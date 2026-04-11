@@ -1,25 +1,46 @@
 let estoque = [
-    
+
 ];
 
 const b_login = document.querySelector('#b-login');
+const user = document.querySelector('#user');
 
-if(b_login){
-    b_login.addEventListener('click', ()=>{
-        window.location.href = 'http://127.0.0.1:5500/src/main/resources/static/index.html'
-    })
+if (user) {
+    user.innerText = sessionStorage.getItem('userName') || 'Name';
 }
 
+if (b_login) {
+    const loginForm = document.querySelector('form');
+    const tentarLogin = (e) => {
+        e.preventDefault();
+        const emailEl = document.querySelector('#email-login');
+        const senhaEl = document.querySelector('#senhaLogin');
+        if (
+            emailEl &&
+            senhaEl &&
+            emailEl.value === 'mateusassissouzaa@gmail.com' &&
+            senhaEl.value === '1'
+        ) {
+            sessionStorage.setItem('userName', 'Mateus Souza');
+            window.location.href = 'index.html';
+        }
+    };
+    if (loginForm) {
+        loginForm.addEventListener('submit', tentarLogin);
+    } else {
+        b_login.addEventListener('click', tentarLogin);
+    }
+}
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
     renderProductList(estoque);
 
     const btnAddOrder = document.getElementById('btn-add-order');
-    if(btnAddOrder) {
+    if (btnAddOrder) {
         btnAddOrder.addEventListener('click', () => {
             const nome = document.getElementById('prod-nome').value;
             const qty = document.getElementById('prod-qty').value;
-            if(!nome) return;
+            if (!nome) return;
 
             const list = document.getElementById('order-items-list');
             const li = document.createElement('li');
@@ -48,7 +69,7 @@ function showPage(pageId) {
 
 function renderProductList(itens) {
     const container = document.getElementById('global-product-list');
-    if(!container) return;
+    if (!container) return;
     container.innerHTML = '';
     itens.forEach(item => {
         const div = document.createElement('div');
@@ -74,13 +95,14 @@ function filterProducts() {
 }
 
 function openModal() { document.getElementById('modal-produto').style.display = 'flex'; }
+
 function closeModal() { document.getElementById('modal-produto').style.display = 'none'; }
 
 function saveProduct() {
     const nome = document.getElementById('new-prod-name').value;
     const id = document.getElementById('new-prod-id').value;
     const unit = document.getElementById('new-prod-unit').value;
-    if(nome && id) {
+    if (nome && id) {
         estoque.push({ id, nome, unidade: unit });
         renderProductList(estoque);
         closeModal();

@@ -201,7 +201,7 @@ body {
     backdrop-filter: blur(4px);
 }
 
-.login-body{
+.login-body {
     display: flexbox;
     flex-direction: column;
     background-color: var(--bg-sidebar);
@@ -212,21 +212,21 @@ body {
     border: 0px;
 }
 
-.login-container{
+.login-container {
     background-color: var(--white);
-    padding: 50px;
+    padding: 60px;
     border-radius: 8px;
     margin-bottom: 10px;
     margin-top: 0px;
 }
 
-.login-visual{
+.login-visual {
     background-color: var(--white);
     padding: 15px;
     border-radius: 8px;
 }
 
-.img-logo{
+.img-logo {
     margin-top: 0;
     width: 35%;
 }
