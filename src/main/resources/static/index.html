@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>IVRNET Pedidos</title>
+    <link rel="shortcut icon" href="img/icone.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand-area">
+            <img src="img/logo.png" alt="logo" class="brand-logo">
+        </div>
+        <nav class="nav-links">
+            <a class="nav-link" id="nav-dash" onclick="showPage('dash')"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a class="nav-link active" id="nav-novo-pedido" onclick="showPage('novo-pedido')"><i data-lucide="shopping-cart"></i> Novo Pedido</a>
+            <a class="nav-link" id="nav-produtos" onclick="showPage('produtos')"><i data-lucide="box"></i> Produtos</a>
+        </nav>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="header">
+            <h1 id="page-title" style="font-size: 20px;">Novo Pedido</h1>
+            <div style="display:flex; gap:15px; align-items:center">
+                <i data-lucide="bell" style="color:var(--text-muted)"></i>
+                <div style="width:32px; height:32px; border-radius:50%; background:#475569; color:white; display:flex; align-items:center; justify-content:center; font-size:12px">RM</div>
+            </div>
+        </header>
+
+        <main class="content">
+            <section id="dash-page" class="page-content">
+                <div class="card">
+                    <h2>Painel de Controle Pedidos</h2>
+                </div>
+            </section>
+
+            <section id="novo-pedido-page" class="page-content active">
+                <div class="order-container" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
+                    <div class="card">
+                        <h2 class="card-title"><i data-lucide="info"></i> Criar Requisição</h2>
+                        <div class="form-group">
+                            <label>Filial Solicitante *</label>
+                            <select class="form-control">
+                                <option>Filial Matriz</option>
+                                <option>Filial Bonito</option>
+                                <option>Filial Bodoquena</option>
+                                <option>Filial Aquidauana</option>
+                                <option>Filial Dois Irmãos</option>
+                                <option>Filial Jardim</option>
+                                <option>Filial Guia Lopez</option>
+                                <option>Filial Nioaque</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Buscar Produto</label>
+                            <div style="display:flex; gap:10px">
+                                <input type="text" id="prod-nome" class="form-control" placeholder="Digite o nome do produto...">
+                                <input type="number" id="prod-qty" class="form-control" style="width:100px" value="1">
+                                <button class="btn-primary" id="btn-add-order"><i data-lucide="plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2 class="card-title"><i data-lucide="list-checks"></i> Itens no Pedido</h2>
+                        <ul id="order-items-list" style="list-style:none"></ul>
+                        <button class="btn-primary" style="width:100%; margin-top:20px; justify-content:center">Finalizar Pedido</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="produtos-page" class="page-content">
+                <div class="card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
+                        <div style="flex:1; max-width:400px; position:relative">
+                            <i data-lucide="search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; color:var(--text-muted)"></i>
+                            <input type="text" id="search-product" class="form-control" placeholder="Pesquisar catálogo..." style="padding-left:40px" oninput="filterProducts()">
+                        </div>
+                        <button class="btn-primary" onclick="openModal()"><i data-lucide="plus"></i> Novo Produto</button>
+                    </div>
+
+                    <div class="product-list-header">
+                        <span>ID</span>
+                        <span>NOME DO PRODUTO</span>
+                        <span>UNIDADE</span>
+                        <span style="text-align:right">AÇÕES</span>
+                    </div>
+                    <div id="global-product-list"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="modal-produto" class="modal-overlay">
+        <div class="card" style="width:100%; max-width:450px;">
+            <h2 class="card-title">Novo Produto</h2>
+            <div class="form-group"><label>Nome</label><input type="text" id="new-prod-name" class="form-control"></div>
+            <div class="form-group"><label>ID</label><input type="text" id="new-prod-id" class="form-control"></div>
+            <div class="form-group">
+                <label>Unidade de Medida</label>
+                <select id="new-prod-unit" class="form-control">
+                    <option value="Unidade">Unidade</option>
+                    <option value="Metro">Metro</option>
+                    <option value="Pacote">Pacote</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px">
+                <button class="btn-primary" style="flex:1; justify-content:center" onclick="saveProduct()">Salvar</button>
+                <button class="btn-primary" style="flex:1; justify-content:center; background:#e2e8f0; color:#475569" onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script/script.js"></script>
+</body>
+
+</html>
