@@ -29,4 +29,9 @@ public class User {
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pedido> pedidos = new ArrayList<>();
+
+    public void addList(Pedido pedido){
+        pedidos.add(pedido);
+        pedido.setUser(this);
+    }
 }

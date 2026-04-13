@@ -22,4 +22,8 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Produto> lProdutos;
+
+    public void setUser(User user){
+        this.user = user;
+    }
 }
