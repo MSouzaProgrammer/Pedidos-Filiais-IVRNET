@@ -19,7 +19,7 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    //#region
+    //#region CRUD
     public Boolean save(User user){
         if(user != null){
             userRepository.save(user);
