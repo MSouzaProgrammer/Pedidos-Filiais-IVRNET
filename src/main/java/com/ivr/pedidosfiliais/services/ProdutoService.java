@@ -32,7 +32,10 @@ public class ProdutoService {
     }
 
     public Produto findById(Long id){
-        return findById(id);
+        if(produtoRepository.existsById(id)){
+            return produtoRepository.findById(id).orElse(null);
+        }
+        return null;
     }
 
     public List<Produto> findAll(){

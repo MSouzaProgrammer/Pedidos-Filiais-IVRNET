@@ -1,6 +1,7 @@
 package com.ivr.pedidosfiliais.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,10 @@ public class UserService {
     }
 
     public User findById(Long id){
-        return findById(id);
-    }
-
-    public List<User> findAll(){
-        return userRepository.findAll();
+        if(userRepository.existsById(id)){
+            return userRepository.findById(id).orElse(null);
+        }
+        return null;
     }
     //#endregion
 
@@ -54,5 +54,18 @@ public class UserService {
         User user = findByUser(id);
         user.addList(pedido);
         return true;
+    }
+
+    public User validarLogin(String email, String password){
+        Optional<User> userEncontrado = userRepository.findByEmail(email);
+
+        if(userEncontrado.isPresent()){
+            User user = userEncontrado.get();
+            
+            if(user.getPassword().equals(password)){
+                return user;
+            }
+        }
+        return null;
     }
 }

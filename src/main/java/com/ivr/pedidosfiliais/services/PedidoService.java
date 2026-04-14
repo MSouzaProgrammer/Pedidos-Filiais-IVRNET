@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.Produto;
+import com.ivr.pedidosfiliais.enums.Filiais;
+import com.ivr.pedidosfiliais.enums.Status;
 import com.ivr.pedidosfiliais.repository.PedidosRepository;
 
 @Service
@@ -35,6 +37,29 @@ public class PedidoService {
     public Boolean addProduto(Produto produto){
         if(produto != null){
             pedido.addProduto(produto);
+            return true;
+        }
+        return false;
+    }
+
+    public Pedido findById(Long id){
+        if(pedidosRepository.existsById(id)){
+            return pedidosRepository.findById(id).orElse(pedido);
+        }
+        return null;
+    }
+
+    public Boolean novoStatus(Status NovoStatus, Long id){
+        if(NovoStatus != null){
+            
+        }
+        return false;
+    }
+
+    public Boolean trocarFilial(Long id, Filiais nFilial){
+        if(nFilial != null){
+            Pedido pedido = findById(id);
+            pedido.setFilial(nFilial);
             return true;
         }
         return false;
