@@ -30,7 +30,7 @@ public class Pedido {
     private Status Status;
     private Filiais filial;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

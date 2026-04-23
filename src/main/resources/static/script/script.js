@@ -7,62 +7,64 @@ if (user) {
   user.innerText = sessionStorage.getItem("userName") || "Name";
 }
 
+async function requestBack(caminho, metodo, dados) {
+  // Faz a chamada para o back-end
+  const resposta = await fetch("http://localhost:8080/" + caminho, {
+    method: metodo,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dados),
+  });
+
+  return resposta;
+}
+
 if (b_login) {
-  const loginForm = document.querySelector("form");
+  // 1. Adicionamos o parâmet
+  if (b_login) {
+    const loginForm = document.querySelector("form");
 
-  // Adicionamos o 'async' aqui
-  const tentarLogin = async (e) => {
-    e.preventDefault();
+    const tentarLogin = async (e) => {
+      e.preventDefault();
 
-    const emailEl = document.querySelector("#email-login");
-    const senhaEl = document.querySelector("#senhaLogin");
+      const emailEl = document.querySelector("#email-login");
+      const senhaEl = document.querySelector("#senhaLogin");
 
-    if (emailEl && senhaEl) {
-      // 1. Prepara os dados para enviar pro Spring Boot
-      // Lembre-se que as chaves devem ter o mesmo nome dos atributos na classe User (Java)
-      const loginData = {
-        email: emailEl.value,
-        password: senhaEl.value,
-        nome: null,
-      };
+      if (emailEl && senhaEl) {
+        const loginData = {
+          email: emailEl.value,
+          password: senhaEl.value,
+          nome: null,
+        };
 
-      try {
-        // 2. Faz a chamada para o back-end
-        const resposta = await fetch("http://localhost:8080/users/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-        });
+        try {
+          // 2. Colocamos o const, o await, passamos o loginData e arrumamos a ordem (caminho, método, dados)
+          const resposta = await requestBack("users/login", "POST", loginData);
 
-        // 3. Verifica a resposta do servidor
-        if (resposta.ok) {
-          // 1. Extrai o JSON que o Java enviou
-          const dadosDoUsuario = await resposta.json();
+          // 3. Verifica a resposta do servidor
+          if (resposta.ok) {
+            const dadosDoUsuario = await resposta.json();
+            const nomeReal = dadosDoUsuario.nome;
 
-          // 2. Pega o nome de dentro do JSON (usando a mesma chave "nome" que colocamos no Java)
-          const nomeReal = dadosDoUsuario.nome;
-
-          // 3. Salva no SessionStorage
-          sessionStorage.setItem("userName", nomeReal);
-          
-
-          // 4. Redireciona para a página principal
-          window.location.href = "index.html";
-        } else if (resposta.status === 401) {
-          alert("Email ou senha incorretos. Tente novamente!");
-        } else {
-          alert("Erro inesperado no servidor.");
+            sessionStorage.setItem("userName", nomeReal);
+            window.location.href = "index.html";
+          } else if (resposta.status === 401) {
+            alert("Email ou senha incorretos. Tente novamente!");
+          } else {
+            alert("Erro inesperado no servidor.");
+          }
+        } catch (erro) {
+          console.error("Erro de conexão:", erro);
+          alert(
+            "Não foi possível conectar ao servidor. Verifique se o Spring Boot está rodando.",
+          );
         }
-      } catch (erro) {
-        console.error("Erro de conexão:", erro);
-        alert(
-          "Não foi possível conectar ao servidor. Verifique se o Spring Boot está rodando.",
-        );
       }
-    }
-  };
+    };
+
+    loginForm.addEventListener("submit", tentarLogin);
+  }
 
   if (loginForm) {
     loginForm.addEventListener("submit", tentarLogin);
@@ -152,11 +154,38 @@ function openModal() {
 function closeModal() {
   document.getElementById("modal-produto").style.display = "none";
 }
-
+/*
 function saveProduct() {
   const nome = document.getElementById("new-prod-name").value;
   const id = document.getElementById("new-prod-id").value;
   const unit = document.getElementById("new-prod-unit").value;
+
+ 
+}
+*/
+function deleteProduct(id) {
+  estoque = estoque.filter((p) => p.id !== id);
+  renderProductList(estoque);
+}
+
+const novoProduto = document.getElementById("btn-salvar");
+
+novoProduto.addEventListener("click", async function () {
+  const nomeP = document.getElementById("new-prod-name");
+  const idP = document.getElementById("new-prod-id");
+  const unitP = document.getElementById("new-prod-unit");
+
+  const produto = {
+    idProduto: idP.value,
+    name: nomeP.value,
+    undMedida: unitP.value,
+  };
+
+  console.log(produto.name);
+
+  const resposta = requestBack("produto", "POST", produto);
+  console.log(resposta);
+
   if (nome && id) {
     estoque.push({ id, nome, unidade: unit });
     renderProductList(estoque);
@@ -164,9 +193,9 @@ function saveProduct() {
     document.getElementById("new-prod-name").value = "";
     document.getElementById("new-prod-id").value = "";
   }
-}
 
-function deleteProduct(id) {
-  estoque = estoque.filter((p) => p.id !== id);
-  renderProductList(estoque);
-}
+  function deleteProduct(id) {
+    estoque = estoque.filter((p) => p.id !== id);
+    renderProductList(estoque);
+  }
+});

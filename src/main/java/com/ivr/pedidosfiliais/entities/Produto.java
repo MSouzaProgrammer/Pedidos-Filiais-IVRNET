@@ -1,6 +1,8 @@
 package com.ivr.pedidosfiliais.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,13 +21,30 @@ import lombok.Setter;
 public class Produto {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long idProduto;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
     private String name;
     private String undMedida;
-    private Long quantidade;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUndMedida() {
+        return undMedida;
+    }
+
+    public void setUndMedida(String undMedida) {
+        this.undMedida = undMedida;
+    }
 }
