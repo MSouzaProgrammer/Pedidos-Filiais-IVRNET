@@ -1,0 +1,24 @@
+{
+  "name": "pedidos-filiais-ivrnet",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MSouzaProgrammer/Pedidos-Filiais-IVRNET.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MSouzaProgrammer/Pedidos-Filiais-IVRNET/issues"
+  },
+  "homepage": "https://github.com/MSouzaProgrammer/Pedidos-Filiais-IVRNET#readme",
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}
