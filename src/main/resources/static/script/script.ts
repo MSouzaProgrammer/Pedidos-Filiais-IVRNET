@@ -64,42 +64,6 @@ function showPage(pageId: string): void {
   atualizarProdutos();
 }
 
-// --- LÓGICA DO DASHBOARD E PRODUTOS ---
-document.addEventListener("DOMContentLoaded", () => {
-  if (typeof lucide !== "undefined") lucide.createIcons();
-  
-  configurarDropdownProdutos();
-  carregarProdutos();
-
-  const btnAddOrder = document.getElementById("btn-add-order") as HTMLButtonElement | null;
-  if (btnAddOrder) {
-    btnAddOrder.addEventListener("click", () => {
-      const nomeEl = document.getElementById("prod-nome") as HTMLInputElement | null;
-      const qtyEl = document.getElementById("prod-qty") as HTMLInputElement | null;
-
-      if (!nomeEl || !qtyEl || !nomeEl.value) return;
-
-      const nome = nomeEl.value;
-      const qty = qtyEl.value;
-
-      const list = document.getElementById("order-items-list") as HTMLElement | null;
-      if (!list) return;
-
-      const li = document.createElement("li");
-      li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
-      li.innerHTML = `
-                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
-                <div style="display:flex; align-items:center; gap:12px">
-                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
-                </div>
-            `;
-      list.appendChild(li);
-      if (typeof lucide !== "undefined") lucide.createIcons();
-    });
-  }
-});
-
 //#region LOGIN
 const b_login = document.querySelector("#b-login") as HTMLButtonElement | null;
 const user = document.querySelector("#user") as HTMLElement | null;
@@ -328,6 +292,9 @@ if (btnNovoProduto) {
   });
 }
 
+//#endregion
+
+//#region {NOVO PEDIDO}
 function configurarDropdownProdutos(): void {
   const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
   const listaSugestoes = document.getElementById("sugestoes-produtos") as HTMLUListElement | null;
@@ -359,7 +326,6 @@ function configurarDropdownProdutos(): void {
           inputProduto.value = produto.nome; // Preenche o input
           listaSugestoes.style.display = "none"; // Esconde a lista
         });
-
         listaSugestoes.appendChild(li);
       });
       
@@ -376,9 +342,50 @@ function configurarDropdownProdutos(): void {
     }
   });
 }
-//#endregion
 
-//#region {NOVO PEDIDO}
+// --- LÓGICA DO DASHBOARD E PRODUTOS ---
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof lucide !== "undefined") lucide.createIcons();
+  
+  configurarDropdownProdutos();
+  carregarProdutos();
 
+  const btnAddOrder = document.getElementById("btn-add-order") as HTMLButtonElement | null;
+  if (btnAddOrder) {
+    btnAddOrder.addEventListener("click", () => {
+      const nomeEl = document.getElementById("prod-nome") as HTMLInputElement | null;
+      const qtyEl = document.getElementById("prod-qty") as HTMLInputElement | null;
 
+      if (!nomeEl || !qtyEl || !nomeEl.value) return;
+
+      const nome = nomeEl.value;
+      const qty = qtyEl.value;
+
+      const list = document.getElementById("order-items-list") as HTMLElement | null;
+      if (!list) return;
+
+      const li = document.createElement("li");
+      li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
+      li.innerHTML = `
+                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
+                <div style="display:flex; align-items:center; gap:12px">
+                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
+                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
+                </div>
+            `;
+      list.appendChild(li);
+      if (typeof lucide !== "undefined") lucide.createIcons();
+      nomeEl.value = "";
+      qtyEl.value = "1";
+    });
+  }
+});
+
+const btnFinalizar = document.getElementById("btn-finalizar") as HTMLButtonElement | null;
+if(btnFinalizar){
+  btnFinalizar.addEventListener("click",() =>{
+    const lista = document.getElementById("order-items-list") as HTMLUListElement | null;
+    console.log(lista);
+  })
+}
 //#endregion

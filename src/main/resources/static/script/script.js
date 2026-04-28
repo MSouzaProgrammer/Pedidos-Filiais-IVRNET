@@ -37,39 +37,6 @@ function showPage(pageId) {
     carregarProdutos();
     atualizarProdutos();
 }
-// --- LÓGICA DO DASHBOARD E PRODUTOS ---
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof lucide !== "undefined")
-        lucide.createIcons();
-    configurarDropdownProdutos();
-    carregarProdutos();
-    const btnAddOrder = document.getElementById("btn-add-order");
-    if (btnAddOrder) {
-        btnAddOrder.addEventListener("click", () => {
-            const nomeEl = document.getElementById("prod-nome");
-            const qtyEl = document.getElementById("prod-qty");
-            if (!nomeEl || !qtyEl || !nomeEl.value)
-                return;
-            const nome = nomeEl.value;
-            const qty = qtyEl.value;
-            const list = document.getElementById("order-items-list");
-            if (!list)
-                return;
-            const li = document.createElement("li");
-            li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
-            li.innerHTML = `
-                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
-                <div style="display:flex; align-items:center; gap:12px">
-                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
-                </div>
-            `;
-            list.appendChild(li);
-            if (typeof lucide !== "undefined")
-                lucide.createIcons();
-        });
-    }
-});
 //#region LOGIN
 const b_login = document.querySelector("#b-login");
 const user = document.querySelector("#user");
@@ -280,6 +247,8 @@ if (btnNovoProduto) {
         }
     });
 }
+//#endregion
+//#region {NOVO PEDIDO}
 function configurarDropdownProdutos() {
     const inputProduto = document.getElementById("prod-nome");
     const listaSugestoes = document.getElementById("sugestoes-produtos");
@@ -319,6 +288,46 @@ function configurarDropdownProdutos() {
         }
     });
 }
-//#endregion
-//#region {NOVO PEDIDO}
+// --- LÓGICA DO DASHBOARD E PRODUTOS ---
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof lucide !== "undefined")
+        lucide.createIcons();
+    configurarDropdownProdutos();
+    carregarProdutos();
+    const btnAddOrder = document.getElementById("btn-add-order");
+    if (btnAddOrder) {
+        btnAddOrder.addEventListener("click", () => {
+            const nomeEl = document.getElementById("prod-nome");
+            const qtyEl = document.getElementById("prod-qty");
+            if (!nomeEl || !qtyEl || !nomeEl.value)
+                return;
+            const nome = nomeEl.value;
+            const qty = qtyEl.value;
+            const list = document.getElementById("order-items-list");
+            if (!list)
+                return;
+            const li = document.createElement("li");
+            li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
+            li.innerHTML = `
+                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
+                <div style="display:flex; align-items:center; gap:12px">
+                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
+                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
+                </div>
+            `;
+            list.appendChild(li);
+            if (typeof lucide !== "undefined")
+                lucide.createIcons();
+            nomeEl.value = "";
+            qtyEl.value = "1";
+        });
+    }
+});
+const btnFinalizar = document.getElementById("btn-finalizar");
+if (btnFinalizar) {
+    btnFinalizar.addEventListener("click", () => {
+        const lista = document.getElementById("order-items-list");
+        console.log(lista);
+    });
+}
 //#endregion
