@@ -4,8 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,32 +13,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "tb_produto")
-public class Produto {
+//@Embeddable
+public class ProdutoPedido {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long idProduto;
 
+    @ManyToOne
+    private Pedido pedido;
+    
+    @OneToOne
+    private Produto produto;
     private String name;
     private String undMedida;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUndMedida() {
-        return undMedida;
-    }
-
-    public void setUndMedida(String undMedida) {
-        this.undMedida = undMedida;
+    public ProdutoPedido(Long id, Pedido pedido, Produto produto) {
+        this.id = id;
+        this.idProduto = produto.getIdProduto();
+        this.pedido = pedido;
+        this.name =produto.getName();
+        this.undMedida = produto.getUndMedida();
     }
 }

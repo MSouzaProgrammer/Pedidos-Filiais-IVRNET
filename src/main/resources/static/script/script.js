@@ -1,4 +1,93 @@
 "use strict";
+//#region Funçoes
+// Parâmetro pageId tipado como string
+function showPage(pageId) {
+    document.querySelectorAll(".page-content").forEach((p) => p.classList.remove("active"));
+    document.querySelectorAll(".nav-link").forEach((l) => l.classList.remove("active"));
+    const pageTarget = document.getElementById(pageId + "-page");
+    const navTarget = document.getElementById("nav-" + pageId);
+    if (pageTarget)
+        pageTarget.classList.add("active");
+    if (navTarget)
+        navTarget.classList.add("active");
+    const titles = {
+        dash: "Dashboard",
+        "novo-pedido": "Novo Pedido",
+        produtos: "Produtos",
+    };
+    const titleEl = document.getElementById("page-title");
+    if (titleEl)
+        titleEl.innerText = titles[pageId] || "Página";
+    carregarProdutos();
+    atualizarProdutos();
+}
+// Recebe o array tipado
+function renderProductList(itens) {
+    const container = document.getElementById("global-product-list");
+    if (!container)
+        return;
+    container.innerHTML = "";
+    itens.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "product-list-item";
+        div.innerHTML = `
+            <span style="font-weight:700; color:var(--text-muted)">${item.idProduto}</span>
+            <span style="font-weight:600">${item.nome}</span>
+            <span style="color:var(--text-muted)">${item.unidade}</span>
+            <div style="text-align:right">
+                <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px"><i data-lucide="edit" style="width:16px"></i></button>
+                <button style="border:none; background:none; cursor:pointer; color:#ef4444" onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+    if (typeof lucide !== "undefined")
+        lucide.createIcons();
+}
+function filterProducts() {
+    const searchEl = document.getElementById("search-product");
+    if (!searchEl)
+        return;
+    const term = searchEl.value.toLowerCase();
+    const filtered = estoque.filter((p) => p.nome.toLowerCase().includes(term) || String(p.id).toLowerCase().includes(term));
+    renderProductList(filtered);
+}
+function openModal() {
+    const modal = document.getElementById("modal-produto");
+    if (modal)
+        modal.style.display = "flex";
+}
+function closeModal() {
+    const modal = document.getElementById("modal-produto");
+    if (modal)
+        modal.style.display = "none";
+}
+async function carregarProdutos() {
+    try {
+        const resposta = await requestBack("produto", "GET", null);
+        if (resposta.ok) {
+            const dadosBack = await resposta.json();
+            console.log(dadosBack);
+            // Atualiza a variável (lembre-se que tem que ser "let estoque" lá no topo)
+            estoque = dadosBack.map((itemDoJava) => {
+                return {
+                    id: String(itemDoJava.id),
+                    idProduto: String(itemDoJava.idProduto), // Transforma número em texto, caso o Java mande número
+                    nome: String(itemDoJava.name),
+                    unidade: String(itemDoJava.undMedida)
+                };
+            });
+            preencherSugestoes();
+        }
+        else {
+            console.error("Deu ruim no back-end. Status:", resposta.status);
+        }
+    }
+    catch (err) {
+        console.error("Erro ao buscar produtos no backend:", err);
+    }
+}
+//#endregion
 // 2. Tipamos o estoque como um array de Produtos
 let estoque = [];
 // Tipamos os elementos do DOM
@@ -67,6 +156,7 @@ if (b_login) {
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined")
         lucide.createIcons();
+    carregarProdutos();
     renderProductList(estoque);
     const btnAddOrder = document.getElementById("btn-add-order");
     if (btnAddOrder) {
@@ -95,66 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-// Parâmetro pageId tipado como string
-function showPage(pageId) {
-    document.querySelectorAll(".page-content").forEach((p) => p.classList.remove("active"));
-    document.querySelectorAll(".nav-link").forEach((l) => l.classList.remove("active"));
-    const pageTarget = document.getElementById(pageId + "-page");
-    const navTarget = document.getElementById("nav-" + pageId);
-    if (pageTarget)
-        pageTarget.classList.add("active");
-    if (navTarget)
-        navTarget.classList.add("active");
-    const titles = {
-        dash: "Dashboard",
-        "novo-pedido": "Novo Pedido",
-        produtos: "Produtos",
-    };
-    const titleEl = document.getElementById("page-title");
-    if (titleEl)
-        titleEl.innerText = titles[pageId] || "Página";
-}
-// Recebe o array tipado
-function renderProductList(itens) {
-    const container = document.getElementById("global-product-list");
-    if (!container)
-        return;
-    container.innerHTML = "";
-    itens.forEach((item) => {
-        const div = document.createElement("div");
-        div.className = "product-list-item";
-        div.innerHTML = `
-            <span style="font-weight:700; color:var(--text-muted)">${item.idProduto}</span>
-            <span style="font-weight:600">${item.nome}</span>
-            <span style="color:var(--text-muted)">${item.unidade}</span>
-            <div style="text-align:right">
-                <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px"><i data-lucide="edit" style="width:16px"></i></button>
-                <button style="border:none; background:none; cursor:pointer; color:#ef4444" onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
-            </div>
-        `;
-        container.appendChild(div);
-    });
-    if (typeof lucide !== "undefined")
-        lucide.createIcons();
-}
-function filterProducts() {
-    const searchEl = document.getElementById("search-product");
-    if (!searchEl)
-        return;
-    const term = searchEl.value.toLowerCase();
-    const filtered = estoque.filter((p) => p.nome.toLowerCase().includes(term) || String(p.id).toLowerCase().includes(term));
-    renderProductList(filtered);
-}
-function openModal() {
-    const modal = document.getElementById("modal-produto");
-    if (modal)
-        modal.style.display = "flex";
-}
-function closeModal() {
-    const modal = document.getElementById("modal-produto");
-    if (modal)
-        modal.style.display = "none";
-}
 // Parâmetro tipado
 // Exposto no objeto Window (TypeScript exige isso se você chama a função pelo HTML via onclick)
 window.deleteProduct = async function (idDoBanco) {
@@ -207,12 +237,6 @@ async function atualizarProdutos() {
         console.error("Erro ao buscar produtos no backend:", err);
     }
 }
-const attProdutos = document.getElementById("nav-produtos");
-if (attProdutos) {
-    attProdutos.addEventListener("click", async function () {
-        atualizarProdutos();
-    });
-}
 const bAtualizar = document.getElementById("atualizar"); // Corrigido para ButtonElement
 if (bAtualizar) {
     bAtualizar.addEventListener("click", async function () {
@@ -256,4 +280,18 @@ if (btnNovoProduto) {
             alert("Por favor, preencha pelo menos o Nome e o ID do produto.");
         }
     });
+}
+function preencherSugestoes() {
+    const datalist = document.getElementById("sugestoes-produtos");
+    if (!datalist)
+        return;
+    // Limpamos a lista caso ela já tenha algo
+    datalist.innerHTML = "";
+    // Percorremos o nosso array de estoque
+    for (const produto of estoque) {
+        const option = document.createElement("option");
+        // O value é o que o usuário vai poder selecionar
+        option.value = produto.nome;
+        datalist.appendChild(option);
+    }
 }

@@ -15,8 +15,10 @@
             <img src="img/logo.png" alt="logo" class="brand-logo">
         </div>
         <nav class="nav-links">
-            <a class="nav-link" id="nav-dash" onclick="showPage('dash')"><i data-lucide="layout-dashboard"></i> Dashboard</a>
-            <a class="nav-link active" id="nav-novo-pedido" onclick="showPage('novo-pedido')"><i data-lucide="shopping-cart"></i> Novo Pedido</a>
+            <a class="nav-link" id="nav-dash" onclick="showPage('dash')"><i data-lucide="layout-dashboard"></i>
+                Dashboard</a>
+            <a class="nav-link active" id="nav-novo-pedido" onclick="showPage('novo-pedido')"><i
+                    data-lucide="shopping-cart"></i> Novo Pedido</a>
             <a class="nav-link" id="nav-produtos" onclick="showPage('produtos')"><i data-lucide="box"></i> Produtos</a>
         </nav>
         <h1 id="user">
@@ -28,7 +30,9 @@
             <h1 id="page-title" style="font-size: 20px;">Novo Pedido</h1>
             <div style="display:flex; gap:15px; align-items:center">
                 <i data-lucide="bell" style="color:var(--text-muted)"></i>
-                <div style="width:32px; height:32px; border-radius:50%; background:#475569; color:white; display:flex; align-items:center; justify-content:center; font-size:12px">RM</div>
+                <div
+                    style="width:32px; height:32px; border-radius:50%; background:#475569; color:white; display:flex; align-items:center; justify-content:center; font-size:12px">
+                    RM</div>
             </div>
         </header>
 
@@ -59,7 +63,9 @@
                         <div class="form-group">
                             <label>Buscar Produto</label>
                             <div style="display:flex; gap:10px">
-                                <input type="text" id="prod-nome" class="form-control" placeholder="Digite o nome do produto...">
+                                <input type="search" id="prod-nome" class="form-control"
+                                    placeholder="Digite o nome do produto..." list="sugestoes-produtos">
+                                <datalist id="sugestoes-produtos"></datalist>
                                 <input type="number" id="prod-qty" class="form-control" style="width:100px" value="1">
                                 <button class="btn-primary" id="btn-add-order"><i data-lucide="plus"></i></button>
                             </div>
@@ -67,8 +73,9 @@
                     </div>
                     <div class="card">
                         <h2 class="card-title"><i data-lucide="list-checks"></i> Itens no Pedido</h2>
-                        <ul id="order-items-list" style="list-style:none"></ul>
-                        <button class="btn-primary" style="width:100%; margin-top:20px; justify-content:center">Finalizar Pedido</button>
+                        <ul id="order-items-list" style="list-style:none "></ul>
+                        <button class="btn-primary"
+                            style="width:100%; margin-top:20px; justify-content:center">Finalizar Pedido</button>
                     </div>
                 </div>
             </section>
@@ -77,10 +84,14 @@
                 <div class="card">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px">
                         <div style="flex:1; max-width:400px; position:relative">
-                            <i data-lucide="search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; color:var(--text-muted)"></i>
-                            <input type="text" id="search-product" class="form-control" placeholder="Pesquisar catálogo..." style="padding-left:40px" oninput="filterProducts()">
+                            <i data-lucide="search"
+                                style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; color:var(--text-muted)"></i>
+                            <input type="text" id="search-product" class="form-control"
+                                placeholder="Pesquisar catálogo..." style="padding-left:40px"
+                                oninput="filterProducts()">
                         </div>
-                        <button class="btn-primary" onclick="openModal()"><i data-lucide="plus"></i> Novo Produto</button>
+                        <button class="btn-primary" onclick="openModal()"><i data-lucide="plus"></i> Novo
+                            Produto</button>
                     </div>
                     <button style="margin-bottom: 20px;" class="btn-primary" id="atualizar">Atualizar</button>
                     <div class="product-list-header">
@@ -99,7 +110,8 @@
         <div class="card" style="width:100%; max-width:450px;">
             <h2 class="card-title">Novo Produto</h2>
             <div class="form-group"><label>Nome</label><input type="text" id="new-prod-name" class="form-control"></div>
-            <div class="form-group"><label>ID PRODUTO</label><input type="text" id="new-prod-id" class="form-control"></div>
+            <div class="form-group"><label>ID PRODUTO</label><input type="text" id="new-prod-id" class="form-control">
+            </div>
             <div class="form-group">
                 <label>Unidade de Medida</label>
                 <select id="new-prod-unit" class="form-control">
@@ -110,7 +122,8 @@
             </div>
             <div style="display:flex; gap:10px">
                 <button id="btn-salvar" class="btn-primary" style="flex:1; justify-content:center">Salvar</button>
-                <button class="btn-primary" style="flex:1; justify-content:center; background:#e2e8f0; color:#475569" onclick="closeModal()">Cancelar</button>
+                <button class="btn-primary" style="flex:1; justify-content:center; background:#e2e8f0; color:#475569"
+                    onclick="closeModal()">Cancelar</button>
             </div>
         </div>
     </div>

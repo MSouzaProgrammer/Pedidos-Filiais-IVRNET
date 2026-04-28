@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ivr.pedidosfiliais.entities.Pedido;
-import com.ivr.pedidosfiliais.entities.Produto;
+import com.ivr.pedidosfiliais.entities.ProdutoPedido;
 import com.ivr.pedidosfiliais.enums.Filiais;
 import com.ivr.pedidosfiliais.enums.Status;
 import com.ivr.pedidosfiliais.repository.PedidosRepository;
@@ -34,7 +34,7 @@ public class PedidoService {
         return false;
     }
 
-    public Boolean addProduto(Produto produto){
+    public Boolean addProduto(ProdutoPedido produto){
         if(produto != null){
             pedido.addProduto(produto);
             return true;

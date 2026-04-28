@@ -35,13 +35,13 @@ public class Pedido {
     private User user;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Produto> lProdutos;
+    private List<ProdutoPedido> lProdutos;
 
     public void setUser(User user){
         this.user = user;
     }
 
-    public void addProduto(Produto produto){
+    public void addProduto(ProdutoPedido produto){
         lProdutos.add(produto);
     }
 }
