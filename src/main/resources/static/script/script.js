@@ -1,6 +1,22 @@
 "use strict";
-//#region Funçoes
-// Parâmetro pageId tipado como string
+// 2. Tipamos o estoque como um array de Produtos
+let estoque = [];
+//FUNÇÃO PARA BUSCAR COISAS DO BACK
+async function requestBack(caminho, metodo, dados) {
+    const opcoes = {
+        method: metodo,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    };
+    if (dados && metodo.toUpperCase() !== "GET") {
+        opcoes.body = JSON.stringify(dados);
+    }
+    const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
+    return resposta;
+}
+//#endregion
+//FUNÇÃO PARA TROCA DE PAGINAS;
 function showPage(pageId) {
     document.querySelectorAll(".page-content").forEach((p) => p.classList.remove("active"));
     document.querySelectorAll(".nav-link").forEach((l) => l.classList.remove("active"));
@@ -21,7 +37,89 @@ function showPage(pageId) {
     carregarProdutos();
     atualizarProdutos();
 }
-// Recebe o array tipado
+// --- LÓGICA DO DASHBOARD E PRODUTOS ---
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof lucide !== "undefined")
+        lucide.createIcons();
+    configurarDropdownProdutos();
+    carregarProdutos();
+    const btnAddOrder = document.getElementById("btn-add-order");
+    if (btnAddOrder) {
+        btnAddOrder.addEventListener("click", () => {
+            const nomeEl = document.getElementById("prod-nome");
+            const qtyEl = document.getElementById("prod-qty");
+            if (!nomeEl || !qtyEl || !nomeEl.value)
+                return;
+            const nome = nomeEl.value;
+            const qty = qtyEl.value;
+            const list = document.getElementById("order-items-list");
+            if (!list)
+                return;
+            const li = document.createElement("li");
+            li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
+            li.innerHTML = `
+                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
+                <div style="display:flex; align-items:center; gap:12px">
+                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
+                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
+                </div>
+            `;
+            list.appendChild(li);
+            if (typeof lucide !== "undefined")
+                lucide.createIcons();
+        });
+    }
+});
+//#region LOGIN
+const b_login = document.querySelector("#b-login");
+const user = document.querySelector("#user");
+if (user) {
+    user.innerText = sessionStorage.getItem("userName") || "Name";
+}
+// --- LÓGICA DE LOGIN ---
+if (b_login) {
+    const loginForm = document.querySelector("form");
+    // Tipamos o evento como Event
+    const tentarLogin = async (e) => {
+        e.preventDefault();
+        const emailEl = document.querySelector("#email-login");
+        const senhaEl = document.querySelector("#senhaLogin");
+        if (emailEl && senhaEl) {
+            const loginData = {
+                email: emailEl.value,
+                password: senhaEl.value,
+                nome: null,
+            };
+            try {
+                const resposta = await requestBack("users/login", "POST", loginData);
+                if (resposta.ok) {
+                    const dadosDoUsuario = await resposta.json();
+                    const nomeReal = dadosDoUsuario.nome;
+                    sessionStorage.setItem("userName", nomeReal);
+                    window.location.href = "index.html";
+                }
+                else if (resposta.status === 401) {
+                    alert("Email ou senha incorretos. Tente novamente!");
+                }
+                else {
+                    alert("Erro inesperado no servidor.");
+                }
+            }
+            catch (erro) {
+                console.error("Erro de conexão:", erro);
+                alert("Não foi possível conectar ao servidor. Verifique se o Spring Boot está rodando.");
+            }
+        }
+    };
+    if (loginForm) {
+        loginForm.addEventListener("submit", tentarLogin);
+    }
+    else if (b_login) {
+        b_login.addEventListener("click", tentarLogin);
+    }
+}
+//#endregion
+//#region Funçoes para {PRODUTOS}
 function renderProductList(itens) {
     const container = document.getElementById("global-product-list");
     if (!container)
@@ -77,7 +175,7 @@ async function carregarProdutos() {
                     unidade: String(itemDoJava.undMedida)
                 };
             });
-            preencherSugestoes();
+            renderProductList(estoque);
         }
         else {
             console.error("Deu ruim no back-end. Status:", resposta.status);
@@ -87,105 +185,6 @@ async function carregarProdutos() {
         console.error("Erro ao buscar produtos no backend:", err);
     }
 }
-//#endregion
-// 2. Tipamos o estoque como um array de Produtos
-let estoque = [];
-// Tipamos os elementos do DOM
-const b_login = document.querySelector("#b-login");
-const user = document.querySelector("#user");
-if (user) {
-    user.innerText = sessionStorage.getItem("userName") || "Name";
-}
-// Tipamos os parâmetros da função e o retorno como Promise<Response>
-async function requestBack(caminho, metodo, dados) {
-    const opcoes = {
-        method: metodo,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    };
-    if (dados && metodo.toUpperCase() !== "GET") {
-        opcoes.body = JSON.stringify(dados);
-    }
-    const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
-    return resposta;
-}
-// --- LÓGICA DE LOGIN ---
-if (b_login) {
-    const loginForm = document.querySelector("form");
-    // Tipamos o evento como Event
-    const tentarLogin = async (e) => {
-        e.preventDefault();
-        const emailEl = document.querySelector("#email-login");
-        const senhaEl = document.querySelector("#senhaLogin");
-        if (emailEl && senhaEl) {
-            const loginData = {
-                email: emailEl.value,
-                password: senhaEl.value,
-                nome: null,
-            };
-            try {
-                const resposta = await requestBack("users/login", "POST", loginData);
-                if (resposta.ok) {
-                    const dadosDoUsuario = await resposta.json();
-                    const nomeReal = dadosDoUsuario.nome;
-                    sessionStorage.setItem("userName", nomeReal);
-                    window.location.href = "index.html";
-                }
-                else if (resposta.status === 401) {
-                    alert("Email ou senha incorretos. Tente novamente!");
-                }
-                else {
-                    alert("Erro inesperado no servidor.");
-                }
-            }
-            catch (erro) {
-                console.error("Erro de conexão:", erro);
-                alert("Não foi possível conectar ao servidor. Verifique se o Spring Boot está rodando.");
-            }
-        }
-    };
-    if (loginForm) {
-        loginForm.addEventListener("submit", tentarLogin);
-    }
-    else if (b_login) {
-        b_login.addEventListener("click", tentarLogin);
-    }
-}
-// --- LÓGICA DO DASHBOARD E PRODUTOS ---
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof lucide !== "undefined")
-        lucide.createIcons();
-    carregarProdutos();
-    renderProductList(estoque);
-    const btnAddOrder = document.getElementById("btn-add-order");
-    if (btnAddOrder) {
-        btnAddOrder.addEventListener("click", () => {
-            const nomeEl = document.getElementById("prod-nome");
-            const qtyEl = document.getElementById("prod-qty");
-            if (!nomeEl || !qtyEl || !nomeEl.value)
-                return;
-            const nome = nomeEl.value;
-            const qty = qtyEl.value;
-            const list = document.getElementById("order-items-list");
-            if (!list)
-                return;
-            const li = document.createElement("li");
-            li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
-            li.innerHTML = `
-                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
-                <div style="display:flex; align-items:center; gap:12px">
-                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
-                </div>
-            `;
-            list.appendChild(li);
-            if (typeof lucide !== "undefined")
-                lucide.createIcons();
-        });
-    }
-});
-// Parâmetro tipado
 // Exposto no objeto Window (TypeScript exige isso se você chama a função pelo HTML via onclick)
 window.deleteProduct = async function (idDoBanco) {
     // 1. Confirmação pro usuário não apagar sem querer (opcional, mas recomendado)
@@ -281,17 +280,45 @@ if (btnNovoProduto) {
         }
     });
 }
-function preencherSugestoes() {
-    const datalist = document.getElementById("sugestoes-produtos");
-    if (!datalist)
+function configurarDropdownProdutos() {
+    const inputProduto = document.getElementById("prod-nome");
+    const listaSugestoes = document.getElementById("sugestoes-produtos");
+    if (!inputProduto || !listaSugestoes)
         return;
-    // Limpamos a lista caso ela já tenha algo
-    datalist.innerHTML = "";
-    // Percorremos o nosso array de estoque
-    for (const produto of estoque) {
-        const option = document.createElement("option");
-        // O value é o que o usuário vai poder selecionar
-        option.value = produto.nome;
-        datalist.appendChild(option);
-    }
+    // Dispara toda vez que o usuário digita algo no campo de busca
+    inputProduto.addEventListener("input", function () {
+        const valorDigitado = this.value.toLowerCase();
+        listaSugestoes.innerHTML = ""; // Limpa os resultados anteriores
+        if (!valorDigitado) {
+            listaSugestoes.style.display = "none";
+            return;
+        }
+        // Filtra o array global 'estoque' que veio do seu Java
+        const produtosFiltrados = estoque.filter((p) => p.nome.toLowerCase().includes(valorDigitado));
+        if (produtosFiltrados.length > 0) {
+            produtosFiltrados.forEach((produto) => {
+                const li = document.createElement("li");
+                li.textContent = produto.nome;
+                // Quando o usuário clicar no produto da lista
+                li.addEventListener("click", function () {
+                    inputProduto.value = produto.nome; // Preenche o input
+                    listaSugestoes.style.display = "none"; // Esconde a lista
+                });
+                listaSugestoes.appendChild(li);
+            });
+            listaSugestoes.style.display = "block"; // Mostra a lista
+        }
+        else {
+            listaSugestoes.style.display = "none"; // Esconde se não achar nada
+        }
+    });
+    // Fecha a lista se o usuário clicar em qualquer outro lugar da tela
+    document.addEventListener("click", function (evento) {
+        if (evento.target !== inputProduto && evento.target !== listaSugestoes) {
+            listaSugestoes.style.display = "none";
+        }
+    });
 }
+//#endregion
+//#region {NOVO PEDIDO}
+//#endregion

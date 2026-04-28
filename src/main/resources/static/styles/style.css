@@ -231,3 +231,38 @@ body {
     width: 35%;
 }
 
+/* Estilo da caixa do menu suspenso */
+.dropdown-produtos {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #1c1e26; /* Cor de fundo */
+    color: #ffffff; /* Cor da letra */
+    list-style: none; /* Remove as bolinhas da lista */
+    padding: 0;
+    margin: 4px 0 0 0;
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    max-height: 200px; /* Limita a altura */
+    overflow-y: auto; /* Adiciona barra de rolagem se tiver muitos itens */
+    z-index: 1000;
+}
+
+/* Estilo de cada item da lista */
+.dropdown-produtos li {
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #2f334d; /* Linha sutil dividindo os itens */
+}
+
+/* Remove a linha do último item */
+.dropdown-produtos li:last-child {
+    border-bottom: none;
+}
+
+/* A mágica do Hover (que o datalist não deixa fazer) */
+.dropdown-produtos li:hover {
+    background-color: #3b405e;
+}

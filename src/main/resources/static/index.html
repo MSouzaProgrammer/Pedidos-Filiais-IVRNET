@@ -62,10 +62,13 @@
                         </div>
                         <div class="form-group">
                             <label>Buscar Produto</label>
-                            <div style="display:flex; gap:10px">
-                                <input type="search" id="prod-nome" class="form-control"
-                                    placeholder="Digite o nome do produto..." list="sugestoes-produtos">
-                                <datalist id="sugestoes-produtos"></datalist>
+                            <div style="display:flex; gap:10px; align-items: flex-start;">
+                                
+                                <div style="position: relative; flex-grow: 1;">
+                                    <input type="search" id="prod-nome" class="form-control" placeholder="Digite o nome do produto..." autocomplete="off">
+                                    <ul id="sugestoes-produtos" class="dropdown-produtos" style="display: none;"></ul>
+                                </div>
+
                                 <input type="number" id="prod-qty" class="form-control" style="width:100px" value="1">
                                 <button class="btn-primary" id="btn-add-order"><i data-lucide="plus"></i></button>
                             </div>
