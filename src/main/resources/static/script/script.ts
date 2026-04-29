@@ -24,7 +24,7 @@ async function requestBack(caminho: string, metodo: string, dados: unknown): Pro
 //#region INTERFACES
 interface Produto {
   id: string | number;
-  idProduto: string | number; 
+  idProduto: string | number;
   nome: string;
   unidade: string;
   quantidade: number;
@@ -41,7 +41,7 @@ interface ProdutosRegistrados {
   idProduto: string | number;         // O código visível do produto
   name: string;              // Nome no Java
   undMedida: string;       // Unidade de medida no Java
-  
+
 }
 //#endregion
 
@@ -168,7 +168,7 @@ function closeModal(): void {
 }
 
 async function carregarProdutos() {
-     try {
+  try {
     const resposta = await requestBack("produto", "GET", null);
 
     if (resposta.ok) {
@@ -195,7 +195,7 @@ async function carregarProdutos() {
 }
 
 // Exposto no objeto Window (TypeScript exige isso se você chama a função pelo HTML via onclick)
-(window as any).deleteProduct = async function(idDoBanco: string): Promise<void> {
+(window as any).deleteProduct = async function (idDoBanco: string): Promise<void> {
   // 1. Confirmação pro usuário não apagar sem querer (opcional, mas recomendado)
   const querMesmoApagar = confirm("Tem certeza que deseja apagar este produto?");
   if (!querMesmoApagar) return;
@@ -208,10 +208,10 @@ async function carregarProdutos() {
     if (resposta.ok) {
       // 3. Se o Java confirmou que apagou, a gente tira ele da nossa lista local
       estoque = estoque.filter((p) => String(p.id) !== String(idDoBanco));
-      
+
       // 4. Atualiza a tela
       renderProductList(estoque);
-      
+
     } else {
       console.error("Erro ao apagar. Status:", resposta.status);
       alert("Não foi possível apagar o produto no banco de dados.");
@@ -270,7 +270,7 @@ if (btnNovoProduto) {
         idProduto: idP.value,
         nome: nomeP.value,
         unidade: unitP ? unitP.value : "",
-        quantidade:0
+        quantidade: 0
       };
 
       // Quando for ligar o backend novamente, descomente aqui:
@@ -303,14 +303,40 @@ if (btnNovoProduto) {
 //#region {NOVO PEDIDO}
 
 
+
 const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
 const listaSugestoes = document.getElementById("sugestoes-produtos") as HTMLUListElement | null;
 const quantValor = document.getElementById("prod-qty") as HTMLInputElement | null;
 const btAdd = document.getElementById("btn-add-order") as HTMLButtonElement;
 
-function configurarDropdownProdutos(): void {
- 
+if (!inputProduto || !listaSugestoes || !quantValor) { }
+    else {
+      if (quantValor.value == "") {
+        btAdd.disabled = true;
+        btAdd.style.backgroundColor = 'red';
 
+        quantValor.disabled = true;
+        console.log(btAdd.disabled);
+      }
+    }
+
+if (btAdd) {
+  btAdd.addEventListener("click", () => {
+    if (!inputProduto || !listaSugestoes || !quantValor) { }
+    else {
+      if (quantValor.value == "") {
+        btAdd.disabled = true;
+        btAdd.style.backgroundColor = 'red';
+
+        quantValor.disabled = true;
+        console.log(btAdd.disabled);
+        console.log("cliquei");
+      }
+    }
+  })
+}
+
+function configurarDropdownProdutos(): void {
   if (!inputProduto || !listaSugestoes || !quantValor) return;
 
   // Dispara toda vez que o usuário digita algo no campo de busca
@@ -339,46 +365,31 @@ function configurarDropdownProdutos(): void {
           produtoEmEspera = produto;
           listaSugestoes.style.display = "none";
           quantValor.disabled = false;
+
+          btAdd.style.backgroundColor = '#041033'
+          btAdd.disabled = false;
         });
         listaSugestoes.appendChild(li);
       });
-      
+
       listaSugestoes.style.display = "block"; // Mostra a lista
     } else {
       listaSugestoes.style.display = "none"; // Esconde se não achar nada
     }
   });
 
-  
+
   // Fecha a lista se o usuário clicar em qualquer outro lugar da tela
   document.addEventListener("click", function (evento) {
     if (evento.target !== inputProduto && evento.target !== listaSugestoes) {
       listaSugestoes.style.display = "none";
     }
   });
-
-  
 }
-
-if (!inputProduto || !listaSugestoes || !quantValor) {
-  return;
-}
-else{
-if(quantValor.value !== ""){
-    btAdd.disabled = false;
-    btAdd.style.backgroundColor = 'black';
-  }
-else{
-    btAdd.disabled = true;
-    btAdd.style.backgroundColor = 'red';
-}
-}
-
 
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
-  
   configurarDropdownProdutos();
   carregarProdutos();
 
@@ -407,13 +418,13 @@ document.addEventListener("DOMContentLoaded", () => {
       list.appendChild(li);
       if (typeof lucide !== "undefined") lucide.createIcons();
       //#endregion
-      if(!produtoEmEspera){
+      if (!produtoEmEspera) {
         alert("Por favor, pesquise e selecione um produto da lista primeiro!");
         return;
       }
       const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
       const quantValor = document.getElementById("prod-qty") as HTMLInputElement | null;
-      if(quantValor && inputProduto){
+      if (quantValor && inputProduto) {
         const itemFinalCarrinho = {
           id: produtoEmEspera.id,
           idProduto: produtoEmEspera.idProduto,
@@ -435,8 +446,8 @@ function apagar(idParaRemover: string): void {
 }
 
 const btnFinalizar = document.getElementById("btn-finalizar") as HTMLButtonElement | null;
-if(btnFinalizar){
-  btnFinalizar.addEventListener("click",() =>{
+if (btnFinalizar) {
+  btnFinalizar.addEventListener("click", () => {
     const lista = document.getElementById("order-items-list") as HTMLUListElement | null;
     console.log(carrinhoDePedidos);
   })

@@ -258,6 +258,29 @@ const inputProduto = document.getElementById("prod-nome");
 const listaSugestoes = document.getElementById("sugestoes-produtos");
 const quantValor = document.getElementById("prod-qty");
 const btAdd = document.getElementById("btn-add-order");
+if (!inputProduto || !listaSugestoes || !quantValor) { }
+else {
+    if (quantValor.value == "") {
+        btAdd.disabled = true;
+        btAdd.style.backgroundColor = 'red';
+        quantValor.disabled = true;
+        console.log(btAdd.disabled);
+    }
+}
+if (btAdd) {
+    btAdd.addEventListener("click", () => {
+        if (!inputProduto || !listaSugestoes || !quantValor) { }
+        else {
+            if (quantValor.value == "") {
+                btAdd.disabled = true;
+                btAdd.style.backgroundColor = 'red';
+                quantValor.disabled = true;
+                console.log(btAdd.disabled);
+                console.log("cliquei");
+            }
+        }
+    });
+}
 function configurarDropdownProdutos() {
     if (!inputProduto || !listaSugestoes || !quantValor)
         return;
@@ -281,6 +304,8 @@ function configurarDropdownProdutos() {
                     produtoEmEspera = produto;
                     listaSugestoes.style.display = "none";
                     quantValor.disabled = false;
+                    btAdd.style.backgroundColor = '#041033';
+                    btAdd.disabled = false;
                 });
                 listaSugestoes.appendChild(li);
             });
@@ -296,19 +321,6 @@ function configurarDropdownProdutos() {
             listaSugestoes.style.display = "none";
         }
     });
-}
-if (!inputProduto || !listaSugestoes || !quantValor) {
-    return;
-}
-else {
-    if (quantValor.value !== "") {
-        btAdd.disabled = false;
-        btAdd.style.backgroundColor = 'black';
-    }
-    else {
-        btAdd.disabled = true;
-        btAdd.style.backgroundColor = 'red';
-    }
 }
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
 document.addEventListener("DOMContentLoaded", () => {
