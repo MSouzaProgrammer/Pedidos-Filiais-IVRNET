@@ -1,6 +1,8 @@
 "use strict";
 // 2. Tipamos o estoque como um array de Produtos
 let estoque = [];
+let produtoEmEspera = null;
+let carrinhoDePedidos = [];
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho, metodo, dados) {
     const opcoes = {
@@ -101,7 +103,7 @@ function renderProductList(itens) {
             <span style="color:var(--text-muted)">${item.unidade}</span>
             <div style="text-align:right">
                 <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px"><i data-lucide="edit" style="width:16px"></i></button>
-                <button style="border:none; background:none; cursor:pointer; color:#ef4444" onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
+                <button style="border:none; background:none; cursor:pointer; color:#ef4444"  onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
             </div>
         `;
         container.appendChild(div);
@@ -139,7 +141,8 @@ async function carregarProdutos() {
                     id: String(itemDoJava.id),
                     idProduto: String(itemDoJava.idProduto), // Transforma número em texto, caso o Java mande número
                     nome: String(itemDoJava.name),
-                    unidade: String(itemDoJava.undMedida)
+                    unidade: String(itemDoJava.undMedida),
+                    quantidade: Number()
                 };
             });
             renderProductList(estoque);
@@ -190,7 +193,8 @@ async function atualizarProdutos() {
                     id: String(itemDoJava.id),
                     idProduto: String(itemDoJava.idProduto), // Transforma número em texto, caso o Java mande número
                     nome: String(itemDoJava.name),
-                    unidade: String(itemDoJava.undMedida)
+                    unidade: String(itemDoJava.undMedida),
+                    quantidade: Number()
                 };
             });
             renderProductList(estoque);
@@ -221,6 +225,7 @@ if (btnNovoProduto) {
                 idProduto: idP.value,
                 nome: nomeP.value,
                 unidade: unitP ? unitP.value : "",
+                quantidade: 0
             };
             // Quando for ligar o backend novamente, descomente aqui:
             try {
@@ -252,7 +257,8 @@ if (btnNovoProduto) {
 function configurarDropdownProdutos() {
     const inputProduto = document.getElementById("prod-nome");
     const listaSugestoes = document.getElementById("sugestoes-produtos");
-    if (!inputProduto || !listaSugestoes)
+    const quantValor = document.getElementById("prod-qty");
+    if (!inputProduto || !listaSugestoes || !quantValor)
         return;
     // Dispara toda vez que o usuário digita algo no campo de busca
     inputProduto.addEventListener("input", function () {
@@ -270,8 +276,9 @@ function configurarDropdownProdutos() {
                 li.textContent = produto.nome;
                 // Quando o usuário clicar no produto da lista
                 li.addEventListener("click", function () {
-                    inputProduto.value = produto.nome; // Preenche o input
-                    listaSugestoes.style.display = "none"; // Esconde a lista
+                    inputProduto.value = produto.nome;
+                    produtoEmEspera = produto;
+                    listaSugestoes.style.display = "none";
                 });
                 listaSugestoes.appendChild(li);
             });
@@ -297,6 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAddOrder = document.getElementById("btn-add-order");
     if (btnAddOrder) {
         btnAddOrder.addEventListener("click", () => {
+            //#region LATERAL
             const nomeEl = document.getElementById("prod-nome");
             const qtyEl = document.getElementById("prod-qty");
             if (!nomeEl || !qtyEl || !nomeEl.value)
@@ -312,22 +320,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
                 <div style="display:flex; align-items:center; gap:12px">
                     <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove()"><i data-lucide="trash-2" style="width:16px"></i></button>
+                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagar('${nome}')" id="bDeletar"><i data-lucide="trash-2" style="width:16px"></i></button>
                 </div>
             `;
             list.appendChild(li);
             if (typeof lucide !== "undefined")
                 lucide.createIcons();
+            //#endregion
+            if (!produtoEmEspera) {
+                alert("Por favor, pesquise e selecione um produto da lista primeiro!");
+                return;
+            }
+            const inputProduto = document.getElementById("prod-nome");
+            const quantValor = document.getElementById("prod-qty");
+            if (quantValor && inputProduto) {
+                const itemFinalCarrinho = {
+                    id: produtoEmEspera.id,
+                    idProduto: produtoEmEspera.idProduto,
+                    nome: produtoEmEspera.nome,
+                    unidade: produtoEmEspera.unidade,
+                    quantidade: quantValor.valueAsNumber
+                };
+                carrinhoDePedidos.push(itemFinalCarrinho);
+            }
             nomeEl.value = "";
             qtyEl.value = "1";
         });
     }
 });
+function apagar(idParaRemover) {
+    const container = document.getElementById("global-product-list");
+    carrinhoDePedidos = carrinhoDePedidos.filter(produto => String(produto.nome) !== String(idParaRemover));
+}
 const btnFinalizar = document.getElementById("btn-finalizar");
 if (btnFinalizar) {
     btnFinalizar.addEventListener("click", () => {
         const lista = document.getElementById("order-items-list");
-        console.log(lista);
+        console.log(carrinhoDePedidos);
     });
 }
 //#endregion
