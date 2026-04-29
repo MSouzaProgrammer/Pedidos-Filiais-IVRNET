@@ -9,7 +9,6 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,16 +29,11 @@ public class Pedido {
     private Status Status;
     private Filiais filial;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "nome_usuario")
+    private String usuario;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdutoPedido> lProdutos;
-
-    public void setUser(User user){
-        this.user = user;
-    }
 
     public void addProduto(ProdutoPedido produto){
         lProdutos.add(produto);

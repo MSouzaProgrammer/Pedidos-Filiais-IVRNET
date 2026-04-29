@@ -3,6 +3,7 @@
 let estoque = [];
 let produtoEmEspera = null;
 let carrinhoDePedidos = [];
+let filial;
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho, metodo, dados) {
     const opcoes = {
@@ -134,7 +135,6 @@ async function carregarProdutos() {
         const resposta = await requestBack("produto", "GET", null);
         if (resposta.ok) {
             const dadosBack = await resposta.json();
-            console.log(dadosBack);
             // Atualiza a variável (lembre-se que tem que ser "let estoque" lá no topo)
             estoque = dadosBack.map((itemDoJava) => {
                 return {
@@ -234,7 +234,6 @@ if (btnNovoProduto) {
                     name: produto.nome,
                     undMedida: produto.unidade
                 });
-                console.log(resposta);
             }
             catch (err) {
                 console.error("Erro ao enviar produto para o backend:", err);
@@ -264,23 +263,18 @@ else {
         btAdd.disabled = true;
         btAdd.style.backgroundColor = 'red';
         quantValor.disabled = true;
-        console.log(btAdd.disabled);
     }
 }
-if (btAdd) {
-    btAdd.addEventListener("click", () => {
-        if (!inputProduto || !listaSugestoes || !quantValor) { }
-        else {
-            if (quantValor.value == "") {
-                btAdd.disabled = true;
-                btAdd.style.backgroundColor = 'red';
-                quantValor.disabled = true;
-                console.log(btAdd.disabled);
-                console.log("cliquei");
-            }
+btAdd.addEventListener("click", () => {
+    if (!inputProduto || !listaSugestoes || !quantValor) { }
+    else {
+        if (quantValor.value == "") {
+            btAdd.disabled = true;
+            btAdd.style.backgroundColor = 'red';
+            quantValor.disabled = true;
         }
-    });
-}
+    }
+});
 function configurarDropdownProdutos() {
     if (!inputProduto || !listaSugestoes || !quantValor)
         return;
@@ -381,9 +375,17 @@ function apagar(idParaRemover) {
 }
 const btnFinalizar = document.getElementById("btn-finalizar");
 if (btnFinalizar) {
-    btnFinalizar.addEventListener("click", () => {
-        const lista = document.getElementById("order-items-list");
-        console.log(carrinhoDePedidos);
+    btnFinalizar.addEventListener("click", async () => {
+        const filialSelecionada = document.getElementById("select-filial");
+        const nomeUsuario = sessionStorage.getItem("userName") || "Name";
+        const dadosPedido = {
+            Status: "PENDENTE",
+            filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
+            lProdutos: carrinhoDePedidos,
+            usuario: nomeUsuario
+        };
+        const resposta = await requestBack("pedido", "POST", dadosPedido);
+        console.log(resposta);
     });
 }
 //#endregion

@@ -1,12 +1,10 @@
 package com.ivr.pedidosfiliais.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.User;
 import com.ivr.pedidosfiliais.repository.UserRepository;
 
@@ -44,17 +42,6 @@ public class UserService {
         return null;
     }
     //#endregion
-
-    public List<Pedido> getAllList(Long id){
-        User user = findByUser(id);
-        return user.getPedidos();
-    }
-
-    public Boolean addPedido(Pedido pedido, Long id){
-        User user = findByUser(id);
-        user.addList(pedido);
-        return true;
-    }
 
     public User validarLogin(String email, String password){
         Optional<User> userEncontrado = userRepository.findByEmail(email);
