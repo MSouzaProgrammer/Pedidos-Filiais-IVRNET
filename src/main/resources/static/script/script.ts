@@ -303,11 +303,13 @@ if (btnNovoProduto) {
 //#region {NOVO PEDIDO}
 
 
+const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
+const listaSugestoes = document.getElementById("sugestoes-produtos") as HTMLUListElement | null;
+const quantValor = document.getElementById("prod-qty") as HTMLInputElement | null;
+const btAdd = document.getElementById("btn-add-order") as HTMLButtonElement;
 
 function configurarDropdownProdutos(): void {
-  const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
-  const listaSugestoes = document.getElementById("sugestoes-produtos") as HTMLUListElement | null;
-  const quantValor = document.getElementById("prod-qty") as HTMLInputElement | null;
+ 
 
   if (!inputProduto || !listaSugestoes || !quantValor) return;
 
@@ -336,6 +338,7 @@ function configurarDropdownProdutos(): void {
           inputProduto.value = produto.nome;
           produtoEmEspera = produto;
           listaSugestoes.style.display = "none";
+          quantValor.disabled = false;
         });
         listaSugestoes.appendChild(li);
       });
@@ -346,13 +349,31 @@ function configurarDropdownProdutos(): void {
     }
   });
 
+  
   // Fecha a lista se o usuário clicar em qualquer outro lugar da tela
   document.addEventListener("click", function (evento) {
     if (evento.target !== inputProduto && evento.target !== listaSugestoes) {
       listaSugestoes.style.display = "none";
     }
   });
+
+  
 }
+
+if (!inputProduto || !listaSugestoes || !quantValor) {
+  return;
+}
+else{
+if(quantValor.value !== ""){
+    btAdd.disabled = false;
+    btAdd.style.backgroundColor = 'black';
+  }
+else{
+    btAdd.disabled = true;
+    btAdd.style.backgroundColor = 'red';
+}
+}
+
 
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -367,9 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
       //#region LATERAL
       const nomeEl = document.getElementById("prod-nome") as HTMLInputElement | null;
       const qtyEl = document.getElementById("prod-qty") as HTMLInputElement | null;
-
       if (!nomeEl || !qtyEl || !nomeEl.value) return;
-
       const nome = nomeEl.value;
       const qty = qtyEl.value;
 

@@ -254,10 +254,11 @@ if (btnNovoProduto) {
 }
 //#endregion
 //#region {NOVO PEDIDO}
+const inputProduto = document.getElementById("prod-nome");
+const listaSugestoes = document.getElementById("sugestoes-produtos");
+const quantValor = document.getElementById("prod-qty");
+const btAdd = document.getElementById("btn-add-order");
 function configurarDropdownProdutos() {
-    const inputProduto = document.getElementById("prod-nome");
-    const listaSugestoes = document.getElementById("sugestoes-produtos");
-    const quantValor = document.getElementById("prod-qty");
     if (!inputProduto || !listaSugestoes || !quantValor)
         return;
     // Dispara toda vez que o usuário digita algo no campo de busca
@@ -279,6 +280,7 @@ function configurarDropdownProdutos() {
                     inputProduto.value = produto.nome;
                     produtoEmEspera = produto;
                     listaSugestoes.style.display = "none";
+                    quantValor.disabled = false;
                 });
                 listaSugestoes.appendChild(li);
             });
@@ -294,6 +296,19 @@ function configurarDropdownProdutos() {
             listaSugestoes.style.display = "none";
         }
     });
+}
+if (!inputProduto || !listaSugestoes || !quantValor) {
+    return;
+}
+else {
+    if (quantValor.value !== "") {
+        btAdd.disabled = false;
+        btAdd.style.backgroundColor = 'black';
+    }
+    else {
+        btAdd.disabled = true;
+        btAdd.style.backgroundColor = 'red';
+    }
 }
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
 document.addEventListener("DOMContentLoaded", () => {
