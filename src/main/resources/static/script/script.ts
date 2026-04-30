@@ -305,15 +305,16 @@ const quantValor = document.getElementById("prod-qty") as HTMLInputElement | nul
 const btAdd = document.getElementById("btn-add-order") as HTMLButtonElement;
 
 if (!inputProduto || !listaSugestoes || !quantValor) { }
-    else {
-      if (quantValor.value == "") {
-        btAdd.disabled = true;
-        btAdd.style.backgroundColor = 'red';
-        quantValor.disabled = true;
+else {
+  if (quantValor.value == "") {
+    btAdd.disabled = true;
+    btAdd.style.backgroundColor = 'red';
+    quantValor.disabled = true;
 
-      }
-    }
+  }
+}
 
+if (btAdd) {
   btAdd.addEventListener("click", () => {
     if (!inputProduto || !listaSugestoes || !quantValor) { }
     else {
@@ -324,6 +325,8 @@ if (!inputProduto || !listaSugestoes || !quantValor) { }
       }
     }
   })
+}
+
 
 function configurarDropdownProdutos(): void {
   if (!inputProduto || !listaSugestoes || !quantValor) return;
@@ -377,6 +380,7 @@ function configurarDropdownProdutos(): void {
 }
 
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
+const list = document.getElementById("order-items-list") as HTMLElement | null;
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
   configurarDropdownProdutos();
@@ -392,16 +396,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const nome = nomeEl.value;
       const qty = qtyEl.value;
 
-      const list = document.getElementById("order-items-list") as HTMLElement | null;
       if (!list) return;
 
       const li = document.createElement("li");
       li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
       li.innerHTML = `
-                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
-                <div style="display:flex; align-items:center; gap:12px">
-                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-                    <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagar('${nome}')" id="bDeletar"><i data-lucide="trash-2" style="width:16px"></i></button>
+                <div id="listaProduto"><span style="font-size:14px; font-weight:600">${nome}</span></div>
+                <div id="listaProduto" style="display:flex; align-items:center; gap:12px">
+                    <span id="spanProduto" style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
+                    <button id="buttonProduto" style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagar('${nome}')" id="bDeletar"><i data-lucide="trash-2" style="width:16px"></i></button>
                 </div>
             `;
       list.appendChild(li);
@@ -436,7 +439,7 @@ function apagar(idParaRemover: string): void {
 
 const btnFinalizar = document.getElementById("btn-finalizar") as HTMLButtonElement | null;
 if (btnFinalizar) {
-  btnFinalizar.addEventListener("click", async() => {
+  btnFinalizar.addEventListener("click", async () => {
     const filialSelecionada = document.getElementById("select-filial") as HTMLSelectElement;
     const nomeUsuario = sessionStorage.getItem("userName") || "Name";
     const listaProdutos = carrinhoDePedidos.map(item => {
@@ -454,9 +457,13 @@ if (btnFinalizar) {
       lProdutos: listaProdutos,
       usuario: nomeUsuario
     }
-    
+    const divProdutos = document.getElementById("listaProduto") as HTMLDivElement
+    const spanProdutos = document.getElementById("spanProduto") as HTMLSpanElement
+    const buttonProdutos = document.getElementById("buttonProduto") as HTMLButtonElement
+
     const resposta = await requestBack("pedido", "POST", dadosPedido);
     console.log(resposta);
+    location.reload();
   })
 }
 //#endregion
