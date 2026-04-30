@@ -112,7 +112,8 @@ body {
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
     padding: 24px;
-    margin-bottom: 20px;
+    margin-top: -15px;
+    margin-bottom: 0px;
 }
 
 .card-title {
@@ -237,15 +238,21 @@ body {
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: #1c1e26; /* Cor de fundo */
-    color: #ffffff; /* Cor da letra */
-    list-style: none; /* Remove as bolinhas da lista */
+    background-color: #1c1e26;
+    /* Cor de fundo */
+    color: #ffffff;
+    /* Cor da letra */
+    list-style: none;
+    /* Remove as bolinhas da lista */
     padding: 0;
     margin: 4px 0 0 0;
-    border-radius: 8px; /* Bordas arredondadas */
+    border-radius: 8px;
+    /* Bordas arredondadas */
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    max-height: 200px; /* Limita a altura */
-    overflow-y: auto; /* Adiciona barra de rolagem se tiver muitos itens */
+    max-height: 200px;
+    /* Limita a altura */
+    overflow-y: auto;
+    /* Adiciona barra de rolagem se tiver muitos itens */
     z-index: 1000;
 }
 
@@ -254,7 +261,8 @@ body {
     padding: 10px 15px;
     font-size: 14px;
     cursor: pointer;
-    border-bottom: 1px solid #2f334d; /* Linha sutil dividindo os itens */
+    border-bottom: 1px solid #2f334d;
+    /* Linha sutil dividindo os itens */
 }
 
 /* Remove a linha do último item */
@@ -265,4 +273,72 @@ body {
 /* A mágica do Hover (que o datalist não deixa fazer) */
 .dropdown-produtos li:hover {
     background-color: #3b405e;
+}
+
+.cardsPedidos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+}
+
+/* Container principal isolado */
+.ui-window-panel {
+    background-color: #ffffff;
+    width: 24rem;
+    /* 192px */
+    height: 22rem;
+    /* 256px */
+    border-radius: 0.8rem;
+    /* 8px */
+
+    transition: all 0.3s ease;
+    /* Faz o movimento ser suave e não um "susto" */
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Sombra leve quando parado */
+    transform: translateY(0);
+    /* Posição original */
+}
+
+.ui-window-panel:hover {
+    /* 1. Faz ele subir um pouco (eixo Y) */
+    transform: translateY(-8px) scale(1.02);
+
+    /* 2. Aumenta a sombra (parece que ele se afastou do fundo) */
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+
+    /* 3. Opcional: destaque na borda */
+    border: 1px solid #3b82f6;
+}
+
+/* Área dos botões alinhada */
+.ui-window-controls {
+    display: flex;
+    padding: 0.5rem;
+    /* 8px */
+    gap: 0.25rem;
+    /* 4px */
+}
+
+/* Base das bolinhas */
+.ui-window-dot {
+    display: inline-block;
+    width: 0.75rem;
+    /* 12px */
+    height: 0.75rem;
+    /* 12px */
+    border-radius: 50%;
+}
+
+/* Cores específicas com prefixo */
+.ui-dot-blue {
+    background-color: #3b82f6;
+}
+
+.ui-dot-purple {
+    background-color: #a855f7;
+}
+
+.ui-dot-pink {
+    background-color: #ec4899;
 }

@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
       //#region LATERAL
       const nomeEl = document.getElementById("prod-nome") as HTMLInputElement | null;
       const qtyEl = document.getElementById("prod-qty") as HTMLInputElement | null;
-      
+
       if (!nomeEl || !qtyEl || !nomeEl.value) return;
       const nome = nomeEl.value;
       const qty = qtyEl.value;
@@ -429,31 +429,35 @@ function apagar(idParaRemover: string): void {
 
 const btnFinalizar = document.getElementById("btn-finalizar") as HTMLButtonElement | null;
 if (btnFinalizar) {
+
   btnFinalizar.addEventListener("click", async () => {
-    const filialSelecionada = document.getElementById("select-filial") as HTMLSelectElement;
-    const nomeUsuario = sessionStorage.getItem("userName") || "Name";
-    const listaProdutos = carrinhoDePedidos.map(item => {
-      return {
-        idProduto: item.idProduto,
-        name: item.nome,
-        undMedida: item.unidade,
-        quant: item.quantidade
+    if (carrinhoDePedidos.length !== 0) {
+      const filialSelecionada = document.getElementById("select-filial") as HTMLSelectElement;
+      const nomeUsuario = sessionStorage.getItem("userName") || "Name";
+      const listaProdutos = carrinhoDePedidos.map(item => {
+        return {
+          idProduto: item.idProduto,
+          name: item.nome,
+          undMedida: item.unidade,
+          quant: item.quantidade
+        }
+      })
+
+      const dadosPedido = {
+        status: "PENDENTE",
+        filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
+        lProdutos: listaProdutos,
+        usuario: nomeUsuario
       }
-    })
+      const divProdutos = document.getElementById("listaProduto") as HTMLDivElement
+      const spanProdutos = document.getElementById("spanProduto") as HTMLSpanElement
+      const buttonProdutos = document.getElementById("buttonProduto") as HTMLButtonElement
 
-    const dadosPedido = {
-      status: "ENVIADO",
-      filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
-      lProdutos: listaProdutos,
-      usuario: nomeUsuario
+      const resposta = await requestBack("pedido", "POST", dadosPedido);
+      console.log(resposta);
+      location.reload();
     }
-    const divProdutos = document.getElementById("listaProduto") as HTMLDivElement
-    const spanProdutos = document.getElementById("spanProduto") as HTMLSpanElement
-    const buttonProdutos = document.getElementById("buttonProduto") as HTMLButtonElement
-
-    const resposta = await requestBack("pedido", "POST", dadosPedido);
-    console.log(resposta);
-    location.reload();
   })
 }
+
 //#endregion

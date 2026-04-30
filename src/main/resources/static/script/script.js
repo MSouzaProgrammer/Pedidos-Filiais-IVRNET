@@ -369,28 +369,30 @@ function apagar(idParaRemover) {
 const btnFinalizar = document.getElementById("btn-finalizar");
 if (btnFinalizar) {
     btnFinalizar.addEventListener("click", async () => {
-        const filialSelecionada = document.getElementById("select-filial");
-        const nomeUsuario = sessionStorage.getItem("userName") || "Name";
-        const listaProdutos = carrinhoDePedidos.map(item => {
-            return {
-                idProduto: item.idProduto,
-                name: item.nome,
-                undMedida: item.unidade,
-                quant: item.quantidade
+        if (carrinhoDePedidos.length !== 0) {
+            const filialSelecionada = document.getElementById("select-filial");
+            const nomeUsuario = sessionStorage.getItem("userName") || "Name";
+            const listaProdutos = carrinhoDePedidos.map(item => {
+                return {
+                    idProduto: item.idProduto,
+                    name: item.nome,
+                    undMedida: item.unidade,
+                    quant: item.quantidade
+                };
+            });
+            const dadosPedido = {
+                status: "PENDENTE",
+                filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
+                lProdutos: listaProdutos,
+                usuario: nomeUsuario
             };
-        });
-        const dadosPedido = {
-            status: "ENVIADO",
-            filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
-            lProdutos: listaProdutos,
-            usuario: nomeUsuario
-        };
-        const divProdutos = document.getElementById("listaProduto");
-        const spanProdutos = document.getElementById("spanProduto");
-        const buttonProdutos = document.getElementById("buttonProduto");
-        const resposta = await requestBack("pedido", "POST", dadosPedido);
-        console.log(resposta);
-        location.reload();
+            const divProdutos = document.getElementById("listaProduto");
+            const spanProdutos = document.getElementById("spanProduto");
+            const buttonProdutos = document.getElementById("buttonProduto");
+            const resposta = await requestBack("pedido", "POST", dadosPedido);
+            console.log(resposta);
+            location.reload();
+        }
     });
 }
 //#endregion
