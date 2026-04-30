@@ -378,10 +378,18 @@ if (btnFinalizar) {
     btnFinalizar.addEventListener("click", async () => {
         const filialSelecionada = document.getElementById("select-filial");
         const nomeUsuario = sessionStorage.getItem("userName") || "Name";
+        const listaProdutos = carrinhoDePedidos.map(item => {
+            return {
+                idProduto: item.idProduto,
+                name: item.nome,
+                undMedida: item.unidade,
+                quant: item.quantidade
+            };
+        });
         const dadosPedido = {
-            Status: "PENDENTE",
+            status: "ENVIADO",
             filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
-            lProdutos: carrinhoDePedidos,
+            lProdutos: listaProdutos,
             usuario: nomeUsuario
         };
         const resposta = await requestBack("pedido", "POST", dadosPedido);

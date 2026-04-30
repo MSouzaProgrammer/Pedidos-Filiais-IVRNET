@@ -18,8 +18,13 @@ public class PedidoService {
     private Pedido pedido;
 
     //#region CRUD
-    public Boolean save(Pedido pedido){
-        if(pedido !=  null){
+    public Boolean save(Pedido pedido) {
+        if (pedido!= null) {
+            if (pedido.getLProdutos() != null) {
+            for (ProdutoPedido item : pedido.getLProdutos()) {
+                item.setPedido(pedido); // <--- É ISSO AQUI QUE PREENCHE A COLUNA NO BANCO!
+            }
+        }
             pedidosRepository.save(pedido);
             return true;
         }

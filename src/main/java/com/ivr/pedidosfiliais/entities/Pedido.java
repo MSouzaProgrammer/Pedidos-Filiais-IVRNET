@@ -7,6 +7,8 @@ import com.ivr.pedidosfiliais.enums.Status;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -24,9 +26,10 @@ import lombok.Setter;
 @Table(name = "tb_pedidos")
 public class Pedido {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Status Status;
+    private Status status;
     private Filiais filial;
 
     @JoinColumn(name = "nome_usuario")
