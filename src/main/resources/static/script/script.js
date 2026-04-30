@@ -253,30 +253,10 @@ if (btnNovoProduto) {
 }
 //#endregion
 //#region {NOVO PEDIDO}
+const btAdd = document.getElementById("btn-add-order");
 const inputProduto = document.getElementById("prod-nome");
 const listaSugestoes = document.getElementById("sugestoes-produtos");
 const quantValor = document.getElementById("prod-qty");
-const btAdd = document.getElementById("btn-add-order");
-if (!inputProduto || !listaSugestoes || !quantValor) { }
-else {
-    if (quantValor.value == "") {
-        btAdd.disabled = true;
-        btAdd.style.backgroundColor = 'red';
-        quantValor.disabled = true;
-    }
-}
-if (btAdd) {
-    btAdd.addEventListener("click", () => {
-        if (!inputProduto || !listaSugestoes || !quantValor) { }
-        else {
-            if (quantValor.value == "") {
-                btAdd.disabled = true;
-                btAdd.style.backgroundColor = 'red';
-                quantValor.disabled = true;
-            }
-        }
-    });
-}
 function configurarDropdownProdutos() {
     if (!inputProduto || !listaSugestoes || !quantValor)
         return;
@@ -318,6 +298,14 @@ function configurarDropdownProdutos() {
         }
     });
 }
+if (!inputProduto || !listaSugestoes || !quantValor) { }
+else {
+    if (quantValor.value == "") {
+        btAdd.disabled = true;
+        btAdd.style.backgroundColor = 'red';
+        quantValor.disabled = true;
+    }
+}
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
 const list = document.getElementById("order-items-list");
 document.addEventListener("DOMContentLoaded", () => {
@@ -340,10 +328,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const li = document.createElement("li");
             li.style.cssText = "display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9; align-items:center";
             li.innerHTML = `
-                <div id="listaProduto"><span style="font-size:14px; font-weight:600">${nome}</span></div>
-                <div id="listaProduto" style="display:flex; align-items:center; gap:12px">
-                    <span id="spanProduto" style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-                    <button id="buttonProduto" style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagar('${nome}')" id="bDeletar"><i data-lucide="trash-2" style="width:16px"></i></button>
+                <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
+                <div style="display:flex; align-items:center; gap:12px">
+                    <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
+                    <buttonstyle="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagar('${nome}')" id="bDeletar"><i data-lucide="trash-2" style="width:16px"></i></button>
                 </div>
             `;
             list.appendChild(li);
@@ -368,6 +356,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             nomeEl.value = "";
             qtyEl.value = "1";
+            btAdd.disabled = true;
+            btAdd.style.backgroundColor = 'red';
+            qtyEl.disabled = true;
         });
     }
 });

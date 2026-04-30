@@ -299,34 +299,11 @@ if (btnNovoProduto) {
 //#endregion
 
 //#region {NOVO PEDIDO}
+const btAdd = document.getElementById("btn-add-order") as HTMLButtonElement;
+
 const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
 const listaSugestoes = document.getElementById("sugestoes-produtos") as HTMLUListElement | null;
 const quantValor = document.getElementById("prod-qty") as HTMLInputElement | null;
-const btAdd = document.getElementById("btn-add-order") as HTMLButtonElement;
-
-if (!inputProduto || !listaSugestoes || !quantValor) { }
-else {
-  if (quantValor.value == "") {
-    btAdd.disabled = true;
-    btAdd.style.backgroundColor = 'red';
-    quantValor.disabled = true;
-
-  }
-}
-
-if (btAdd) {
-  btAdd.addEventListener("click", () => {
-    if (!inputProduto || !listaSugestoes || !quantValor) { }
-    else {
-      if (quantValor.value == "") {
-        btAdd.disabled = true;
-        btAdd.style.backgroundColor = 'red';
-        quantValor.disabled = true;
-      }
-    }
-  })
-}
-
 
 function configurarDropdownProdutos(): void {
   if (!inputProduto || !listaSugestoes || !quantValor) return;
@@ -379,6 +356,15 @@ function configurarDropdownProdutos(): void {
   });
 }
 
+if (!inputProduto || !listaSugestoes || !quantValor) { }
+else {
+  if (quantValor.value == "") {
+    btAdd.disabled = true;
+    btAdd.style.backgroundColor = 'red';
+    quantValor.disabled = true;
+  }
+}
+
 // --- LÓGICA DO DASHBOARD E PRODUTOS ---
 const list = document.getElementById("order-items-list") as HTMLElement | null;
 document.addEventListener("DOMContentLoaded", () => {
@@ -392,6 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
       //#region LATERAL
       const nomeEl = document.getElementById("prod-nome") as HTMLInputElement | null;
       const qtyEl = document.getElementById("prod-qty") as HTMLInputElement | null;
+      
       if (!nomeEl || !qtyEl || !nomeEl.value) return;
       const nome = nomeEl.value;
       const qty = qtyEl.value;
@@ -428,6 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       nomeEl.value = "";
       qtyEl.value = "1";
+      btAdd.disabled = true;
+      btAdd.style.backgroundColor = 'red';
+      qtyEl.disabled = true;
     });
   }
 });
