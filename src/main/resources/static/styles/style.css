@@ -116,6 +116,10 @@ body {
     margin-bottom: 0px;
 }
 
+.filialCardNome{
+    padding-left: 10px;
+}
+
 .card-title {
     font-size: 16px;
     font-weight: 700;
