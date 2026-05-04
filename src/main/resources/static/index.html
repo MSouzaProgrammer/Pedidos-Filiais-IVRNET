@@ -15,9 +15,9 @@
             <img src="img/logo.png" alt="logo" class="brand-logo">
         </div>
         <nav class="nav-links">
-            <a class="nav-link" id="nav-dash" onclick="showPage('dash')"><i data-lucide="layout-dashboard"></i>
+            <a class="nav-link active" id="nav-dash" onclick="showPage('dash')"><i data-lucide="layout-dashboard"></i>
                 Dashboard</a>
-            <a class="nav-link active" id="nav-novo-pedido" onclick="showPage('novo-pedido')"><i
+            <a class="nav-link" id="nav-novo-pedido" onclick="showPage('novo-pedido')"><i
                     data-lucide="shopping-cart"></i> Novo Pedido</a>
             <a class="nav-link" id="nav-produtos" onclick="showPage('produtos')"><i data-lucide="box"></i> Produtos</a>
         </nav>
@@ -37,136 +37,24 @@
         </header>
 
         <main class="content">
-            <section id="dash-page" class="page-content">
+            <section id="dash-page" class="page-content active">
 
                 <div class="card">
                     <h2>Painel de Controle Pedidos</h2>
                 </div>
-
-                <section id="cardsPedidos" class="cardsPedidos">
-                    <div id="bonito" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Bonito</h2>
+                <section>
+                    <nav>
+                        <div class="menuEsquerda">
+                            <a><i></i></a>
                         </div>
-                        <div class="card__content">
-                        </div>
+                    </nav>
+                    <div class="menuPedidos">
+                        
                     </div>
-
-                    <div id="bodoquena" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Bodoquena</h2>
-                        </div>
-                        <div class="card__content">
-                        </div>
-                    </div>
-
-                    <div id="aquidauana" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Aquidauana</h2>
-                        </div>
-                        <div class="card__content">
-                        </div>
-                    </div>
-
-                    <div id="doisIrmaos" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Dois Irmãos</h2>
-                        </div>
-                        <div class="card__content">
-                        </div>
-                    </div>
-
-                    <div id="jardim" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Jardim</h2>
-                        </div>
-                        <div class="card__content">
-                        </div>
-                    </div>
-
-                    <div id="guiaLopez" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Guia Lopez</h2>
-                        </div>
-                        <div class="card__content">
-                        </div>
-                    </div>
-
-                    <div id="nioaque" class="ui-window-panel" style="margin-top: 20px;">
-                        <div class="ui-window-controls">
-                            <div class="">
-                                <span class="ui-window-dot ui-dot-blue center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-purple center"></span>
-                            </div>
-                            <div class="circle">
-                                <span class="ui-window-dot ui-dot-pink box center"></span>
-                            </div>
-                            <h2 class="filialCardNome">Filial Nioaque</h2>
-                        </div>
-                        <div class="card__content">
-                        </div>
-                    </div>
-                    
                 </section>
             </section>
 
-            <section id="novo-pedido-page" class="page-content active">
+            <section id="novo-pedido-page" class="page-content">
                 <div class="order-container" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
                     <div class="card">
                         <h2 class="card-title"><i data-lucide="info"></i> Criar Requisição</h2>
