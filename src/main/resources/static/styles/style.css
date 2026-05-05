@@ -369,7 +369,7 @@ body {
     position: absolute;
     margin: 20px 0px 0px 15px;
     padding: 2px;
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .menuPedidos{
@@ -401,7 +401,7 @@ body {
     gap: 12px;
     padding: 10px 0px 10px 30px;
     text-decoration: none;
-    font-size: 35px;
+    font-size: 20px;
     font-weight: 500px;
     border-radius: var(--radius-md);
     transition: 0.2s;
@@ -435,7 +435,7 @@ body {
     position: absolute;
     margin: 20px 0px 0px 20px;
     padding: 2px;
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .listaPedidos{
@@ -450,7 +450,7 @@ body {
 
 .tagsPedido{
     display: flex;
-    font-size: 18px;
+    font-size: 15px;
     margin-top: 15px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
@@ -472,4 +472,16 @@ body {
 
 .dataTexto{
     margin-left: 150px;
+}
+
+.imgDasboard{
+    display: flex;
+    position: relative;
+    width: 250px;
+    top: 10px;
+    left: 50px;
+}
+
+.logoBaixo{
+    width: 250px;
 }
