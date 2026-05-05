@@ -461,3 +461,21 @@ if (btnFinalizar) {
 }
 
 //#endregion
+
+//#region DASHBOARD 
+
+const caixaFiliais = document.querySelectorAll('.navFiliais');
+caixaFiliais.forEach((botao) => {
+  botao.addEventListener('click', () => {
+    caixaFiliais.forEach(b => b.classList.remove('ativa'));
+
+    botao.classList.add('ativa');
+
+    const textoFilial = botao.querySelector('i')?.textContent;
+    const nomeFilialH2 = document.getElementById("textoNomeFilial") as HTMLElement;
+
+    nomeFilialH2.textContent = 'Pedidos ' + textoFilial;
+  })
+})
+
+//#endregion
