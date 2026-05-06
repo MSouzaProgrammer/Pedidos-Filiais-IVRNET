@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
-import com.ivr.pedidosfiliais.enums.Filiais;
 import com.ivr.pedidosfiliais.enums.Status;
 import com.ivr.pedidosfiliais.repository.PedidosRepository;
 
@@ -47,9 +46,9 @@ public class PedidoService {
         return false;
     }
 
-    public Pedido findById(Long id){
+    public Pedido findByIdFilial(Long id){
         if(pedidosRepository.existsById(id)){
-            return pedidosRepository.findById(id).orElse(pedido);
+            return pedidosRepository.findByFilial(id).orElseThrow(() -> new RuntimeException("Filial nao encontrada"));
         }
         return null;
     }
@@ -61,13 +60,5 @@ public class PedidoService {
         return false;
     }
 
-    public Boolean trocarFilial(Long id, Filiais nFilial){
-        if(nFilial != null){
-            Pedido pedido = findById(id);
-            pedido.setFilial(nFilial);
-            return true;
-        }
-        return false;
-    }
     //#endregion
 }

@@ -14,10 +14,11 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    /* 
     private User findByUser(Long id){
         return userRepository.findById(id).orElse(null);
     }
-
+    */
     //#region CRUD
     public Boolean save(User user){
         if(user != null){
