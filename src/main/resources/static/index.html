@@ -48,12 +48,12 @@
                             <h2>Filiais</h2>
                             <div style="padding-top: 75px;">
                                 <a onclick="produtosLista(1)" class="navFiliais"><i>Filial Bonito</i></a>
-                                <a onclick="produtosLista(2)"class="navFiliais"><i>Filial Bodoquena</i></a>
-                                <a onclick="produtosLista(3)"class="navFiliais"><i>Filial Aquidauana</i></a>
-                                <a onclick="produtosLista(4)"class="navFiliais"><i>Filial Dois irmaos</i></a>
-                                <a onclick="produtosLista(5)"class="navFiliais"><i>Filial jardim</i></a>
-                                <a onclick="produtosLista(6)"class="navFiliais"><i>Filial Guia Lopez</i></a>
-                                <a onclick="produtosLista(7)"class="navFiliais"><i>Filial Nioaque</i></a>
+                                <a onclick="produtosLista(2)" class="navFiliais"><i>Filial Bodoquena</i></a>
+                                <a onclick="produtosLista(3)" class="navFiliais"><i>Filial Aquidauana</i></a>
+                                <a onclick="produtosLista(4)" class="navFiliais"><i>Filial Dois irmaos</i></a>
+                                <a onclick="produtosLista(5)" class="navFiliais"><i>Filial jardim</i></a>
+                                <a onclick="produtosLista(6)" class="navFiliais"><i>Filial Guia Lopez</i></a>
+                                <a onclick="produtosLista(7)" class="navFiliais"><i>Filial Nioaque</i></a>
                                 <div class="imgDasboard">
                                     <img src="img/logoIVRNET.png" alt="LogoDashboard" class="logoBaixo">
                                 </div>
@@ -70,6 +70,15 @@
                                 <h3 class="statusTexto">Status</h3>
                                 <h3 class="dataTexto">Data</h3>
                             </div>
+                            <section id="sectionPedidos" class="sectionPedidos">
+                                <div class="pedidoInformacoes">
+                                    <i id="idPedido" style="position: absolute; font-style: normal; font-size: 20px; padding: 5px 5px 5px 5px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--backId);">1236</i>
+                                    <i id="usuarioPedido"style="position: absolute; font-style: normal; font-size: 20px; left: 278px; padding: 5px 5px 5px 5px;">Mateus Souza</i>
+                                    <i id="statusPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 756px; padding: 5px 5px 5px 5px; border: 1.5px solid var(--pendendeteBorda); border-radius: 10px; background-color: var(--pendentefundo); color: red;">Pendente</i>
+                                    <i id="dataPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 940px; padding: 5px 5px 5px 5px;">06/05/2026 15:51</i>
+                                </div>
+                            </section>
+
                         </div>
                     </div>
                 </section>
@@ -105,7 +114,7 @@
                                 <input type="number" id="prod-qty" class="form-control" style="width:100px" value=""
                                     disabled>
                                 <button class="btn-primary" id="btn-add-order" disabled><i
-                                        data-lucide="plus"></i></button>
+                                        data-lucide="plus"></i></button>7
                             </div>
                         </div>
                     </div>

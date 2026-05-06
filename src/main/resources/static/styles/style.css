@@ -8,7 +8,7 @@
     --text-main: #f1f5f9;       /* Branco/Gelo para leitura confortável */
     --text-muted: #94a3b8;      /* Cinza azulado para textos secundários */
     --border-color: #2a3441;    /* Bordas sutis e fechadas */
-    
+    --backId: #5f69773f;
     /* Cores de Ação (Azul Sóbrio) */
     --primary: #3b82f6;         /* Azul padrão */
     --primary-hover: #2563eb;   /* Azul mais escuro no hover */
@@ -18,6 +18,9 @@
     --radius-md: 8px;
     --radius-lg: 12px;
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+
+    --pendendeteBorda: red;
+    --pendentefundo:rgba(255, 0, 0, 0.151);
 }
 
 * {
@@ -467,11 +470,11 @@ body {
 }
 
 .statusTexto{
-    margin-left: 400px;
+    margin-left: 350px;
 }
 
 .dataTexto{
-    margin-left: 150px;
+    margin-left: 130px;
 }
 
 .imgDasboard{
@@ -484,4 +487,22 @@ body {
 
 .logoBaixo{
     width: 250px;
+}
+
+.sectionPedidos{
+    margin-top: 10px;
+}
+
+.pedidoInformacoes{
+    margin-bottom: 15px;
+    margin-left: 10px;
+    padding: 15px;
+    margin-right: 30px;
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pedidoInformacoes:hover{
+    background-color: var(--sidebar-active);
+    border: 1px solid var(--border-color);
 }

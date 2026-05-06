@@ -409,7 +409,13 @@ caixaFiliais.forEach((botao) => {
 });
 async function produtosLista(numero) {
     const resposta = (await requestBack("pedido/" + numero, "GET", null));
-    const dadosPedidos = await resposta.json();
-    console.log(dadosPedidos.lProdutos[0]);
+    if (resposta) {
+        const dadosPedidos = await resposta.json();
+        const idPedido = dadosPedidos.id;
+        const usuarioPedido = dadosPedidos.usuario;
+        const statusPedido = dadosPedidos.status;
+        const dataFormatada = new Date(dadosPedidos.dataCriacao).toLocaleString('pt-BR');
+        const sectionPedidos = document.getElementById();
+    }
 }
 //#endregion
