@@ -478,4 +478,10 @@ caixaFiliais.forEach((botao) => {
   })
 })
 
+async function produtosLista(numero: Number) {
+  const resposta = (await requestBack("pedido/" + numero, "GET", null));
+  const dadosPedidos = await resposta.json();
+  console.log(dadosPedidos.lProdutos[0]);
+}
+
 //#endregion

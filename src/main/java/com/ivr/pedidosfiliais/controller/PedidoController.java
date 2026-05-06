@@ -16,7 +16,7 @@ import com.ivr.pedidosfiliais.services.PedidoService;
 
 @RestController
 @RequestMapping("/pedido")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*")
 public class PedidoController {
 
     @Autowired
