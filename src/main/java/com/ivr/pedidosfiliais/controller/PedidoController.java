@@ -1,5 +1,7 @@
 package com.ivr.pedidosfiliais.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ public class PedidoController {
     }
 
     @GetMapping("/{filial}")
-    public ResponseEntity<Pedido> findByIdFilial(@PathVariable Long filial){
-        return ResponseEntity.ok(pedidoService.findByIdFilial(filial));
+    public List<Pedido> findByIdFilial(@PathVariable Long filial){
+        return pedidoService.findByIdFilial(filial);
     }
 }

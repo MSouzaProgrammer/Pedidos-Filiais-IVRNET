@@ -1,5 +1,7 @@
 package com.ivr.pedidosfiliais.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,6 +25,7 @@ public class ProdutoPedido {
     private Long idProduto;
 
     @ManyToOne
+    @JsonBackReference
     private Pedido pedido;
     
     private String name;

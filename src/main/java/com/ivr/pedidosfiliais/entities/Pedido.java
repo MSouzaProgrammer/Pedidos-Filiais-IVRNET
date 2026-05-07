@@ -1,11 +1,9 @@
 package com.ivr.pedidosfiliais.entities;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
-import org.h2.store.Data;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ivr.pedidosfiliais.enums.Filiais;
 import com.ivr.pedidosfiliais.enums.Status;
 
@@ -49,7 +47,7 @@ public class Pedido {
     @JoinColumn(name = "nome_usuario")
     private String usuario;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdutoPedido> lProdutos;
 

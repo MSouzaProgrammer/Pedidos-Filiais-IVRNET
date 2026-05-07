@@ -419,11 +419,36 @@ async function produtosLista(numero) {
                 const usuarioPedido = element.usuario;
                 const statusPedido = element.status;
                 const dataFormatada = new Date(element.dataCriacao).toLocaleString('pt-BR');
+                let bordaStatus = "";
+                let fundoStatus = "";
+                let letraStatus = "";
+                switch (statusPedido) {
+                    case "PENDENTE":
+                        bordaStatus = "var(--pendendeteBorda)";
+                        fundoStatus = "var(--pendenteFundo)";
+                        letraStatus = "var(--pendenteLetra)";
+                        break;
+                    case "SEPARADO":
+                        bordaStatus = "var(--separadoBorda)";
+                        fundoStatus = "var(--separadoFundo)";
+                        letraStatus = "var(--separadoLetra)";
+                        break;
+                    case "ENVIADO":
+                        bordaStatus = "var(--enviadoBorda)";
+                        fundoStatus = "var(--enviadoFundo)";
+                        letraStatus = "var(--enviadoLetra)";
+                        break;
+                    default:
+                        bordaStatus = "black";
+                        fundoStatus = "black";
+                        letraStatus = "black";
+                        break;
+                }
                 if (sectionPedidos) {
-                    sectionPedidos.innerHTML = `<div class="pedidoInformacoes">
+                    sectionPedidos.innerHTML += `<div class="pedidoInformacoes">
                                     <i id="idPedido" style="position: absolute; font-style: normal; font-size: 20px; padding: 5px 5px 5px 5px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--backId);">${idPedido}</i>
                                     <i id="usuarioPedido"style="position: absolute; font-style: normal; font-size: 20px; left: 278px; padding: 5px 5px 5px 5px;">${usuarioPedido}</i>
-                                    <i id="statusPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 756px; padding: 5px 5px 5px 5px; border: 1.5px solid var(--pendendeteBorda); border-radius: 10px; background-color: var(--pendentefundo); color: red;">${statusPedido}</i>
+                                    <i id="statusPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 756px; padding: 5px 5px 5px 5px; border: 1.5px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};">${statusPedido}</i>
                                     <i id="dataPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 940px; padding: 5px 5px 5px 5px;">${dataFormatada}</i>
                                 </div>`;
                 }
@@ -435,7 +460,8 @@ async function produtosLista(numero) {
             sectionPedidos.innerHTML = `<div style="color: orange;">Ops! Não encontramos pedidos para esta filial (Erro ${resposta.status}).</div>`;
         }
     }
-    catch {
+    catch (error) {
+        console.log(error);
         return;
     }
 }
