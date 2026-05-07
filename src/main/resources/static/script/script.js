@@ -408,14 +408,35 @@ caixaFiliais.forEach((botao) => {
     });
 });
 async function produtosLista(numero) {
-    const resposta = (await requestBack("pedido/" + numero, "GET", null));
-    if (resposta) {
-        const dadosPedidos = await resposta.json();
-        const idPedido = dadosPedidos.id;
-        const usuarioPedido = dadosPedidos.usuario;
-        const statusPedido = dadosPedidos.status;
-        const dataFormatada = new Date(dadosPedidos.dataCriacao).toLocaleString('pt-BR');
-        const sectionPedidos = document.getElementById();
+    const sectionPedidos = document.getElementById('sectionPedidos');
+    sectionPedidos.innerHTML = '';
+    try {
+        const resposta = (await requestBack("pedido/" + numero, "GET", null));
+        if (resposta && resposta.ok) {
+            const dadosPedidos = await resposta.json();
+            dadosPedidos.forEach((element) => {
+                const idPedido = element.id;
+                const usuarioPedido = element.usuario;
+                const statusPedido = element.status;
+                const dataFormatada = new Date(element.dataCriacao).toLocaleString('pt-BR');
+                if (sectionPedidos) {
+                    sectionPedidos.innerHTML = `<div class="pedidoInformacoes">
+                                    <i id="idPedido" style="position: absolute; font-style: normal; font-size: 20px; padding: 5px 5px 5px 5px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--backId);">${idPedido}</i>
+                                    <i id="usuarioPedido"style="position: absolute; font-style: normal; font-size: 20px; left: 278px; padding: 5px 5px 5px 5px;">${usuarioPedido}</i>
+                                    <i id="statusPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 756px; padding: 5px 5px 5px 5px; border: 1.5px solid var(--pendendeteBorda); border-radius: 10px; background-color: var(--pendentefundo); color: red;">${statusPedido}</i>
+                                    <i id="dataPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 940px; padding: 5px 5px 5px 5px;">${dataFormatada}</i>
+                                </div>`;
+                }
+            });
+        }
+        else {
+            // 3. CHECAGEM: "Deu ruim" (Erro de API, ex: 404 não encontrado, 401 não autorizado)
+            console.error("Erro na API:", resposta.status);
+            sectionPedidos.innerHTML = `<div style="color: orange;">Ops! Não encontramos pedidos para esta filial (Erro ${resposta.status}).</div>`;
+        }
+    }
+    catch {
+        return;
     }
 }
 //#endregion
