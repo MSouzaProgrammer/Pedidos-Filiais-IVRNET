@@ -54,7 +54,7 @@ public class PedidoService {
         try {
             // Converte o ID para o Enum de forma mais segura
             Filiais filialEnum = Filiais.values()[filial.intValue()];
-            return pedidosRepository.findByFilial(filialEnum);
+            return pedidosRepository.findTop7ByFilialOrderByIdDesc(filialEnum);
         } catch (ArrayIndexOutOfBoundsException e) {
             return new ArrayList<>(); // Retorna lista vazia se o ID da filial não existir no Enum
         }
