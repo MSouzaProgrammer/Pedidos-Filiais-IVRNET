@@ -446,10 +446,10 @@ async function produtosLista(numero) {
                 }
                 if (sectionPedidos) {
                     sectionPedidos.innerHTML += `<div class="pedidoInformacoes">
-                                    <i id="idPedido" style="position: absolute; font-style: normal; font-size: 20px; padding: 5px 5px 5px 5px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--backId);">${idPedido}</i>
-                                    <i id="usuarioPedido"style="position: absolute; font-style: normal; font-size: 20px; left: 278px; padding: 5px 5px 5px 5px;">${usuarioPedido}</i>
-                                    <i id="statusPedido" style="position: absolute; font-style: normal; margin-top:-3px; font-size: 20px; left: 756px; padding: 5px 5px 5px 5px; border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};">${statusPedido}</i>
-                                    <i id="dataPedido" style="position: absolute; font-style: normal; font-size: 20px; left: 940px; padding: 5px 5px 5px 5px;">${dataFormatada}</i>
+                                    <i id="idPedido" class="idPedidoTela">${idPedido}</i>
+                                    <i id="usuarioPedido" class="usuarioPedidoTela">${usuarioPedido}</i>
+                                    <i id="statusPedido" class="statusPedidoTela" style=" border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};"">${statusPedido}</i>
+                                    <i id="dataPedido" class="dataPedidoTela">${dataFormatada}</i>
                                 </div>`;
                 }
             });

@@ -1,42 +1,51 @@
 :root {
     /* Paleta Muted Dark (Sem Neon) */
-    --bg-body: #0b0f19;         /* Fundo principal bem escuro (quase preto azulado) */
-    --bg-sidebar: #151b2b;      /* Fundo do menu lateral e topo (levemente mais claro) */
-    --white: #1e2536;           /* Usado como fundo dos painéis e cards */
-    
+    --bg-body: #0b0f19;
+    /* Fundo principal bem escuro (quase preto azulado) */
+    --bg-sidebar: #151b2b;
+    /* Fundo do menu lateral e topo (levemente mais claro) */
+    --white: #1e2536;
+    /* Usado como fundo dos painéis e cards */
+
     /* Textos e Bordas */
-    --text-main: #f1f5f9;       /* Branco/Gelo para leitura confortável */
-    --text-muted: #94a3b8;      /* Cinza azulado para textos secundários */
-    --border-color: #2a3441;    /* Bordas sutis e fechadas */
+    --text-main: #f1f5f9;
+    /* Branco/Gelo para leitura confortável */
+    --text-muted: #94a3b8;
+    /* Cinza azulado para textos secundários */
+    --border-color: #2a3441;
+    /* Bordas sutis e fechadas */
     --backId: #5f69773f;
     /* Cores de Ação (Azul Sóbrio) */
-    --primary: #3b82f6;         /* Azul padrão */
-    --primary-hover: #2563eb;   /* Azul mais escuro no hover */
-    --sidebar-active: #2a3441;  /* Fundo cinza/azul para o item selecionado */
-    
+    --primary: #3b82f6;
+    /* Azul padrão */
+    --primary-hover: #2563eb;
+    /* Azul mais escuro no hover */
+    --sidebar-active: #2a3441;
+    /* Fundo cinza/azul para o item selecionado */
+
     /* Estrutura */
     --radius-md: 8px;
     --radius-lg: 12px;
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 
     --pendendeteBorda: #DC2626;
-    --pendenteFundo:rgba(152, 27, 27, 0.247);
+    --pendenteFundo: rgba(152, 27, 27, 0.247);
     --pendenteLetra: red;
-    
+
     --separadoBorda: #1D4ED8;
-    --separadoFundo:#202d49;
+    --separadoFundo: #202d49;
     --separadoLetra: #1D4ED8;
 
     --enviadoBorda: green;
-    --enviadoFundo:rgba(0, 128, 0, 0.226);
+    --enviadoFundo: rgba(0, 128, 0, 0.226);
     --enviadoLetra: green;
-    
+
 }
 
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     font-family: 'Inter', sans-serif;
 }
 
@@ -115,6 +124,7 @@ body {
     background: var(--bg-sidebar);
     border-bottom: 1px solid var(--border-color);
     padding: 16px 40px;
+    margin-top: -15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -125,6 +135,7 @@ body {
 
 .content {
     padding: 40px;
+    padding-left: 10px;
     flex: 1;
 }
 
@@ -134,6 +145,7 @@ body {
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
     padding: 24px;
+    padding-right: 0;
     margin-top: -15px;
     margin-bottom: 0px;
 }
@@ -156,7 +168,7 @@ body {
     display: grid;
     grid-template-columns: 100px 1fr 150px 100px;
     padding: 12px 16px;
-    background: var(--bg-sidebar); 
+    background: var(--bg-sidebar);
     font-size: 12px;
     font-weight: 600;
     color: var(--text-muted);
@@ -218,6 +230,7 @@ body {
     align-items: center;
     gap: 8px;
     transition: 0.2s;
+    margin-right: 20px;
 }
 
 .btn-primary:hover {
@@ -240,7 +253,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(11, 15, 25, 0.85); /* Fundo modal compatível */
+    background: rgba(11, 15, 25, 0.85);
+    /* Fundo modal compatível */
     z-index: 1000;
     align-items: center;
     justify-content: center;
@@ -350,12 +364,21 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    opacity: 0.8; /* Suaviza as cores das bolinhas */
+    opacity: 0.8;
+    /* Suaviza as cores das bolinhas */
 }
 
-.ui-dot-blue { background-color: #3b82f6; }
-.ui-dot-purple { background-color: #a855f7; }
-.ui-dot-pink { background-color: #ec4899; }
+.ui-dot-blue {
+    background-color: #3b82f6;
+}
+
+.ui-dot-purple {
+    background-color: #a855f7;
+}
+
+.ui-dot-pink {
+    background-color: #ec4899;
+}
 
 /* Status Badges - Cores Sóbrias com borda fina */
 .badge {
@@ -364,34 +387,63 @@ body {
     font-size: 12px;
     font-weight: 500;
 }
-.status-separacao { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-.status-finalizado { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-.status-pendente { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-.menuEsquerda{
-    margin-top: 25px;
+.status-separacao {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.status-finalizado {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-pendente {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.dashboardSection {
+    display: flex;
+}
+
+.menuEsquerda {
+    margin-top: 20px;
     background-color: var(--white);
-    width: 350px;
-    height: 75vh;
+    width: 290px;
+    height: 70vh;
     border-radius: 10px;
     list-style: none;
     flex-grow: 1;
 }
 
-.menuEsquerda > h2{
+.menuEsquerda>h2 {
     position: absolute;
     margin: 20px 0px 0px 15px;
     padding: 2px;
     font-size: 25px;
 }
 
-.menuPedidos{
-    position: absolute;
+.dashboardSection {
+    display: flex;
+}
+
+.menuPedidos {
+    display: flex;
+    position: relative;
     background-color: var(--white);
-    left: 681px;
-    top: 192px;
-    width: 1200px;
-    height: 75vh;
+    margin-left: 10px;
+    margin-top: 25px;
+
+    flex: 1;
+    max-width: 1310px;
+    min-width: 955px;
+
+    max-height: 671px;
+    min-height: 200px;
     border-radius: 10px;
 }
 
@@ -403,11 +455,26 @@ body {
     font-size: 12px;
     font-weight: 500;
 }
-.status-separacao { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-.status-finalizado { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
-.status-pendente { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-.navFiliais{
+.status-separacao {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.status-finalizado {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.status-pendente {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.navFiliais {
     display: flex;
     position: relative;
     align-items: center;
@@ -425,95 +492,266 @@ body {
     border-radius: 10px 0px 0px 10px;
 }
 
-.navFiliais > i{
+.navFiliais>i {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-style: normal;
 }
 
-.navFiliais:hover{
+.navFiliais:hover {
     position: relative;
-    background-color: var(--border-color); /* Cor de fundo escura */
-    border: 2px solid #5d6d7e;   /* Cor da borda */
-    border-radius: 10px; /* Arredonda apenas o lado esquerdo */
+    background-color: var(--border-color);
+    /* Cor de fundo escura */
+    border: 2px solid #5d6d7e;
+    /* Cor da borda */
+    border-radius: 10px;
+    /* Arredonda apenas o lado esquerdo */
 }
 
-.navFiliais.ativa{
+.navFiliais.ativa {
     position: relative;
-    background-color: var(--border-color); /* Cor de fundo escura */
-    border: 2px solid #5d6d7e;   /* Cor da borda */
-    border-radius: 10px; /* Arredonda apenas o lado esquerdo */
+    background-color: var(--border-color);
+    /* Cor de fundo escura */
+    border: 2px solid #5d6d7e;
+    /* Cor da borda */
+    border-radius: 10px;
+    /* Arredonda apenas o lado esquerdo */
 }
 
-.menuPedidos > h2{
+.menuPedidos>h2 {
     position: absolute;
     margin: 20px 0px 0px 20px;
     padding: 2px;
     font-size: 25px;
 }
 
-.listaPedidos{
-    border: 1px solid var(--border-color);
+.listaPedidos {
+    display: flex;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
-    position: absolute;
-    top: 80px;
-    left: 20px;
-    width: 1160px;
-    height: 600px;
+    position: relative;
+    width: 100%;
+    min-width: 975px;
+    min-height: 545px;
+    justify-content: center;
 }
 
-.tagsPedido{
+.tagsPedido {
     display: flex;
     font-size: 15px;
-    margin-top: 15px;
+    margin-top: 80px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    width: 1118px;
     margin-left: 20px;
+    height: 25px;
+    width: 98%;
 }
 
-.idTexto{
+.idTexto {
     margin-left: 10px;
 }
 
-.usuarioTexto{
-    margin-left: 170px;
+.usuarioTexto {
+    margin-left: 13.3%;
 }
 
-.statusTexto{
-    margin-left: 350px;
+.statusTexto {
+    margin-left: 25%;
 }
 
-.dataTexto{
-    margin-left: 130px;
+.dataTexto {
+    margin-left: 21%;
 }
 
-.imgDasboard{
+.imgDasboard {
     display: flex;
-    position: relative;
+    position: absolute;
     width: 250px;
-    top: 10px;
-    left: 50px;
+    top: 620px;
+    left: 310px;
 }
 
-.logoBaixo{
-    width: 250px;
+.logoBaixo {
+    width: 220px;
 }
 
-.sectionPedidos{
-    margin-top: -2px;
+.sectionPedidos {
+    margin-top: 110px;
+    margin-left: -1000px;
+    width: 1050px;
+    height: 550px;
 }
 
-.pedidoInformacoes{
+.pedidoInformacoes {
+    display: flexbox;
     margin-bottom: 15px;
-    margin-left: 10px;
+    margin-left: -230px;
     padding: 15px;
-    margin-right: 10px;
+    margin-right: 50px;
     height: 60px;
+    width: 1230px;
     border-bottom: 1px solid var(--border-color);
 }
 
-.pedidoInformacoes:hover{
+.pedidoInformacoes:hover {
+
     background-color: var(--sidebar-active);
     border-radius: 5px;
     cursor: pointer;
+}
+
+.idPedidoTela {
+    position: absolute;
+    margin: -2px 0px 0px -8px;
+    margin-left: -10px;
+    font-style: normal;
+    font-size: 20px;
+    padding: 5px 5px 5px 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--backId);
+}
+
+.usuarioPedidoTela {
+    font-style: normal;
+    font-size: 20px;
+    margin-left: 18%;
+    padding: 3px 240px 0px 5px;
+}
+
+.statusPedidoTela {
+    font-style: normal;
+    margin-top: -3px;
+    margin-left: -10px;
+    font-size: 20px;
+    padding: 5px 5px 5px 5px;
+}
+
+.dataPedidoTela {
+    font-style: normal;
+    font-size: 20px;
+    padding: 5px 5px 5px 5px;
+    margin-left: 17%;
+}
+
+@media screen and (max-width: 1600px) {
+
+    .tagsPedido {
+        display: flex;
+        font-size: 15px;
+        margin-top: 80px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 10px;
+        margin-left: -35px;
+        height: 25px;
+        width: 94%;
+    }
+
+    .dashboardSection {
+        margin-top: -15px;
+        display: flex;
+    }
+
+    .sectionPedidos {
+        margin-top: 110px;
+        margin-left: -940px;
+        width: 950px;
+        height: 440px;
+    }
+
+    .menuEsquerda {
+        margin-top: 25px;
+        background-color: var(--white);
+        width: 290px;
+        height: 72vh;
+        border-radius: 10px;
+        list-style: none;
+        flex-grow: 1;
+    }
+
+    .menuPedidos {
+        display: flex;
+        position: relative;
+        background-color: var(--white);
+        margin-left: 10px;
+        margin-top: 25px;
+
+        flex: 1;
+        width: 955px;
+
+        height: 560px;
+        border-radius: 10px;
+    }
+
+    .usuarioTexto {
+        margin-left: 12.1%;
+    }
+
+    .statusTexto {
+        margin-left: 16%;
+    }
+
+    .dataTexto {
+        margin-left: 12%;
+    }
+
+    .imgDasboard {
+        display: flex;
+        position: absolute;
+        width: 250px;
+        top: 620px;
+        left: 355px;
+    }
+
+    .logoBaixo {
+        width: 100px;
+    }
+
+    .pedidoInformacoes {
+        display: flex;
+        margin-bottom: 15px;
+        margin-left: 20px;
+        padding: 15px;
+        margin-right: 0px;
+        height: 50px;
+        width: 900px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .idPedidoTela {
+        position: absolute;
+        margin: -8px 0px 0px -10px;
+        font-style: normal;
+        font-size: 20px;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        background-color: var(--backId);
+    }
+
+    .usuarioPedidoTela {
+        font-style: normal;
+        font-size: 20px;
+        margin-left: 19.5%;
+        margin-top: -3px;
+        padding: 0px 20px 0px 0px;
+        margin-right: 10px;
+    }
+
+    .statusPedidoTela {
+        position: absolute;
+        font-style: normal;
+        margin-top: -8px;
+        font-size: 20px;
+        padding: 5px 5px 5px 5px;
+        right: 375px;
+    }
+
+    .dataPedidoTela {
+        font-style: normal;
+        margin-top: -7px;
+        font-size: 20px;
+        padding: 5px 5px 5px 5px;
+        right: 20px;
+        margin-left: 220px;
+    }
 }

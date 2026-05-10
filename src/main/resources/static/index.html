@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IVRNET Pedidos</title>
     <link rel="shortcut icon" href="img/icone.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles/style.css">
@@ -42,7 +43,7 @@
                 <div class="card">
                     <h2>Painel de Controle Pedidos</h2>
                 </div>
-                <section>
+                <section class="dashboardSection">
                     <nav>
                         <div class="menuEsquerda">
                             <h2>Filiais</h2>
@@ -63,7 +64,7 @@
                     </nav>
                     <div class="menuPedidos">
                         <h2 id="textoNomeFilial">Selecione uma Filial</h2>
-                        <div class="listaPedidos">
+                        <div class="listaPedidos" id="listaPedidos">
                             <div class="tagsPedido">
                                 <h3 class="idTexto">ID Pedido</h3>
                                 <h3 class="usuarioTexto">Usuário Pedido</h3>
@@ -71,7 +72,7 @@
                                 <h3 class="dataTexto">Data</h3>
                             </div>
                             <section id="sectionPedidos" class="sectionPedidos">
-                                
+
                             </section>
                         </div>
                     </div>
