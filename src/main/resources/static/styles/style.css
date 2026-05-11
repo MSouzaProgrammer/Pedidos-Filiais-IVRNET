@@ -193,6 +193,7 @@ body {
 
 .form-group {
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 .form-group label {
@@ -230,7 +231,7 @@ body {
     align-items: center;
     gap: 8px;
     transition: 0.2s;
-    margin-right: 20px;
+    margin-right: 25px;
 }
 
 .btn-primary:hover {
@@ -524,42 +525,113 @@ body {
     font-size: 25px;
 }
 
-.listaPedidos {
+.geraisDashboard {
     display: flex;
     border: 2px solid var(--border-color);
     border-radius: 10px;
     position: relative;
-    width: 100%;
-    min-width: 975px;
-    min-height: 545px;
     justify-content: center;
+    width: 100%;
 }
+
+.listaPedidos {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    width: 100%;
+    height: 10%;
+}
+
+
 
 .tagsPedido {
     display: flex;
     font-size: 15px;
-    margin-top: 80px;
+    margin-top: 85px;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 10px;
-    margin-left: 20px;
-    height: 25px;
-    width: 98%;
+    width: 100%;
+    height: 5%;
+    margin-left: -1305px;
+    margin-right: -50px;
 }
 
 .idTexto {
-    margin-left: 10px;
+    position: absolute;
+    left: 30px;
 }
 
 .usuarioTexto {
-    margin-left: 13.3%;
+    position: absolute;
+    left: 262px;
 }
 
 .statusTexto {
-    margin-left: 25%;
+    position: absolute;
+    left: 645px;
 }
 
 .dataTexto {
-    margin-left: 21%;
+    position: absolute;
+    left: 960px;
+}
+
+.sectionPedidos {
+    margin-top: 110px;
+    margin-left: -1000px;
+    width: 1050px;
+    height: 550px;
+}
+
+.pedidoInformacoes {
+    display: flex;
+    margin: 15px 50px 15px -230px;
+    padding: 15px 0px 0px 10px;
+    height: 62px;
+    width: 1130px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.pedidoInformacoes:hover {
+    background-color: var(--sidebar-active);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.idPedidoTela {
+    position: absolute;
+    margin: 0px 0px 0px -1px;
+    font-style: normal;
+    font-size: 20px;
+    padding: 5px 5px 5px 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--backId);
+}
+
+.usuarioPedidoTela {
+    font-style: normal;
+    font-size: 20px;
+    position: absolute;
+    left: 262px;
+    padding: 3px 240px 0px 0px;
+}
+
+.statusPedidoTela {
+    font-style: normal;
+    margin-top: -7px;
+    position: absolute;
+    left: 645px;
+    font-size: 20px;
+    padding: 5px 5px 5px 5px;
+}
+
+.dataPedidoTela {
+    font-style: normal;
+    font-size: 20px;
+    padding: 5px 5px 5px 0px;
+    position: absolute;
+    left: 960px;
 }
 
 .imgDasboard {
@@ -574,66 +646,9 @@ body {
     width: 220px;
 }
 
-.sectionPedidos {
-    margin-top: 110px;
-    margin-left: -1000px;
-    width: 1050px;
-    height: 550px;
-}
-
-.pedidoInformacoes {
-    display: flexbox;
-    margin-bottom: 15px;
-    margin-left: -230px;
-    padding: 15px;
-    margin-right: 50px;
-    height: 60px;
-    width: 1230px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.pedidoInformacoes:hover {
-
-    background-color: var(--sidebar-active);
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.idPedidoTela {
-    position: absolute;
-    margin: -2px 0px 0px -8px;
-    margin-left: -10px;
-    font-style: normal;
-    font-size: 20px;
-    padding: 5px 5px 5px 5px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: var(--backId);
-}
-
-.usuarioPedidoTela {
-    font-style: normal;
-    font-size: 20px;
-    margin-left: 18%;
-    padding: 3px 240px 0px 5px;
-}
-
-.statusPedidoTela {
-    font-style: normal;
-    margin-top: -3px;
-    margin-left: 8px;
-    font-size: 20px;
-    padding: 5px 5px 5px 5px;
-}
-
-.dataPedidoTela {
-    font-style: normal;
-    font-size: 20px;
-    padding: 5px 5px 5px 5px;
-    margin-left: 15.5%;
-}
-
 .intensPedido {
+    visibility: hidden;
+
     display: flexbox;
     position: absolute;
     border: 2px solid var(--backId);
@@ -668,16 +683,15 @@ body {
 }
 
 @media screen and (max-width: 1600px) {
-
     .tagsPedido {
         display: flex;
         font-size: 15px;
-        margin-top: 80px;
+        margin-top: 85px;
         border-bottom: 1px solid var(--border-color);
         padding-bottom: 10px;
-        margin-left: -35px;
-        height: 25px;
-        width: 94%;
+        width: 100%;
+        height: 5%;
+        margin-left: -1022px;
     }
 
     .dashboardSection {
@@ -687,10 +701,78 @@ body {
 
     .sectionPedidos {
         margin-top: 110px;
-        margin-left: -940px;
-        width: 950px;
+        margin-left: -900px;
+        width: 900px;
         height: 440px;
     }
+
+    .idTexto {
+        position: absolute;
+        left: 25px;
+    }
+
+    .usuarioTexto {
+        position: absolute;
+        left: 250px;
+    }
+
+    .statusTexto {
+        position: absolute;
+        left: 580px;
+    }
+
+    .dataTexto {
+        position: absolute;
+        left: 800px;
+    }
+
+    .pedidoInformacoes {
+        display: flex;
+        margin: 5px 0px 0px 0px;
+        height: 55px;
+        width: 104%;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .idPedidoTela {
+        position: absolute;
+        left: 30px;
+        margin: -8px 0px 0px -10px;
+        font-style: normal;
+        font-size: 20px;
+        padding: 5px 5px 5px 5px;
+        border: 1px solid var(--border-color);
+        border-radius: 5px;
+        background-color: var(--backId);
+    }
+
+    .usuarioPedidoTela {
+        position: absolute;
+        left: 250px;
+        font-style: normal;
+        font-size: 20px;
+        margin-top: -3px;
+        padding: 0px 20px 0px 0px;
+        margin-right: 10px;
+    }
+
+    .statusPedidoTela {
+        position: absolute;
+        left: 580px;
+        font-style: normal;
+        margin-top: -8px;
+        font-size: 20px;
+        padding: 5px 5px 5px 5px;
+    }
+
+    .dataPedidoTela {
+        font-style: normal;
+        margin-top: -7px;
+        font-size: 20px;
+        padding: 5px 5px 5px 0px;
+        left: 800px;
+    }
+
 
     .menuEsquerda {
         margin-top: 25px;
@@ -716,18 +798,6 @@ body {
         border-radius: 10px;
     }
 
-    .usuarioTexto {
-        margin-left: 12.1%;
-    }
-
-    .statusTexto {
-        margin-left: 16%;
-    }
-
-    .dataTexto {
-        margin-left: 12%;
-    }
-
     .imgDasboard {
         display: flex;
         position: absolute;
@@ -740,56 +810,9 @@ body {
         width: 100px;
     }
 
-    .pedidoInformacoes {
-        display: flex;
-        margin-bottom: 15px;
-        margin-left: 20px;
-        padding: 15px;
-        margin-right: 0px;
-        height: 50px;
-        width: 900px;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .idPedidoTela {
-        position: absolute;
-        margin: -8px 0px 0px -10px;
-        font-style: normal;
-        font-size: 20px;
-        padding: 5px 5px 5px 5px;
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        background-color: var(--backId);
-    }
-
-    .usuarioPedidoTela {
-        font-style: normal;
-        font-size: 20px;
-        margin-left: 19.5%;
-        margin-top: -3px;
-        padding: 0px 20px 0px 0px;
-        margin-right: 10px;
-    }
-
-    .statusPedidoTela {
-        position: absolute;
-        font-style: normal;
-        margin-top: -8px;
-        font-size: 20px;
-        padding: 5px 5px 5px 5px;
-        right: 375px;
-    }
-
-    .dataPedidoTela {
-        font-style: normal;
-        margin-top: -7px;
-        font-size: 20px;
-        padding: 5px 5px 5px 5px;
-        right: 20px;
-        margin-left: 220px;
-    }
-
     .intensPedido {
+        visibility: hidden;
+
         display: flexbox;
         position: absolute;
         border: 2px solid var(--backId);
