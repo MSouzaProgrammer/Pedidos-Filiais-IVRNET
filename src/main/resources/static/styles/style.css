@@ -647,8 +647,6 @@ body {
 }
 
 .intensPedido {
-    visibility: hidden;
-
     display: flexbox;
     position: absolute;
     border: 2px solid var(--backId);
@@ -680,6 +678,32 @@ body {
     transform: scale(1.1);
     background-color: var(--backId);
     border-radius: 5px;
+}
+
+.paginaPedidos{
+    display: flex;
+    background-color: red;
+    height: 10%;
+}
+
+.paginaPedidos > h2{
+    font-size: 30px;
+    padding: 12px 0px 0px 20px;
+    width: 40%;
+    background-color: #1D4ED8;
+}
+
+.statusPedido{
+
+}
+.btnImprimir{
+    display: flex;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0;
+    padding: 7px 5px 0px 5px;
+    color: white;
+    background-color: var(--sidebar-active);
 }
 
 @media screen and (max-width: 1600px) {
@@ -811,8 +835,6 @@ body {
     }
 
     .intensPedido {
-        visibility: hidden;
-
         display: flexbox;
         position: absolute;
         border: 2px solid var(--backId);

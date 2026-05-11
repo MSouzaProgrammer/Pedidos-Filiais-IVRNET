@@ -451,7 +451,7 @@ async function produtosLista(numero) {
                         break;
                 }
                 if (sectionPedidos) {
-                    sectionPedidos.innerHTML += `<div class="pedidoInformacoes">
+                    sectionPedidos.innerHTML += `<div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="mostrarLista()">
                                     <i id="idPedido" class="idPedidoTela">${idPedido}</i>
                                     <i id="usuarioPedido" class="usuarioPedidoTela">${usuarioPedido}</i>
                                     <i id="statusPedido" class="statusPedidoTela" style=" border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};"">${statusPedido}</i>
@@ -471,4 +471,19 @@ async function produtosLista(numero) {
         return;
     }
 }
+function mostrarLista() {
+    console.log("foi");
+    const content = document.getElementById("content");
+    content.innerHTML += `<section class="intensPedido" id="intensPedido">
+                            <button class="btnFechar" id="btnFechar" onclick="fecharAba()"><i data-lucide="x"></i></button>
+                          </section>`;
+    lucide.createIcons();
+}
+function fecharAba() {
+    const aba = document.getElementById("intensPedido");
+    aba.remove();
+}
+/*
+
+*/
 //#endregion

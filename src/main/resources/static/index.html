@@ -37,7 +37,7 @@
             </div>
         </header>
 
-        <main class="content">
+        <main class="content" id="content">
             <section id="dash-page" class="page-content active">
 
                 <div class="card">
@@ -75,17 +75,27 @@
                                 <h3 class="dataTexto">Data</h3>
                             </div>
                             <section id="sectionPedidos" class="sectionPedidos">
-
                             </section>
-                            
                         </div>
                     </div>
-                    
+                    <section class="intensPedido" id="intensPedido">
+                        <button class="btnFechar" id="btnFechar" onclick="fecharAba()"><i data-lucide="x"></i></button>
+                        <div class="paginaPedidos">
+                            <h2>Pedido Filial Bonito</h2>
+                            <div class="form-group">
+                            <label>Aleterar Status</label>
+                            <select class="statusPedido" id="statusPedido">
+                                <option>PENDENTE</option>
+                                <option>SEPARADO</option>
+                                <option>ENVIADO</option>
+                            </select>
+                            <button type="button" class="btnImprimir"><i data-lucide="package" style="margin-right: 10px; margin-top: -4px; width: 20px;"></i>Imprimir Pedido<i data-lucide="printer" style="margin-left: 10px; margin-top: -4px; width: 20px;"></i></button>
+                        </div>
+                        </div>
+                    </section>
                 </section>
             </section>
-            <section class="intensPedido" id="intensPedido">
-                <button class="btnFechar"><i data-lucide="x"></i></button>
-            </section>
+
             <section id="novo-pedido-page" class="page-content">
                 <div class="order-container" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px;">
                     <div class="card">
@@ -151,6 +161,7 @@
                     </div>
                     <div id="global-product-list"></div>
                 </div>
+
             </section>
         </main>
     </div>
