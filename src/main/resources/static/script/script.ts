@@ -526,7 +526,7 @@ async function produtosLista(numero: Number) {
           sectionPedidos.innerHTML += `<div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="mostrarLista()">
                                     <i id="idPedido" class="idPedidoTela">${idPedido}</i>
                                     <i id="usuarioPedido" class="usuarioPedidoTela">${usuarioPedido}</i>
-                                    <i id="statusPedido" class="statusPedidoTela" style=" border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};"">${statusPedido}</i>
+                                    <i id="statusPedido" class="statusPedidoTela" style="border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};"">${statusPedido}</i>
                                     <i id="dataPedido" class="dataPedidoTela">${dataFormatada}</i>
                                 </div>`;
         }
