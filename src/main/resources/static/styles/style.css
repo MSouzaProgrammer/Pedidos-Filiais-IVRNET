@@ -74,6 +74,69 @@ body {
     width: 192px;
 }
 
+
+.login-body {
+
+    display: flex;
+
+    flex-direction: column;
+
+    background-color: var(--bg-body);
+
+    justify-content: center;
+
+    align-items: center;
+
+    margin: 0px;
+
+    padding: 0px;
+
+    border: 0px;
+
+}
+
+
+
+.login-container {
+
+    background-color: var(--white);
+
+    padding: 60px;
+
+    border-radius: var(--radius-lg);
+
+    border: 1px solid var(--border-color);
+
+    margin-bottom: 10px;
+
+    margin-top: 0px;
+
+    box-shadow: var(--shadow-sm);
+
+}
+
+
+
+.login-visual {
+
+    background-color: var(--bg-sidebar);
+
+    padding: 15px;
+
+    border-radius: var(--radius-md);
+
+}
+
+
+
+.img-logo {
+
+    margin-top: 0;
+
+    width: 35%;
+
+}
+
 .nav-links {
     list-style: none;
     flex-grow: 1;
