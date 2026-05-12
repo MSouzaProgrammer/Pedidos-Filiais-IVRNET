@@ -155,7 +155,7 @@
     </div>
 
     <div id="modal-produto" class="modal-overlay-pro">
-        <div class="card" style="width:100%; max-width:450px;">
+        <div class="card" style="width:100%; max-width:450px; height: 50%; max-height: 390px; position: fixed; left: 40%; top: 20%;">
             <h2 class="card-title">Novo Produto</h2>
             <div class="form-group"><label>Nome</label><input type="text" id="new-prod-name" class="form-control"></div>
             <div class="form-group"><label>ID PRODUTO</label><input type="text" id="new-prod-id" class="form-control">
@@ -177,13 +177,13 @@
     </div>
 
     <div>
-        <div id="overlayPedido" class="modal-overlay-pro ativo"></div>
+        <div id="overlayPedido" class="modal-overlay-pro"></div>
 
-        <section id="intensPedido" class="intensPedido ativo">
+        <section id="intensPedidoLista" class="intensPedido">
 
             <div class="modal-header-pro">
                 <div class="title-group">
-                    <h2>Pedido #203600 - Filial Bonito</h2>
+                    <h2 id="tituloLista">!</h2>
                     <span class="date-text">02/07/23 14:00</span>
                 </div>
 
@@ -209,53 +209,14 @@
                         <span>Unidade</span>
                         <span>Qtd. Pedida</span>
                         <span>Qtd. para Envio</span>
-                        <span>Status</span>
                         <span></span>
                     </div>
-                    <!--
-                    <div class="table-row-pro">
-                        <span class="text-muted">#000</span>
-                        <span>Copo Descartável 200ml</span>
-                        <span class="text-muted">Unidade</span>
-                        <span>10</span>
-                        <span><input type="number" class="input-qtd-pro" value="10"></span>
-                        <span>120</span>
-                        <span><span class="badge-pro badge-success">Em Estoque</span></span>
-                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
-                                    style="width:18px;"></i></button></span>
-                    </div>
-                    
-                    <div class="table-row-pro">
-                        <span class="text-muted">#001</span>
-                        <span>Detergente Neutro 500ml</span>
-                        <span class="text-muted">Unidade</span>
-                        <span>2</span>
-                        <span><input type="number" class="input-qtd-pro" value="2"></span>
-                        <span>30</span>
-                        <span><span class="badge-pro badge-danger">Estoque Baixo</span></span>
-                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
-                                    style="width:18px;"></i></button></span>
-                    </div>
-
-                    <div class="table-row-pro">
-                        <span class="text-muted">#002</span>
-                        <span>Papel Sulfite A4 (Cxa c/ 10)</span>
-                        <span class="text-muted">Caixa</span>
-                        <span>5</span>
-                        <span><input type="number" class="input-qtd-pro" value="5"></span>
-                        <span>5</span>
-                        <span><span class="badge-pro badge-success">Em Estoque</span></span>
-                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
-                                    style="width:18px;"></i></button></span>
-                    </div>
-                    -->
                     <div class="table-row-pro">
                         <span class="text-muted">#003</span>
                         <span>Copo Descartável 200ml</span>
                         <span class="text-muted">Cento</span>
                         <span>10</span>
                         <span><input type="number" class="input-qtd-pro" value="45"></span>
-                        <span>45</span>
                         <span><button class="btn-icon-danger"><i data-lucide="trash-2"
                                     style="width:18px; position: fixed; right: 32%;"></i></button></span>
                     </div>

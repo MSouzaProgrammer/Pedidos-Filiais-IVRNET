@@ -451,7 +451,7 @@ async function produtosLista(numero) {
                         break;
                 }
                 if (sectionPedidos) {
-                    sectionPedidos.innerHTML += `<div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="mostrarLista()">
+                    sectionPedidos.innerHTML += `<div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="consultarLista(${idPedido})">
                                     <i id="idPedido" class="idPedidoTela">${idPedido}</i>
                                     <i id="usuarioPedido" class="usuarioPedidoTela">${usuarioPedido}</i>
                                     <i id="statusPedido" class="statusPedidoTela" style="border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};"">${statusPedido}</i>
@@ -471,15 +471,40 @@ async function produtosLista(numero) {
         return;
     }
 }
+let consulta = null;
+async function consultarLista(id) {
+    try {
+        const resposta = await requestBack("pedido/pedidoId/" + id, "GET", null);
+        if (resposta && resposta.ok) {
+            const dadosPedido = await resposta.json();
+            // AQUI ESTÁ O SEGREDO: Salva na global para outras funções usarem
+            consulta = dadosPedido;
+            mostrarLista();
+        }
+    }
+    catch (error) {
+        console.error("Erro na consulta:", error);
+    }
+}
 function mostrarLista() {
-    console.log("foi");
-    const content = document.getElementById("content");
-    content.innerHTML += ``;
-    lucide.createIcons();
+    const overlayPedido = document.getElementById("overlayPedido");
+    const conteudoLista = document.getElementById("intensPedidoLista");
+    if (conteudoLista && overlayPedido) {
+        conteudoLista.classList.add('ativo');
+        overlayPedido.classList.add('ativo');
+    }
+    const tituloLista = document.getElementById("tituloLista");
+    if (tituloLista) {
+        const filial = consulta.filial;
+        tituloLista.textContent = "Pedido Filial " + filial;
+        console.log(consulta);
+    }
 }
 function fecharAba() {
-    const aba = document.getElementById("intensPedido");
-    aba.remove();
+    const overlayPedido = document.getElementById("overlayPedido");
+    overlayPedido.classList.remove('ativo');
+    const conteudoLista = document.getElementById("intensPedidoLista");
+    conteudoLista.classList.remove('ativo');
 }
 /*
 

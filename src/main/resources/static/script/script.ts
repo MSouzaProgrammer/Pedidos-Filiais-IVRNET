@@ -6,7 +6,6 @@ let estoque: Produto[] = [];
 let produtoEmEspera: Produto | null = null;
 let carrinhoDePedidos: Produto[] = [];
 let filial: String;
-
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho: string, metodo: string, dados: unknown): Promise<Response> {
   const opcoes: RequestInit = {
@@ -523,7 +522,7 @@ async function produtosLista(numero: Number) {
             break;
         }
         if (sectionPedidos) {
-          sectionPedidos.innerHTML += `<div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="mostrarLista()">
+          sectionPedidos.innerHTML += `<div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="consultarLista(${idPedido})">
                                     <i id="idPedido" class="idPedidoTela">${idPedido}</i>
                                     <i id="usuarioPedido" class="usuarioPedidoTela">${usuarioPedido}</i>
                                     <i id="statusPedido" class="statusPedidoTela" style="border: 2px solid ${bordaStatus}; border-radius: 10px; background-color: ${fundoStatus}; color: ${letraStatus};"">${statusPedido}</i>
@@ -541,20 +540,48 @@ async function produtosLista(numero: Number) {
   catch (error) {
     console.log(error)
     return;
+  }
+}
 
+let consulta: any = null;
+async function consultarLista(id: number) {
+  try {
+    const resposta = await requestBack("pedido/pedidoId/" + id, "GET", null);
+
+    if (resposta && resposta.ok) {
+      const dadosPedido = await resposta.json();
+
+      // AQUI ESTÁ O SEGREDO: Salva na global para outras funções usarem
+      consulta = dadosPedido;
+
+      mostrarLista();
+    }
+  } catch (error) {
+    console.error("Erro na consulta:", error);
   }
 }
 
 function mostrarLista() {
-  console.log("foi");
-  const content = document.getElementById("content") as HTMLTableSectionElement;
-  content.innerHTML += ``;
-  lucide.createIcons();
+  const overlayPedido = document.getElementById("overlayPedido") as HTMLElement;
+  const conteudoLista = document.getElementById("intensPedidoLista") as HTMLElement;
+  if (conteudoLista && overlayPedido) {
+    conteudoLista.classList.add('ativo');
+    overlayPedido.classList.add('ativo');
+  }
+
+  const tituloLista = document.getElementById("tituloLista") as HTMLHeadingElement;
+  if (tituloLista) {
+    const filial = consulta.filial;
+    tituloLista.textContent = "Pedido Filial " + filial;
+    console.log(consulta);
+  }
 }
 
-function fecharAba(){
-  const aba = document.getElementById("intensPedido") as HTMLTableSectionElement;
-  aba.remove();
+function fecharAba() {
+  const overlayPedido = document.getElementById("overlayPedido") as HTMLTableSectionElement;
+  overlayPedido.classList.remove('ativo');
+  const conteudoLista = document.getElementById("intensPedidoLista") as HTMLTableSectionElement;
+  conteudoLista.classList.remove('ativo');
 }
 /*
 

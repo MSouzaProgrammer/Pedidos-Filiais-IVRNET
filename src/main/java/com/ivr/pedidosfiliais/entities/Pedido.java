@@ -39,6 +39,8 @@ public class Pedido {
     @Column(updatable = false)
     private LocalDateTime dataCriacao;
 
+    private String observacao;
+    
     @PrePersist
     protected void onCreate(){
         this.dataCriacao = LocalDateTime.now();

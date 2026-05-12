@@ -1,6 +1,7 @@
 package com.ivr.pedidosfiliais.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,5 +37,10 @@ public class PedidoController {
     @GetMapping("/{filial}")
     public List<Pedido> findByIdFilial(@PathVariable Long filial){
         return pedidoService.findByIdFilial(filial);
+    }
+
+    @GetMapping("/pedidoId/{id}")
+    public Optional<Pedido> findByIdProdutos(@PathVariable Long id){
+        return pedidoService.findByIdProdutos(id);
     }
 }

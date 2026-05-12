@@ -2,6 +2,7 @@ package com.ivr.pedidosfiliais.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,9 @@ public class PedidoService {
         }
     }
 
+    public Optional<Pedido> findByIdProdutos(Long pedido){
+        return pedidosRepository.findById(pedido);
+    }
     public Boolean novoStatus(Status NovoStatus, Long id) {
         if (NovoStatus != null) {
 
