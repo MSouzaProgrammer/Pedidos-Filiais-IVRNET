@@ -76,55 +76,34 @@ body {
 
 
 .login-body {
-
     display: flex;
-
     flex-direction: column;
-
     background-color: var(--bg-body);
-
     justify-content: center;
-
     align-items: center;
-
     margin: 0px;
-
     padding: 0px;
-
     border: 0px;
-
 }
 
 
 
 .login-container {
-
     background-color: var(--white);
-
     padding: 60px;
-
     border-radius: var(--radius-lg);
-
     border: 1px solid var(--border-color);
-
     margin-bottom: 10px;
-
     margin-top: 0px;
-
     box-shadow: var(--shadow-sm);
 
 }
 
-
-
 .login-visual {
 
     background-color: var(--bg-sidebar);
-
     padding: 15px;
-
     border-radius: var(--radius-md);
-
 }
 
 
@@ -402,9 +381,14 @@ body {
 }
 
 .logoBaixo {
-        width: 0px;
-        opacity: 0.5;
+    width: 0px;
+    opacity: 0.5;
 }
+
+.listandoProdutos{
+}
+
+
 
 @media screen and (min-width: 1900px) {
     .logoBaixo {
@@ -520,16 +504,17 @@ body {
 }
 
 .btnFechar {
+    position: fixed;
     background: transparent;
     border: none;
     color: var(--text-muted);
     cursor: pointer;
-    padding: 8px;
+    padding: 2px;
     border-radius: 4px;
     transition: 0.2s;
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 2%;
+    right: 1%;
 }
 
 .btnFechar:hover {
@@ -681,5 +666,318 @@ body {
         border: 1px solid var(--border-color);
         border-radius: var(--radius-md);
         margin-bottom: 10px;
+    }
+}
+
+
+/* =========================================
+   MODAL DE DETALHES DO PEDIDO (IMAGEM)
+   ========================================= */
+
+/* Fundo escuro atrás do modal */
+.modal-overlay-pro {
+    display: none; 
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 15, 25, 0.85); 
+    backdrop-filter: blur(4px);
+    z-index: 9998; 
+}
+
+/* Caixa principal do modal */
+.intensPedido {
+    display: none; /* Fica oculto por padrão */
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-body); /* Fundo igual ao da imagem */
+    border: 1px solid var(--border-color);
+    box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.8);
+    border-radius: var(--radius-lg);
+    width: 95%;
+    max-width: 1200px; /* Bem largo pra caber tudo */
+    max-height: 90vh; /* Não deixa vazar da tela */
+    z-index: 9999;
+    overflow: hidden; 
+}
+
+/* A MÁGICA DE EXIBIR O MODAL */
+.intensPedido.ativo { display: flex; }
+.modal-overlay-pro.ativo { display: block; }
+
+/* --- CABEÇALHO --- */
+.modal-header-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background-color: var(--bg-body);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.title-group h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.date-text {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.actions-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.actions-group label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.select-status-custom {
+    padding: 8px 12px;
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: var(--radius-md);
+    outline: none;
+}
+
+.btn-outline-pro {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--sidebar-active);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-outline-pro:hover {
+    border-color: var(--text-muted);
+}
+
+.btn-close-pro {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+}
+
+.btn-close-pro:hover {
+    color: var(--text-main);
+    background: var(--sidebar-active);
+}
+
+/* --- CORPO (GRID) --- */
+.modal-body-pro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px; /* Tabela 1fr | Painéis 300px */
+    gap: 20px;
+    padding: 24px;
+    background-color: var(--bg-sidebar); /* Fundo ligeiramente mais claro no miolo */
+    overflow-y: auto; 
+    flex: 1; /* Preenche o espaço disponível */
+}
+
+/* --- TABELA DA ESQUERDA --- */
+.table-container-pro {
+    background-color: var(--bg-body);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.table-row-pro {
+    display: grid;
+    grid-template-columns: 70px 2fr 80px 100px 110px 100px 110px 40px;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+}
+
+.table-row-pro:last-child { border-bottom: none; }
+
+.header-pro {
+    background-color: var(--sidebar-active);
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.input-qtd-pro {
+    width: 65px;
+    padding: 6px;
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 4px;
+    text-align: center;
+    outline: none;
+}
+
+.badge-pro {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    color: #4ade80;
+    background-color: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.badge-danger {
+    color: #f87171;
+    background-color: rgba(248, 113, 113, 0.1);
+    border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+.btn-icon-danger {
+    background: transparent;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon-danger:hover {
+    color: #dc2626;
+
+}
+
+/* --- PAINÉIS LATERAIS --- */
+.sidebar-panels-pro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-card-pro {
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 20px;
+}
+
+.resumo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.resumo-row:last-child { margin-bottom: 0; }
+
+.text-danger-row { color: #f87171; }
+
+.number-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: var(--sidebar-active);
+    color: var(--text-main);
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.circle-danger {
+    background-color: #f87171;
+    color: #fff;
+}
+
+/* --- RODAPÉ --- */
+.modal-footer-pro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    padding: 20px 24px;
+    background-color: var(--bg-body);
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-footer-cancel {
+    background-color: var(--bg-sidebar);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 14px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-footer-cancel:hover {
+    background-color: var(--border-color);
+}
+
+.btn-footer-save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #1e3a8a;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-footer-save:hover {
+    background-color: #1e40af;
+}
+
+/* --- RESPONSIVIDADE DO MODAL --- */
+@media screen and (max-width: 1100px) {
+    .modal-body-pro {
+        grid-template-columns: 1fr; /* Quebra pra 1 coluna */
+    }
+    .table-container-pro {
+        overflow-x: auto; /* Scroll horizontal na tabela se precisar */
+    }
+    .table-row-pro {
+        min-width: 800px;
+    }
+    .modal-header-pro {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .modal-footer-pro {
+        grid-template-columns: 1fr; /* Empilha os botões */
     }
 }

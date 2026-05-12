@@ -474,9 +474,7 @@ async function produtosLista(numero) {
 function mostrarLista() {
     console.log("foi");
     const content = document.getElementById("content");
-    content.innerHTML += `<section class="intensPedido" id="intensPedido">
-                            <button class="btnFechar" id="btnFechar" onclick="fecharAba()"><i data-lucide="x"></i></button>
-                          </section>`;
+    content.innerHTML += ``;
     lucide.createIcons();
 }
 function fecharAba() {

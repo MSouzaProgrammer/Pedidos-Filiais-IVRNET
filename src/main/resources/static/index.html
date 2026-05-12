@@ -79,19 +79,7 @@
                         </div>
                     </div>
                     <section class="intensPedido" id="intensPedido">
-                        <button class="btnFechar" id="btnFechar" onclick="fecharAba()"><i data-lucide="x"></i></button>
-                        <div class="paginaPedidos">
-                            <h2>Pedido Filial Bonito</h2>
-                            <div class="form-group">
-                            <label>Aleterar Status</label>
-                            <select class="statusPedido" id="statusPedido">
-                                <option>PENDENTE</option>
-                                <option>SEPARADO</option>
-                                <option>ENVIADO</option>
-                            </select>
-                            <button type="button" class="btnImprimir"><i data-lucide="package" style="margin-right: 10px; margin-top: -4px; width: 20px;"></i>Imprimir Pedido<i data-lucide="printer" style="margin-left: 10px; margin-top: -4px; width: 20px;"></i></button>
-                        </div>
-                        </div>
+
                     </section>
                 </section>
             </section>
@@ -166,7 +154,7 @@
         </main>
     </div>
 
-    <div id="modal-produto" class="modal-overlay">
+    <div id="modal-produto" class="modal-overlay-pro">
         <div class="card" style="width:100%; max-width:450px;">
             <h2 class="card-title">Novo Produto</h2>
             <div class="form-group"><label>Nome</label><input type="text" id="new-prod-name" class="form-control"></div>
@@ -186,6 +174,131 @@
                     onclick="closeModal()">Cancelar</button>
             </div>
         </div>
+    </div>
+
+    <div>
+        <div id="overlayPedido" class="modal-overlay-pro ativo"></div>
+
+        <section id="intensPedido" class="intensPedido ativo">
+
+            <div class="modal-header-pro">
+                <div class="title-group">
+                    <h2>Pedido #203600 - Filial Bonito</h2>
+                    <span class="date-text">02/07/23 14:00</span>
+                </div>
+
+                <div class="actions-group">
+                    <label>Alterar Status</label>
+                    <select class="form-control select-status-custom">
+                        <option>Pendente</option>
+                        <option selected>Em Separação</option>
+                        <option>Finalizado</option>
+                    </select>
+                    <button class="btn-outline-pro"><i data-lucide="printer" style="width:16px;"></i> Imprimir
+                        Pedido</button>
+                    <button class="btn-close-pro" onclick="fecharAba()"><i data-lucide="x"></i></button>
+                </div>
+            </div>
+
+            <div class="modal-body-pro">
+
+                <div class="table-container-pro">
+                    <div class="table-row-pro header-pro">
+                        <span>Item #</span>
+                        <span>Nome do Produto</span>
+                        <span>Unidade</span>
+                        <span>Qtd. Pedida</span>
+                        <span>Qtd. para Envio</span>
+                        <span>Status</span>
+                        <span></span>
+                    </div>
+                    <!--
+                    <div class="table-row-pro">
+                        <span class="text-muted">#000</span>
+                        <span>Copo Descartável 200ml</span>
+                        <span class="text-muted">Unidade</span>
+                        <span>10</span>
+                        <span><input type="number" class="input-qtd-pro" value="10"></span>
+                        <span>120</span>
+                        <span><span class="badge-pro badge-success">Em Estoque</span></span>
+                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
+                                    style="width:18px;"></i></button></span>
+                    </div>
+                    
+                    <div class="table-row-pro">
+                        <span class="text-muted">#001</span>
+                        <span>Detergente Neutro 500ml</span>
+                        <span class="text-muted">Unidade</span>
+                        <span>2</span>
+                        <span><input type="number" class="input-qtd-pro" value="2"></span>
+                        <span>30</span>
+                        <span><span class="badge-pro badge-danger">Estoque Baixo</span></span>
+                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
+                                    style="width:18px;"></i></button></span>
+                    </div>
+
+                    <div class="table-row-pro">
+                        <span class="text-muted">#002</span>
+                        <span>Papel Sulfite A4 (Cxa c/ 10)</span>
+                        <span class="text-muted">Caixa</span>
+                        <span>5</span>
+                        <span><input type="number" class="input-qtd-pro" value="5"></span>
+                        <span>5</span>
+                        <span><span class="badge-pro badge-success">Em Estoque</span></span>
+                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
+                                    style="width:18px;"></i></button></span>
+                    </div>
+                    -->
+                    <div class="table-row-pro">
+                        <span class="text-muted">#003</span>
+                        <span>Copo Descartável 200ml</span>
+                        <span class="text-muted">Cento</span>
+                        <span>10</span>
+                        <span><input type="number" class="input-qtd-pro" value="45"></span>
+                        <span>45</span>
+                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
+                                    style="width:18px; position: fixed; right: 32%;"></i></button></span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-panels-pro">
+
+                    <div class="panel-card-pro">
+                        <input type="text" class="form-control" value="Filial Matriz" readonly
+                            style="margin-bottom: 15px; border-color: var(--border-color); background-color: var(--bg-body);">
+                        <label
+                            style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Observações</label>
+                        <textarea class="form-control" rows="3" readonly
+                            style="resize: none; border-color: var(--border-color); background-color: var(--bg-body);">Atenção ao prazo de entrega de 24h.</textarea>
+                    </div>
+
+                    <div class="panel-card-pro">
+                        <h3 style="font-size: 16px; margin-bottom: 15px;">Resumo</h3>
+
+                        <div class="resumo-row">
+                            <span>Total Itens Pedidos</span>
+                            <span class="number-circle">3</span>
+                        </div>
+
+                        <div class="resumo-row">
+                            <span>Itens para Envio</span>
+                            <span class="number-circle">3</span>
+                        </div>
+
+                        <div class="resumo-row text-danger-row"
+                            style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color);">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer-pro">
+                <button class="btn-footer-cancel" onclick="fecharAba()">Cancelar / Fechar</button>
+                <button class="btn-footer-save">Salvar Alterações e Finalizar Pedido <i data-lucide="check"
+                        style="width:18px;"></i></button>
+            </div>
+        </section>
     </div>
 
     <script src="script/script.js"></script>
