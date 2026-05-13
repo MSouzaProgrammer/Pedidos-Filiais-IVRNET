@@ -4,6 +4,7 @@ let estoque = [];
 let produtoEmEspera = null;
 let carrinhoDePedidos = [];
 let filial;
+let usuario;
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho, metodo, dados) {
     const opcoes = {
@@ -45,6 +46,7 @@ const b_login = document.querySelector("#b-login");
 const user = document.querySelector("#user");
 if (user) {
     user.innerText = sessionStorage.getItem("userName") || "Name";
+    usuario = sessionStorage.getItem("userName") || "Name";
 }
 // --- LÓGICA DE LOGIN ---
 if (b_login) {
@@ -88,6 +90,8 @@ if (b_login) {
         b_login.addEventListener("click", tentarLogin);
     }
 }
+if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html")
+    window.location.href = "login.html";
 //#endregion
 //#region Funçoes para {PRODUTOS}
 function renderProductList(itens) {
@@ -493,6 +497,19 @@ function mostrarLista() {
         conteudoLista.classList.add('ativo');
         overlayPedido.classList.add('ativo');
     }
+    console.log(consulta);
+    const dataText = document.getElementById("dataText");
+    const dataFormatada = new Date(consulta.dataCriacao).toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    console.log(dataFormatada);
+    if (dataText) {
+        dataText.textContent = dataFormatada;
+    }
     const tituloLista = document.getElementById("tituloLista");
     if (tituloLista) {
         const lista = document.getElementById("table-container-pro");
@@ -520,7 +537,7 @@ function mostrarLista() {
                         <span>${quantidade}</span>
                         <span><input type="number" class="input-qtd-pro" value="${quantidade}"></span>
                         <span><button class="btn-icon-danger"><i data-lucide="trash-2"
-                                    style="width:18px; position: fixed; right: 32%;"></i></button></span>
+                                  style="width:18px; position: fixed; right: 32%;"></i></button></span>
                     </div>`;
             });
         }
@@ -532,13 +549,14 @@ function mostrarLista() {
         }
     }
 }
+console.log(document.getElementById("table-container-pro"));
+function salvarAlteracao() {
+    const pedidoAtt = consulta;
+}
 function fecharAba() {
     const overlayPedido = document.getElementById("overlayPedido");
     overlayPedido.classList.remove('ativo');
     const conteudoLista = document.getElementById("intensPedidoLista");
     conteudoLista.classList.remove('ativo');
 }
-/*
-
-*/
 //#endregion

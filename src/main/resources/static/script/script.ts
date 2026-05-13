@@ -6,6 +6,7 @@ let estoque: Produto[] = [];
 let produtoEmEspera: Produto | null = null;
 let carrinhoDePedidos: Produto[] = [];
 let filial: String;
+let usuario: String;
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho: string, metodo: string, dados: unknown): Promise<Response> {
   const opcoes: RequestInit = {
@@ -72,6 +73,7 @@ const b_login = document.querySelector("#b-login") as HTMLButtonElement | null;
 const user = document.querySelector("#user") as HTMLElement | null;
 if (user) {
   user.innerText = sessionStorage.getItem("userName") || "Name";
+  usuario = sessionStorage.getItem("userName") || "Name";
 }
 // --- LÓGICA DE LOGIN ---
 if (b_login) {
@@ -80,7 +82,6 @@ if (b_login) {
   // Tipamos o evento como Event
   const tentarLogin = async (e: Event) => {
     e.preventDefault();
-
     const emailEl = document.querySelector("#email-login") as HTMLInputElement | null;
     const senhaEl = document.querySelector("#senhaLogin") as HTMLInputElement | null;
 
@@ -119,6 +120,7 @@ if (b_login) {
   }
 }
 
+if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html") window.location.href = "login.html";
 //#endregion
 
 //#region Funçoes para {PRODUTOS}
@@ -568,7 +570,19 @@ function mostrarLista() {
     conteudoLista.classList.add('ativo');
     overlayPedido.classList.add('ativo');
   }
-
+  console.log(consulta);
+  const dataText = document.getElementById("dataText");
+  const dataFormatada = new Date(consulta.dataCriacao).toLocaleString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        console.log(dataFormatada)
+  if (dataText) {
+    dataText.textContent = dataFormatada;
+  }
   const tituloLista = document.getElementById("tituloLista") as HTMLHeadingElement;
   if (tituloLista) {
     const lista = document.getElementById("table-container-pro");
@@ -597,17 +611,22 @@ function mostrarLista() {
                         <span>${quantidade}</span>
                         <span><input type="number" class="input-qtd-pro" value="${quantidade}"></span>
                         <span><button class="btn-icon-danger"><i data-lucide="trash-2"
-                                    style="width:18px; position: fixed; right: 32%;"></i></button></span>
+                                  style="width:18px; position: fixed; right: 32%;"></i></button></span>
                     </div>`
       });
     }
     const numberCircle = document.getElementById("numberCircle") as HTMLSpanElement;
     const tam = consulta.lProdutos.length;
     console.log(tam);
-    if(numberCircle) {
+    if (numberCircle) {
       numberCircle.textContent = String(tam);
     }
   }
+}
+
+console.log(document.getElementById("table-container-pro"))
+function salvarAlteracao(){
+  const pedidoAtt = consulta;
 }
 
 function fecharAba() {
@@ -616,8 +635,5 @@ function fecharAba() {
   const conteudoLista = document.getElementById("intensPedidoLista") as HTMLTableSectionElement;
   conteudoLista.classList.remove('ativo');
 }
-/*
-
-*/
 
 //#endregion

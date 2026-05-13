@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,4 +44,16 @@ public class PedidoController {
     public Optional<Pedido> findByIdProdutos(@PathVariable Long id){
         return pedidoService.findByIdProdutos(id);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> atualizarPedido(@PathVariable Long id, @RequestBody Pedido nPedido){
+        nPedido.setId(id);
+        Boolean att = pedidoService.attPedido(nPedido);
+        if (att){
+            return ResponseEntity.ok("Pedido atualizado com sucesso!");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado.");
+        }
+    }
+
 }
