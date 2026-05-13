@@ -190,7 +190,6 @@ async function atualizarProdutos() {
         const resposta = await requestBack("produto", "GET", null);
         if (resposta.ok) {
             const dadosBack = await resposta.json();
-            console.log(dadosBack);
             // Atualiza a variável (lembre-se que tem que ser "let estoque" lá no topo)
             estoque = dadosBack.map((itemDoJava) => {
                 return {
@@ -394,7 +393,6 @@ if (btnFinalizar) {
             const spanProdutos = document.getElementById("spanProduto");
             const buttonProdutos = document.getElementById("buttonProduto");
             const resposta = await requestBack("pedido", "POST", dadosPedido);
-            console.log(resposta);
             location.reload();
         }
     });
@@ -471,7 +469,7 @@ async function produtosLista(numero) {
         }
     }
     catch (error) {
-        console.log(error);
+        console.error(error);
         return;
     }
 }
@@ -497,7 +495,6 @@ function mostrarLista() {
         conteudoLista.classList.add('ativo');
         overlayPedido.classList.add('ativo');
     }
-    console.log(consulta);
     const dataText = document.getElementById("dataText");
     const dataFormatada = new Date(consulta.dataCriacao).toLocaleString('pt-BR', {
         day: '2-digit',
@@ -506,7 +503,6 @@ function mostrarLista() {
         hour: '2-digit',
         minute: '2-digit'
     });
-    console.log(dataFormatada);
     if (dataText) {
         dataText.textContent = dataFormatada;
     }
@@ -530,12 +526,13 @@ function mostrarLista() {
                 const nome = element.name;
                 const undMedida = element.undMedida;
                 const quantidade = element.quant;
+                const quantEnviada = element.quantEnviada;
                 lista.innerHTML += `<div class="table-row-pro">
                         <span class="text-muted">${idProduto}</span>
                         <span>${nome}</span>
                         <span class="text-muted">${undMedida}</span>
                         <span>${quantidade}</span>
-                        <span><input type="number" class="input-qtd-pro" value="${quantidade}"></span>
+                        <span><input type="number" class="input-qtd-pro" data-id-produto="${element.id}" value="${quantEnviada}"></span>
                         <span><button class="btn-icon-danger"><i data-lucide="trash-2"
                                   style="width:18px; position: fixed; right: 32%;"></i></button></span>
                     </div>`;
@@ -543,15 +540,25 @@ function mostrarLista() {
         }
         const numberCircle = document.getElementById("numberCircle");
         const tam = consulta.lProdutos.length;
-        console.log(tam);
         if (numberCircle) {
             numberCircle.textContent = String(tam);
         }
     }
 }
-console.log(document.getElementById("table-container-pro"));
-function salvarAlteracao() {
-    const pedidoAtt = consulta;
+async function salvarAlteracao() {
+    const statusNovo = document.getElementById("nStatus");
+    const pedidoAtt = { ...consulta };
+    pedidoAtt.status = statusNovo.value;
+    const inputs = document.querySelectorAll('.input-qtd-pro');
+    const pedido = inputs.forEach(inputs => {
+        const idProd = Number(inputs.getAttribute('data-id-produto'));
+        const novaQtd = Number(inputs.value);
+        const pedido = pedidoAtt.lProdutos.find((p) => p.id === idProd);
+        pedido.quantEnviada = novaQtd;
+    });
+    pedidoAtt.lProdutos = pedido;
+    const envio = await requestBack("pedido/" + pedidoAtt.id, "PUT", pedidoAtt);
+    console.log(envio);
 }
 function fecharAba() {
     const overlayPedido = document.getElementById("overlayPedido");

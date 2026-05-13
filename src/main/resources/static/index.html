@@ -189,10 +189,10 @@
 
                 <div class="actions-group">
                     <label>Alterar Status</label>
-                    <select class="form-control select-status-custom">
-                        <option>Pendente</option>
-                        <option selected>Em Separação</option>
-                        <option>Finalizado</option>
+                    <select id="nStatus" class="form-control select-status-custom">
+                        <option>PENDENTE</option>
+                        <option selected>SEPARADO</option>
+                        <option>ENVIADO</option>
                     </select>
                     <button class="btn-outline-pro"><i data-lucide="printer" style="width:16px;"></i> Imprimir
                         Pedido</button>
@@ -234,7 +234,7 @@
 
             <div class="modal-footer-pro">
                 <button class="btn-footer-cancel" onclick="fecharAba()">Cancelar / Fechar</button>
-                <button class="btn-footer-save">Salvar Alterações e Finalizar Pedido <i data-lucide="check"
+                <button class="btn-footer-save" onclick="salvarAlteracao(); fecharAba();">Salvar Alterações e Finalizar Pedido <i data-lucide="check"
                         style="width:18px;"></i></button>
             </div>
         </section>

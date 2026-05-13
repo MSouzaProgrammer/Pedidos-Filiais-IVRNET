@@ -11,12 +11,14 @@ import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
 import com.ivr.pedidosfiliais.enums.Filiais;
 import com.ivr.pedidosfiliais.repository.PedidosRepository;
+import com.ivr.pedidosfiliais.repository.ProdutoPedidoRepository;
 
 @Service
 public class PedidoService {
 
     @Autowired
     private PedidosRepository pedidosRepository;
+    private ProdutoPedidoRepository produtoPedidoRepository;
 
     private Pedido pedido;
 
@@ -60,27 +62,30 @@ public class PedidoService {
         }
     }
 
-    public Optional<Pedido> findByIdProdutos(Long pedido){
+    public Optional<Pedido> findByIdProdutos(Long pedido) {
         return pedidosRepository.findById(pedido);
     }
 
-
     public Boolean attPedido(Pedido nPedido) {
-        if(nPedido == null|| nPedido.getId() == null){
-            return false;
-        }
-         return pedidosRepository.findById(nPedido.getId()).map(pedidoExistente ->{
-            pedidoExistente.setStatus(nPedido.getStatus());
-            pedidoExistente.setObservacao(nPedido.getObservacao());
-
-            pedidoExistente.getLProdutos().clear();
-            if(nPedido.getLProdutos() != null){
-                pedidoExistente.getLProdutos().addAll(nPedido.getLProdutos());
-            }
-            pedidosRepository.save(pedidoExistente);
-            return true;
-         }).orElse(false);
+    if (nPedido == null || nPedido.getId() == null) {
+        return false;
     }
+    ProdutoPedido produtoPedido;
+    return pedidosRepository.findById(nPedido.getId()).map(pedidoExistente -> {
+        pedidoExistente.setStatus(nPedido.getStatus());
+        pedidoExistente.setObservacao(nPedido.getObservacao());
+        
+        
+        for(ProdutoPedido produto: lista){
+            if(produto.getId() == ){
+
+            }
+        }
+        
+        pedidosRepository.save(pedidoExistente);
+        return true;
+    }).orElse(false);
+}
 
     // #endregion
 }
