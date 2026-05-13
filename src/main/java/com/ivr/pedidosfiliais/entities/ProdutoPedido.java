@@ -31,4 +31,5 @@ public class ProdutoPedido {
     private String name;
     private String undMedida;
     private Long quant;
+    private Long quantEnviada;
 }

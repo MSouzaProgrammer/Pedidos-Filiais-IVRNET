@@ -571,9 +571,42 @@ function mostrarLista() {
 
   const tituloLista = document.getElementById("tituloLista") as HTMLHeadingElement;
   if (tituloLista) {
+    const lista = document.getElementById("table-container-pro");
     const filial = consulta.filial;
-    tituloLista.textContent = "Pedido Filial " + filial;
-    console.log(consulta);
+    const idPedido = consulta.id;
+    tituloLista.textContent = "#" + idPedido + " Pedido Filial " + filial;
+
+    if (lista) {
+      lista.innerHTML = `<div class="table-row-pro header-pro">
+                        <span>Item #</span>
+                        <span>Nome do Produto</span>
+                        <span>Unidade</span>
+                        <span>Qtd. Pedida</span>
+                        <span>Qtd. para Envio</span>
+                        <span></span>
+                    </div>`;
+      consulta.lProdutos.forEach((element: any) => {
+        const idProduto = element.idProduto;
+        const nome = element.name;
+        const undMedida = element.undMedida;
+        const quantidade = element.quant;
+        lista.innerHTML += `<div class="table-row-pro">
+                        <span class="text-muted">${idProduto}</span>
+                        <span>${nome}</span>
+                        <span class="text-muted">${undMedida}</span>
+                        <span>${quantidade}</span>
+                        <span><input type="number" class="input-qtd-pro" value="${quantidade}"></span>
+                        <span><button class="btn-icon-danger"><i data-lucide="trash-2"
+                                    style="width:18px; position: fixed; right: 32%;"></i></button></span>
+                    </div>`
+      });
+    }
+    const numberCircle = document.getElementById("numberCircle") as HTMLSpanElement;
+    const tam = consulta.lProdutos.length;
+    console.log(tam);
+    if(numberCircle) {
+      numberCircle.textContent = String(tam);
+    }
   }
 }
 
