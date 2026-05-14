@@ -56,5 +56,4 @@ public class PedidoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado.");
         }
     }
-
 }

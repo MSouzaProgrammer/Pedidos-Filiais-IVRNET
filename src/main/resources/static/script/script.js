@@ -537,6 +537,15 @@ function mostrarLista() {
                                   style="width:18px; position: fixed; right: 32%;"></i></button></span>
                     </div>`;
             });
+            const tObservacoes = document.getElementById("tObservacoes");
+            if (tObservacoes) {
+                tObservacoes.value = consulta.observacao ?? "Obervação";
+                console.log("Observação carregada no campo:", tObservacoes.value);
+            }
+            const operadorPedido = document.getElementById("operadorPedido");
+            if (operadorPedido) {
+                operadorPedido.value = consulta.usuario ?? "Usuário não identificado";
+            }
         }
         const numberCircle = document.getElementById("numberCircle");
         const tam = consulta.lProdutos.length;
@@ -547,23 +556,144 @@ function mostrarLista() {
 }
 async function salvarAlteracao() {
     const statusNovo = document.getElementById("nStatus");
+    const tObservacoes = document.getElementById("tObservacoes");
     const pedidoAtt = { ...consulta };
     pedidoAtt.status = statusNovo.value;
+    pedidoAtt.observacao = tObservacoes.value;
     const inputs = document.querySelectorAll('.input-qtd-pro');
-    const pedido = inputs.forEach(inputs => {
-        const idProd = Number(inputs.getAttribute('data-id-produto'));
-        const novaQtd = Number(inputs.value);
-        const pedido = pedidoAtt.lProdutos.find((p) => p.id === idProd);
-        pedido.quantEnviada = novaQtd;
+    inputs.forEach(input => {
+        const idItem = Number(input.getAttribute('data-id-produto'));
+        const novaQtd = Number(input.value);
+        const produtoEncontrado = pedidoAtt.lProdutos.find((p) => p.id === idItem);
+        if (produtoEncontrado) {
+            produtoEncontrado.quantEnviada = novaQtd;
+        }
     });
-    pedidoAtt.lProdutos = pedido;
     const envio = await requestBack("pedido/" + pedidoAtt.id, "PUT", pedidoAtt);
-    console.log(envio);
 }
 function fecharAba() {
     const overlayPedido = document.getElementById("overlayPedido");
     overlayPedido.classList.remove('ativo');
     const conteudoLista = document.getElementById("intensPedidoLista");
     conteudoLista.classList.remove('ativo');
+}
+function gerarImpressaoPicking(consulta) {
+    const iframe = document.getElementById('iframeImpressao');
+    if (!iframe)
+        return;
+    const doc = iframe.contentWindow?.document;
+    if (!doc)
+        return;
+    // Gerando as linhas da tabela
+    const linhasProdutos = consulta.lProdutos.map(p => `
+        <tr>
+            <td>${p.idProduto}</td>
+            <td style="text-align: left;">${p.name}</td>
+            <td>${p.undMedida || 'UN'}</td>
+            <td><strong>${p.quant}</strong></td>
+            <td class="col-manual"></td>
+            <td>${consulta.filial || '-'}</td>
+        </tr>
+    `).join('');
+    // Estilização idêntica ao layout da folha que aprovamos
+    const htmlFinal = `
+        <html>
+        <head>
+            <style>
+              body { font-family: Arial, sans-serif; padding: 0; color: #000; background-color: #fff; margin: 0; }
+              
+              /* Cabeçalho compacto e sem cores */
+              .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 15px; }
+              .logo { height: 50px; filter: grayscale(100%) contrast(1.5); }
+              .header-text { text-align: right; }
+              .header-text h1 { margin: 0; font-size: 16px; }
+              .header-text p { margin: 0; font-size: 11px; font-weight: bold; }
+
+              /* Tabelas com bordas pretas nítidas e arredondadas */
+              .info-table, .products-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 10px; border: 1.5px solid #000; border-radius: 8px; overflow: hidden; }
+              
+              .info-table td { border: 0.5px solid #000; padding: 6px 10px; font-size: 12px; }
+              .label { font-weight: bold; background-color: #eee; width: 15%; } /* O leve cinza aqui ajuda a separar, mas é opcional */
+
+              /* Box de observação mais justo */
+              .obs-box { border: 1.5px solid #000; border-radius: 8px; padding: 8px 12px; margin-bottom: 15px; font-size: 12px; min-height: 30px; }
+              .obs-box strong { font-size: 10px; text-transform: uppercase; display: block; }
+
+              /* Tabela de produtos com aproveitamento de espaço */
+              .products-table th { background-color: #000; color: #fff; padding: 8px; font-size: 10px; text-transform: uppercase; }
+              .products-table td { border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 6px; text-align: center; font-size: 12px; }
+              .products-table tr:last-child td { border-bottom: none; }
+              .products-table td:last-child { border-right: none; }
+
+              /* Coluna manual para caneta - Borda mais grossa para destacar */
+              .col-manual { width: 70px; border: 2px solid #000 !important; background-color: #fff; }
+
+              /* Rodapé compacto */
+              .footer { display: flex; gap: 10px; width: 100%; margin-top: 20px; }
+              .footer-box { flex: 1; border: 1.5px solid #000; border-radius: 8px; padding: 10px; height: 60px; font-size: 10px; }
+              .linha-assinatura { border-top: 1px solid #000; margin-top: 35px; text-align: center; width: 80%; margin-left: 10%; }
+
+              @media print {
+                  @page { size: portrait; margin: 0.8cm; }
+                  body { -webkit-print-color-adjust: exact; }
+              }
+          </style>
+        </head>
+        <body>
+            <div class="header">
+                <img src="img/logoIVRNET.png" class="logo">
+                <div class="header-text">
+                    <h1>IVRNET PROVEDOR DE INTERNET</h1>
+                    <p style="margin:0; font-weight:bold;">Lista de Separação de Pedido</p>
+                </div>
+            </div>
+
+            <table class="info-table">
+                <tr>
+                    <td class="label">PEDIDO ID:</td><td>#${consulta.id}</td>
+                    <td class="label">DATA:</td><td>${new Date(consulta.dataCriacao).toLocaleDateString()}</td>
+                </tr>
+                <tr>
+                    <td class="label">FILIAL:</td><td>${consulta.filial}</td>
+                    <td class="label">SOLICITANTE:</td><td>${consulta.usuario || '________________'}</td>
+                </tr>
+            </table>
+
+            <div class="obs-box">
+                <strong>OBSERVAÇÕES:</strong><br>
+                ${consulta.observacao || 'Nenhuma observação informada.'}
+            </div>
+
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>ID PRODUTO</th>
+                        <th style="text-align: left;">NOME DO PRODUTO</th>
+                        <th>UNID.</th>
+                        <th>QTD. SOLIC.</th>
+                        <th>QTD. ENV. (Manual)</th>
+                        <th>FILIAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${linhasProdutos}
+                </tbody>
+            </table>
+
+            <div class="footer">
+                <div class="footer-box" style="border-right: none;">SEPARADO POR:<br><br>_________________________________</div>
+                <div class="footer-box">CONFERIDO POR:<br><br>_________________________________</div>
+            </div>
+        </body>
+        </html>
+    `;
+    doc.open();
+    doc.write(htmlFinal);
+    doc.close();
+    // Aguarda carregar e dispara a impressão
+    setTimeout(() => {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+    }, 300);
 }
 //#endregion

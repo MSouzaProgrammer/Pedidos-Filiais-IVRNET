@@ -1,11 +1,13 @@
 package com.ivr.pedidosfiliais.services;
 
+import com.ivr.pedidosfiliais.repository.ProdutoRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
@@ -16,11 +18,17 @@ import com.ivr.pedidosfiliais.repository.ProdutoPedidoRepository;
 @Service
 public class PedidoService {
 
+    private final ProdutoRepository produtoRepository;
     @Autowired
     private PedidosRepository pedidosRepository;
+    @Autowired
     private ProdutoPedidoRepository produtoPedidoRepository;
 
     private Pedido pedido;
+
+    PedidoService(ProdutoRepository produtoRepository) {
+        this.produtoRepository = produtoRepository;
+    }
 
     // #region CRUD
     public Boolean save(Pedido pedido) {
@@ -62,30 +70,47 @@ public class PedidoService {
         }
     }
 
+    public List<ProdutoPedido> findByIdPedido(Long id) {
+        try {
+            return produtoPedidoRepository.findByPedidoId(id);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return new ArrayList<>();
+        }
+    }
+
     public Optional<Pedido> findByIdProdutos(Long pedido) {
         return pedidosRepository.findById(pedido);
     }
 
+    @Transactional
     public Boolean attPedido(Pedido nPedido) {
-    if (nPedido == null || nPedido.getId() == null) {
-        return false;
-    }
-    ProdutoPedido produtoPedido;
-    return pedidosRepository.findById(nPedido.getId()).map(pedidoExistente -> {
-        pedidoExistente.setStatus(nPedido.getStatus());
-        pedidoExistente.setObservacao(nPedido.getObservacao());
-        
-        
-        for(ProdutoPedido produto: lista){
-            if(produto.getId() == ){
-
-            }
+        if (nPedido == null || nPedido.getId() == null) {
+            return false;
         }
-        
-        pedidosRepository.save(pedidoExistente);
-        return true;
-    }).orElse(false);
-}
+
+        // REMOVA a busca no banco aqui.
+        // Use a lista que veio no parâmetro da função!
+        List<ProdutoPedido> listaVindaDoFront = nPedido.getLProdutos();
+
+        return pedidosRepository.findById(nPedido.getId()).map(pedidoExistente -> {
+            pedidoExistente.setStatus(nPedido.getStatus());
+            pedidoExistente.setObservacao(nPedido.getObservacao());
+
+            if (listaVindaDoFront != null) {
+                for (ProdutoPedido eProduto : pedidoExistente.getLProdutos()) {
+                    for (ProdutoPedido produtoFront : listaVindaDoFront) {
+                        // Agora você compara o item do banco com o item que veio do Front
+                        if (produtoFront.getIdProduto().equals(eProduto.getIdProduto())) {
+                            eProduto.setQuantEnviada(produtoFront.getQuantEnviada());
+                            break;
+                        }
+                    }
+                }
+            }
+            pedidosRepository.save(pedidoExistente);
+            return true;
+        }).orElse(false);
+    }
 
     // #endregion
 }

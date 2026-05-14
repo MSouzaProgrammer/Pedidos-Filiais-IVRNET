@@ -672,36 +672,48 @@ body {
 
 /* Fundo escuro atrás do modal */
 .modal-overlay-pro {
-    display: none; 
+    display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(11, 15, 25, 0.85); 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 15, 25, 0.85);
     backdrop-filter: blur(4px);
-    z-index: 9998; 
+    z-index: 9998;
 }
 
 /* Caixa principal do modal */
 .intensPedido {
-    display: none; /* Fica oculto por padrão */
+    display: none;
+    /* Fica oculto por padrão */
     flex-direction: column;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--bg-body); /* Fundo igual ao da imagem */
+    background-color: var(--bg-body);
+    /* Fundo igual ao da imagem */
     border: 1px solid var(--border-color);
     box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.8);
     border-radius: var(--radius-lg);
     width: 95%;
-    max-width: 1200px; /* Bem largo pra caber tudo */
-    max-height: 90vh; /* Não deixa vazar da tela */
+    max-width: 1200px;
+    /* Bem largo pra caber tudo */
+    max-height: 90vh;
+    /* Não deixa vazar da tela */
     z-index: 9999;
-    overflow: hidden; 
+    overflow: hidden;
 }
 
 /* A MÁGICA DE EXIBIR O MODAL */
-.intensPedido.ativo { display: flex; }
-.modal-overlay-pro.ativo { display: block; }
+.intensPedido.ativo {
+    display: flex;
+}
+
+.modal-overlay-pro.ativo {
+    display: block;
+}
 
 /* --- CABEÇALHO --- */
 .modal-header-pro {
@@ -788,12 +800,15 @@ body {
 /* --- CORPO (GRID) --- */
 .modal-body-pro {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px; /* Tabela 1fr | Painéis 300px */
+    grid-template-columns: minmax(0, 1fr) 300px;
+    /* Tabela 1fr | Painéis 300px */
     gap: 20px;
     padding: 24px;
-    background-color: var(--bg-sidebar); /* Fundo ligeiramente mais claro no miolo */
-    overflow-y: auto; 
-    flex: 1; /* Preenche o espaço disponível */
+    background-color: var(--bg-sidebar);
+    /* Fundo ligeiramente mais claro no miolo */
+    overflow-y: auto;
+    flex: 1;
+    /* Preenche o espaço disponível */
 }
 
 /* --- TABELA DA ESQUERDA --- */
@@ -817,13 +832,19 @@ body {
 
 .table-row-pro.header-pro {
     position: sticky;
-    top: 0;           /* Gruda exatamente no topo do container */
-    z-index: 10;      /* Garante que ele fique na frente dos itens que sobem */
-    background-color: var(--bg-sidebar); /* Cor sólida para não ser transparente */
-    border-bottom: 2px solid var(--border-color); /* Uma bordinha pra destacar */
+    top: 0;
+    /* Gruda exatamente no topo do container */
+    z-index: 10;
+    /* Garante que ele fique na frente dos itens que sobem */
+    background-color: var(--bg-sidebar);
+    /* Cor sólida para não ser transparente */
+    border-bottom: 2px solid var(--border-color);
+    /* Uma bordinha pra destacar */
 }
 
-.table-row-pro:last-child { border-bottom: none; }
+.table-row-pro:last-child {
+    border-bottom: none;
+}
 
 .header-pro {
     background-color: var(--sidebar-active);
@@ -901,9 +922,13 @@ body {
     color: var(--text-muted);
 }
 
-.resumo-row:last-child { margin-bottom: 0; }
+.resumo-row:last-child {
+    margin-bottom: 0;
+}
 
-.text-danger-row { color: #f87171; }
+.text-danger-row {
+    color: #f87171;
+}
 
 .number-circle {
     display: flex;
@@ -970,20 +995,43 @@ body {
 /* --- RESPONSIVIDADE DO MODAL --- */
 @media screen and (max-width: 1100px) {
     .modal-body-pro {
-        grid-template-columns: 1fr; /* Quebra pra 1 coluna */
+        grid-template-columns: 1fr;
+        /* Quebra pra 1 coluna */
     }
+
     .table-container-pro {
-        overflow-x: auto; /* Scroll horizontal na tabela se precisar */
+        overflow-x: auto;
+        /* Scroll horizontal na tabela se precisar */
     }
+
     .table-row-pro {
         min-width: 800px;
     }
+
     .modal-header-pro {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
+
     .modal-footer-pro {
-        grid-template-columns: 1fr; /* Empilha os botões */
+        grid-template-columns: 1fr;
+        /* Empilha os botões */
+    }
+}
+
+
+#sessaoImpressao {
+    display: none;
+}
+
+@media print {
+    /* Na hora de imprimir, esconde o sistema todo */
+    body * {
+        display: none !important;
+    }
+    /* Mostra apenas a div do papel */
+    #sessaoImpressao, #sessaoImpressao * {
+        display: block !important;
     }
 }

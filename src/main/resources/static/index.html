@@ -190,11 +190,11 @@
                 <div class="actions-group">
                     <label>Alterar Status</label>
                     <select id="nStatus" class="form-control select-status-custom">
-                        <option>PENDENTE</option>
-                        <option selected>SEPARADO</option>
+                        <option selected>PENDENTE</option>
+                        <option>SEPARADO</option>
                         <option>ENVIADO</option>
                     </select>
-                    <button class="btn-outline-pro"><i data-lucide="printer" style="width:16px;"></i> Imprimir
+                    <button class="btn-outline-pro" onclick="gerarImpressaoPicking(consulta)"><i data-lucide="printer" style="width:25px;"></i> Imprimir
                         Pedido</button>
                     <button class="btn-close-pro" onclick="fecharAba()"><i data-lucide="x"></i></button>
                 </div>
@@ -209,12 +209,14 @@
                 <div class="sidebar-panels-pro">
 
                     <div class="panel-card-pro">
-                        <input type="text" class="form-control" value="Filial Matriz" readonly
+                        <label
+                            style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Usuário</label>
+                        <input id="operadorPedido" type="text" class="form-control" value="" readonly
                             style="margin-bottom: 15px; border-color: var(--border-color); background-color: var(--bg-body);">
                         <label
                             style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Observações</label>
                         <textarea class="form-control" rows="3"
-                            style="resize: none; border-color: var(--border-color); background-color: var(--bg-body);">Observações</textarea>
+                            style="resize: none; border-color: var(--border-color); background-color: var(--bg-body);" id="tObservacoes">Observações</textarea>
                     </div>
 
                     <div class="panel-card-pro">
@@ -241,6 +243,7 @@
     </div>
 
     <script src="script/script.js"></script>
+    <iframe id="iframeImpressao" style="display:none;"></iframe>
 </body>
 
 </html>

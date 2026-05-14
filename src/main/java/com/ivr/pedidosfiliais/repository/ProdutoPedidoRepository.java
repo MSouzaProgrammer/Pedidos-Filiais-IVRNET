@@ -1,8 +1,11 @@
 package com.ivr.pedidosfiliais.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
 
 public interface ProdutoPedidoRepository  extends JpaRepository<ProdutoPedido, Long>{
+    List<ProdutoPedido> findByPedidoId(Long id);
 }
