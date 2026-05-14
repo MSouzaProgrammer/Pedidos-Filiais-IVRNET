@@ -1,8 +1,6 @@
 package com.ivr.pedidosfiliais.enums;
 
 public enum Filiais {
-    MATRIZ, BONITO,
-    BODOQUENA, AQUIDAUANA,
-    DOIS_IRMAOS, JARDIM,
-    GUIA_LOPEZ, NIOAQUE;
+    MATRIZ, BONITO_BODOQUENA, AQUIDAUANA,
+    DOIS_IRMAOS, JARDIM_GUIA_LOPEZ_NIOAQUE;
 }

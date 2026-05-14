@@ -511,7 +511,7 @@ function mostrarLista() {
         const lista = document.getElementById("table-container-pro");
         const filial = consulta.filial;
         const idPedido = consulta.id;
-        tituloLista.textContent = "#" + idPedido + " Pedido Filial " + filial;
+        tituloLista.textContent = "#" + idPedido + " Pedido Filial " + filialNome;
         if (lista) {
             lista.innerHTML = `<div class="table-row-pro header-pro">
                         <span>Item #</span>
@@ -577,6 +577,16 @@ function fecharAba() {
     const conteudoLista = document.getElementById("intensPedidoLista");
     conteudoLista.classList.remove('ativo');
 }
+//#endregion
+let filialNome = "";
+function pegarNome(elemento) {
+    const iElement = elemento.querySelector('i');
+    if (iElement) {
+        filialNome = iElement.innerText;
+    }
+    console.log(filialNome);
+    return filialNome;
+}
 function gerarImpressaoPicking(consulta) {
     const iframe = document.getElementById('iframeImpressao');
     if (!iframe)
@@ -592,10 +602,9 @@ function gerarImpressaoPicking(consulta) {
             <td>${p.undMedida || 'UN'}</td>
             <td><strong>${p.quant}</strong></td>
             <td class="col-manual"></td>
-            <td>${consulta.filial || '-'}</td>
+            <td>${filialNome || '-'}</td>
         </tr>
     `).join('');
-    // Estilização idêntica ao layout da folha que aprovamos
     const htmlFinal = `
         <html>
         <head>
@@ -654,7 +663,7 @@ function gerarImpressaoPicking(consulta) {
                     <td class="label">DATA:</td><td>${new Date(consulta.dataCriacao).toLocaleDateString()}</td>
                 </tr>
                 <tr>
-                    <td class="label">FILIAL:</td><td>${consulta.filial}</td>
+                    <td class="label">FILIAL:</td><td>${filialNome}</td>
                     <td class="label">SOLICITANTE:</td><td>${consulta.usuario || '________________'}</td>
                 </tr>
             </table>

@@ -48,13 +48,10 @@
                         <div class="menuEsquerda">
                             <h2>Filiais</h2>
                             <div>
-                                <a onclick="produtosLista(1)" class="navFiliais"><i>Filial Bonito</i></a>
-                                <a onclick="produtosLista(2)" class="navFiliais"><i>Filial Bodoquena</i></a>
-                                <a onclick="produtosLista(3)" class="navFiliais"><i>Filial Aquidauana</i></a>
-                                <a onclick="produtosLista(4)" class="navFiliais"><i>Filial Dois irmaos</i></a>
-                                <a onclick="produtosLista(5)" class="navFiliais"><i>Filial jardim</i></a>
-                                <a onclick="produtosLista(6)" class="navFiliais"><i>Filial Guia Lopez</i></a>
-                                <a onclick="produtosLista(7)" class="navFiliais"><i>Filial Nioaque</i></a>
+                                <a onclick="produtosLista(1); pegarNome(this)" class="navFiliais"><i>Bonito | Bodoquena</i></a>
+                                <a onclick="produtosLista(2); pegarNome(this)" class="navFiliais"><i>Aquidauana</i></a>
+                                <a onclick="produtosLista(3); pegarNome(this)" class="navFiliais"><i>Dois irmaos</i></a>
+                                <a onclick="produtosLista(4); pegarNome(this)" class="navFiliais"><i>Jardim | Nioaque</i></a>
                                 <div class="imgDasboard">
                                     <img src="img/logoIVRNET.png" alt="LogoDashboard" class="logoBaixo">
                                 </div>
@@ -91,14 +88,11 @@
                         <div class="form-group">
                             <label>Filial Solicitante *</label>
                             <select class="form-control" id="select-filial">
-                                <option>Filial Matriz</option>
-                                <option>Filial Bonito</option>
-                                <option>Filial Bodoquena</option>
-                                <option>Filial Aquidauana</option>
-                                <option>Filial Dois Irmãos</option>
-                                <option>Filial Jardim</option>
-                                <option>Filial Guia Lopez</option>
-                                <option>Filial Nioaque</option>
+                                <option value="MATRIZ">Filial Matriz</option>
+                                <option value="BONITO_BODOQUENA">Filial Bonito | Bodoquena</option>
+                                <option value="AQUIDAUANA">Filial Aquidauana</option>
+                                <option value="DOIS_IRMAOS">Filial Dois Irmãos</option>
+                                <option value="JARDIM_GUIA_LOPEZ_NIOAQUE">Filial Jardim | Guia Lopez | Nioaque</option>
                             </select>
                         </div>
                         <div class="form-group">

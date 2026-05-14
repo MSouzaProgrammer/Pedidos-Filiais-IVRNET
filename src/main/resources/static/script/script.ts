@@ -530,6 +530,7 @@ async function produtosLista(numero: Number) {
                                 </div>`;
         }
       });
+      
     }
     else {
       // 3. CHECAGEM: "Deu ruim" (Erro de API, ex: 404 não encontrado, 401 não autorizado)
@@ -584,7 +585,7 @@ function mostrarLista() {
     const lista = document.getElementById("table-container-pro");
     const filial = consulta.filial;
     const idPedido = consulta.id;
-    tituloLista.textContent = "#" + idPedido + " Pedido Filial " + filial;
+    tituloLista.textContent = "#" + idPedido + " Pedido Filial " + filialNome;
 
     if (lista) {
       lista.innerHTML = `<div class="table-row-pro header-pro">
@@ -657,6 +658,16 @@ function fecharAba() {
 
 //#endregion
 
+let filialNome: string = "";
+function pegarNome(elemento: HTMLElement): string {
+  const iElement = elemento.querySelector('i');
+  
+  if (iElement) {
+    filialNome = iElement.innerText;
+  }
+  console.log(filialNome);
+  return filialNome;
+}
 //#region
 interface PedidoCompleto {
   id: number;
@@ -681,11 +692,10 @@ function gerarImpressaoPicking(consulta: PedidoCompleto) {
             <td>${p.undMedida || 'UN'}</td>
             <td><strong>${p.quant}</strong></td>
             <td class="col-manual"></td>
-            <td>${consulta.filial || '-'}</td>
+            <td>${filialNome || '-'}</td>
         </tr>
     `).join('');
 
-  // Estilização idêntica ao layout da folha que aprovamos
   const htmlFinal = `
         <html>
         <head>
@@ -744,7 +754,7 @@ function gerarImpressaoPicking(consulta: PedidoCompleto) {
                     <td class="label">DATA:</td><td>${new Date(consulta.dataCriacao).toLocaleDateString()}</td>
                 </tr>
                 <tr>
-                    <td class="label">FILIAL:</td><td>${consulta.filial}</td>
+                    <td class="label">FILIAL:</td><td>${filialNome}</td>
                     <td class="label">SOLICITANTE:</td><td>${consulta.usuario || '________________'}</td>
                 </tr>
             </table>
