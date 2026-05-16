@@ -87,8 +87,8 @@
                         <h2 class="card-title"><i data-lucide="info"></i> Criar Requisição</h2>
                         <div class="form-group">
                             <label>Filial Solicitante *</label>
-                            <select class="form-control" id="select-filial">
-                                <option value="MATRIZ">Filial Matriz</option>
+                            <select class="form-control" id="select-filial" required>
+                                <option value="" disabled selected hidden>Selecione uma Filial...</option>
                                 <option value="BONITO_BODOQUENA">Filial Bonito | Bodoquena</option>
                                 <option value="AQUIDAUANA">Filial Aquidauana</option>
                                 <option value="DOIS_IRMAOS">Filial Dois Irmãos</option>
@@ -156,7 +156,9 @@
             </div>
             <div class="form-group">
                 <label>Unidade de Medida</label>
-                <select id="new-prod-unit" class="form-control">
+                <select id="new-prod-unit" class="form-control" required>
+                    <option value="" disabled selected hidden>Selecione uma unidade...</option>
+
                     <option value="Unidade">Unidade</option>
                     <option value="Metro">Metro</option>
                     <option value="Pacote">Pacote</option>
@@ -164,7 +166,31 @@
             </div>
             <div style="display:flex; gap:10px">
                 <button id="btn-salvar" class="btn-primary" style="flex:1; justify-content:center">Salvar</button>
-                <button class="btn-primary" style="flex:1; justify-content:center; background:#e2e8f0; color:#475569"
+                <button class="btn-primary" style="flex:1; justify-content:center; background:#eb1313; color:#ffffff"
+                    onclick="closeModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-produto-edit" class="modal-overlay-pro">
+        <div class="card" style="width:100%; max-width:450px; height: 50%; max-height: 390px; position: fixed; left: 40%; top: 20%;">
+            <h2 class="card-title">Novo Produto</h2>
+            <div class="form-group"><label>Nome</label><input type="text" id="edit-prod-name" class="form-control"></div>
+            <div class="form-group"><label>ID PRODUTO</label><input type="text" id="edit-prod-id" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Unidade de Medida</label>
+                <select id="edit-prod-unit" class="form-control" required>
+                    <option value="" disabled selected hidden>Selecione uma unidade...</option>
+
+                    <option value="Unidade">Unidade</option>
+                    <option value="Metro">Metro</option>
+                    <option value="Pacote">Pacote</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:10px">
+                <button id="btn-salvar-edit" class="btn-primary" style="flex:1; justify-content:center">Salvar</button>
+                <button class="btn-primary" style="flex:1; justify-content:center; background:#eb1313; color:#ffffff"
                     onclick="closeModal()">Cancelar</button>
             </div>
         </div>

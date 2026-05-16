@@ -137,7 +137,7 @@ function renderProductList(itens: Produto[]): void {
             <span style="font-weight:600">${item.nome}</span>
             <span style="color:var(--text-muted)">${item.unidade}</span>
             <div style="text-align:right">
-                <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px"><i data-lucide="edit" style="width:16px"></i></button>
+                <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px" onclick="editarItem('${item.id}')"><i data-lucide="edit" style="width:16px"></i></button>
                 <button style="border:none; background:none; cursor:pointer; color:#ef4444"  onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
             </div>
         `;
@@ -165,7 +165,9 @@ function openModal(): void {
 
 function closeModal(): void {
   const modal = document.getElementById("modal-produto") as HTMLElement | null;
+  const modalEdit = document.getElementById("modal-produto-edit") as HTMLElement | null;
   if (modal) modal.style.display = "none";
+  if (modalEdit) modalEdit.style.display = "none";
 }
 
 async function carregarProdutos() {
@@ -656,6 +658,53 @@ function fecharAba() {
   conteudoLista.classList.remove('ativo');
 }
 
+function editarItem(idDoBanco: Number){
+  const modal = document.getElementById("modal-produto-edit") as HTMLElement | null;
+  if (modal) modal.style.display = "flex";
+
+  const btnEditProduto = document.getElementById("btn-salvar-edit") as HTMLButtonElement | null;
+if (btnEditProduto) {
+  btnEditProduto.addEventListener("click", async function () {
+
+    const nomeP = document.getElementById("edit-prod-name") as HTMLInputElement | null;
+    const idP = document.getElementById("edit-prod-id") as HTMLInputElement | null;
+    const unitP = document.getElementById("edit-prod-unit") as HTMLInputElement | null;
+
+    if (nomeP && idP && nomeP.value.trim() !== "" && idP.value.trim() !== "") {
+      const produto: Produto = {
+        id: idP.value,
+        idProduto: idP.value,
+        nome: nomeP.value,
+        unidade: unitP ? unitP.value : "",
+        quantidade: 0
+      };
+
+      // Quando for ligar o backend novamente, descomente aqui:
+      try {
+        const resposta = await requestBack("produto/update", "PUT", {
+          id: idDoBanco,
+          idProduto: produto.idProduto,
+          name: produto.nome,
+          undMedida: produto.unidade
+        });
+      } catch (err) {
+        console.error("Erro ao enviar produto para o backend:", err);
+      }
+      closeModal();
+
+      nomeP.value = "";
+      idP.value = "";
+      if (unitP) unitP.value = "";
+    } else {
+      alert("Por favor, preencha pelo menos o Nome e o ID do produto.");
+    }
+  });
+}
+}
+
+
+
+
 //#endregion
 
 let filialNome: string = "";
@@ -700,7 +749,7 @@ function gerarImpressaoPicking(consulta: PedidoCompleto) {
         <html>
         <head>
             <style>
-              body { font-family: Arial, sans-serif; padding: 0; color: #000; background-color: #fff; margin: 0; }
+              body {padding: 10; border: 1px solid #000; border-radius: 5px ;font-family: Arial, sans-serif; color: #000; background-color: #fff; margin: 0;}
               
               /* Cabeçalho compacto e sem cores */
               .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 5px; margin-bottom: 15px; }
@@ -720,13 +769,13 @@ function gerarImpressaoPicking(consulta: PedidoCompleto) {
               .obs-box strong { font-size: 10px; text-transform: uppercase; display: block; }
 
               /* Tabela de produtos com aproveitamento de espaço */
-              .products-table th { background-color: #000; color: #fff; padding: 8px; font-size: 10px; text-transform: uppercase; }
+              .products-table th { background-color: #414141; color: #fff; padding: 2px; font-size: 10px; text-transform: uppercase; }
               .products-table td { border-bottom: 1px solid #000; border-right: 1px solid #000; padding: 6px; text-align: center; font-size: 12px; }
               .products-table tr:last-child td { border-bottom: none; }
               .products-table td:last-child { border-right: none; }
 
               /* Coluna manual para caneta - Borda mais grossa para destacar */
-              .col-manual { width: 70px; border: 2px solid #000 !important; background-color: #fff; }
+              .col-manual { width: 70px; border: 1px solid #000 !important; background-color: #fff; }
 
               /* Rodapé compacto */
               .footer { display: flex; gap: 10px; width: 100%; margin-top: 20px; }
