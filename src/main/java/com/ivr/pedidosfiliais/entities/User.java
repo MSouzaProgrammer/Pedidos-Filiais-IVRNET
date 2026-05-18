@@ -1,5 +1,7 @@
 package com.ivr.pedidosfiliais.entities;
 
+import com.ivr.pedidosfiliais.enums.Access;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,4 +27,5 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private Access access;
 }

@@ -5,6 +5,7 @@ let produtoEmEspera = null;
 let carrinhoDePedidos = [];
 let filial;
 let usuario;
+let acesso;
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho, metodo, dados) {
     const opcoes = {
@@ -44,10 +45,6 @@ function showPage(pageId) {
 //#region LOGIN
 const b_login = document.querySelector("#b-login");
 const user = document.querySelector("#user");
-if (user) {
-    user.innerText = sessionStorage.getItem("userName") || "Name";
-    usuario = sessionStorage.getItem("userName") || "Name";
-}
 // --- LÓGICA DE LOGIN ---
 if (b_login) {
     const loginForm = document.querySelector("form");
@@ -60,14 +57,16 @@ if (b_login) {
             const loginData = {
                 email: emailEl.value,
                 password: senhaEl.value,
-                nome: null,
+                nome: null
             };
             try {
                 const resposta = await requestBack("users/login", "POST", loginData);
                 if (resposta.ok) {
                     const dadosDoUsuario = await resposta.json();
                     const nomeReal = dadosDoUsuario.nome;
+                    const acesso = dadosDoUsuario.acesso;
                     sessionStorage.setItem("userName", nomeReal);
+                    sessionStorage.setItem("userAccess", acesso);
                     window.location.href = "index.html";
                 }
                 else if (resposta.status === 401) {
@@ -89,6 +88,11 @@ if (b_login) {
     else if (b_login) {
         b_login.addEventListener("click", tentarLogin);
     }
+}
+if (user) {
+    usuario = sessionStorage.getItem("userName") || "Name";
+    acesso = sessionStorage.getItem("userAccess") || "NOT";
+    user.innerText = sessionStorage.getItem("userName") || "Name";
 }
 if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html")
     window.location.href = "login.html";

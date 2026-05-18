@@ -1,12 +1,13 @@
 // Declara o lucide globalmente para o TS não reclamar se você importar via script/CDN
 declare const lucide: any;
-
 // 2. Tipamos o estoque como um array de Produtos
 let estoque: Produto[] = [];
 let produtoEmEspera: Produto | null = null;
 let carrinhoDePedidos: Produto[] = [];
 let filial: String;
 let usuario: String;
+let acesso: String;
+
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho: string, metodo: string, dados: unknown): Promise<Response> {
   const opcoes: RequestInit = {
@@ -71,14 +72,9 @@ function showPage(pageId: string): void {
 //#region LOGIN
 const b_login = document.querySelector("#b-login") as HTMLButtonElement | null;
 const user = document.querySelector("#user") as HTMLElement | null;
-if (user) {
-  user.innerText = sessionStorage.getItem("userName") || "Name";
-  usuario = sessionStorage.getItem("userName") || "Name";
-}
 // --- LÓGICA DE LOGIN ---
 if (b_login) {
   const loginForm = document.querySelector("form") as HTMLFormElement | null;
-
   // Tipamos o evento como Event
   const tentarLogin = async (e: Event) => {
     e.preventDefault();
@@ -89,17 +85,19 @@ if (b_login) {
       const loginData: LoginData = {
         email: emailEl.value,
         password: senhaEl.value,
-        nome: null,
+        nome: null
       };
 
       try {
         const resposta = await requestBack("users/login", "POST", loginData);
-
         if (resposta.ok) {
           const dadosDoUsuario = await resposta.json();
           const nomeReal = dadosDoUsuario.nome;
+          const acesso = dadosDoUsuario.acesso;
 
           sessionStorage.setItem("userName", nomeReal);
+          sessionStorage.setItem("userAccess", acesso);
+
           window.location.href = "index.html";
         } else if (resposta.status === 401) {
           alert("Email ou senha incorretos. Tente novamente!");
@@ -110,9 +108,9 @@ if (b_login) {
         console.error("Erro de conexão:", erro);
         alert("Não foi possível conectar ao servidor. Verifique se o Spring Boot está rodando.");
       }
+
     }
   };
-
   if (loginForm) {
     loginForm.addEventListener("submit", tentarLogin);
   } else if (b_login) {
@@ -120,6 +118,12 @@ if (b_login) {
   }
 }
 
+
+if (user) {
+  usuario = sessionStorage.getItem("userName") || "Name";
+  acesso = sessionStorage.getItem("userAccess") || "NOT";
+  user.innerText = sessionStorage.getItem("userName") || "Name";
+}
 if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html") window.location.href = "login.html";
 //#endregion
 
@@ -532,7 +536,7 @@ async function produtosLista(numero: Number) {
                                 </div>`;
         }
       });
-      
+
     }
     else {
       // 3. CHECAGEM: "Deu ruim" (Erro de API, ex: 404 não encontrado, 401 não autorizado)
@@ -658,48 +662,48 @@ function fecharAba() {
   conteudoLista.classList.remove('ativo');
 }
 
-function editarItem(idDoBanco: Number){
+function editarItem(idDoBanco: Number) {
   const modal = document.getElementById("modal-produto-edit") as HTMLElement | null;
   if (modal) modal.style.display = "flex";
 
   const btnEditProduto = document.getElementById("btn-salvar-edit") as HTMLButtonElement | null;
-if (btnEditProduto) {
-  btnEditProduto.addEventListener("click", async function () {
+  if (btnEditProduto) {
+    btnEditProduto.addEventListener("click", async function () {
 
-    const nomeP = document.getElementById("edit-prod-name") as HTMLInputElement | null;
-    const idP = document.getElementById("edit-prod-id") as HTMLInputElement | null;
-    const unitP = document.getElementById("edit-prod-unit") as HTMLInputElement | null;
+      const nomeP = document.getElementById("edit-prod-name") as HTMLInputElement | null;
+      const idP = document.getElementById("edit-prod-id") as HTMLInputElement | null;
+      const unitP = document.getElementById("edit-prod-unit") as HTMLInputElement | null;
 
-    if (nomeP && idP && nomeP.value.trim() !== "" && idP.value.trim() !== "") {
-      const produto: Produto = {
-        id: idP.value,
-        idProduto: idP.value,
-        nome: nomeP.value,
-        unidade: unitP ? unitP.value : "",
-        quantidade: 0
-      };
+      if (nomeP && idP && nomeP.value.trim() !== "" && idP.value.trim() !== "") {
+        const produto: Produto = {
+          id: idP.value,
+          idProduto: idP.value,
+          nome: nomeP.value,
+          unidade: unitP ? unitP.value : "",
+          quantidade: 0
+        };
 
-      // Quando for ligar o backend novamente, descomente aqui:
-      try {
-        const resposta = await requestBack("produto/update", "PUT", {
-          id: idDoBanco,
-          idProduto: produto.idProduto,
-          name: produto.nome,
-          undMedida: produto.unidade
-        });
-      } catch (err) {
-        console.error("Erro ao enviar produto para o backend:", err);
+        // Quando for ligar o backend novamente, descomente aqui:
+        try {
+          const resposta = await requestBack("produto/update", "PUT", {
+            id: idDoBanco,
+            idProduto: produto.idProduto,
+            name: produto.nome,
+            undMedida: produto.unidade
+          });
+        } catch (err) {
+          console.error("Erro ao enviar produto para o backend:", err);
+        }
+        closeModal();
+
+        nomeP.value = "";
+        idP.value = "";
+        if (unitP) unitP.value = "";
+      } else {
+        alert("Por favor, preencha pelo menos o Nome e o ID do produto.");
       }
-      closeModal();
-
-      nomeP.value = "";
-      idP.value = "";
-      if (unitP) unitP.value = "";
-    } else {
-      alert("Por favor, preencha pelo menos o Nome e o ID do produto.");
-    }
-  });
-}
+    });
+  }
 }
 
 
@@ -710,7 +714,7 @@ if (btnEditProduto) {
 let filialNome: string = "";
 function pegarNome(elemento: HTMLElement): string {
   const iElement = elemento.querySelector('i');
-  
+
   if (iElement) {
     filialNome = iElement.innerText;
   }

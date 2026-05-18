@@ -43,7 +43,7 @@ public class UserController {
             Map<String, Object> resposta = new HashMap<>();
             resposta.put("nome", usuarioLogado.getName());
             resposta.put("email", usuarioLogado.getEmail());
-
+            resposta.put("acesso", usuarioLogado.getAccess());
             return ResponseEntity.ok(resposta);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha invalido!");
