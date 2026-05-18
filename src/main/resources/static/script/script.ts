@@ -6,7 +6,6 @@ let produtoEmEspera: Produto | null = null;
 let carrinhoDePedidos: Produto[] = [];
 let filial: String;
 let usuario: String;
-let acesso: String;
 
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho: string, metodo: string, dados: unknown): Promise<Response> {
@@ -121,11 +120,40 @@ if (b_login) {
 
 if (user) {
   usuario = sessionStorage.getItem("userName") || "Name";
-  acesso = sessionStorage.getItem("userAccess") || "NOT";
   user.innerText = sessionStorage.getItem("userName") || "Name";
 }
 if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html") window.location.href = "login.html";
+
+function pegarIniciais(nomeCompleto: string): string {
+  const conectivos = ["de", "da", "do", "dos", "das", "e"];
+  return nomeCompleto
+    .trim()
+    .split(/\s+/)
+    .filter(palavra => !conectivos.includes(palavra.toLowerCase()))
+    .map(palavra => palavra.charAt(0).toUpperCase())
+    .join('');
+}
+
+const avatarLogo = document.getElementById("avatarLogo") as HTMLDivElement
+if (avatarLogo) {
+
+  const nomeUsuario = sessionStorage.getItem("userName") || 'Usuário';
+  const iniciais = pegarIniciais(nomeUsuario);
+console.log("O nome que veio do sessionStorage é:", nomeUsuario);
+
+  const avatarContainer = document.getElementById("avatarLogo") as HTMLDivElement;
+  avatarContainer.textContent = iniciais;
+
+  if (!sessionStorage.getItem("userAccess")) {
+
+    window.location.href = "login.html";
+}
+}
 //#endregion
+
+function avisoDePermissao() {
+  alert("Você não tem permissão de administrador");
+}
 
 //#region Funçoes para {PRODUTOS}
 function renderProductList(itens: Produto[]): void {
@@ -135,16 +163,32 @@ function renderProductList(itens: Produto[]): void {
 
   itens.forEach((item) => {
     const div = document.createElement("div");
+
     div.className = "product-list-item";
-    div.innerHTML = `
+    if (sessionStorage.getItem("userAccess") === 'ADM') {
+      div.innerHTML = `
             <span style="font-weight:700; color:var(--text-muted)">${item.idProduto}</span>
             <span style="font-weight:600">${item.nome}</span>
             <span style="color:var(--text-muted)">${item.unidade}</span>
             <div style="text-align:right">
-                <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px" onclick="editarItem('${item.id}')"><i data-lucide="edit" style="width:16px"></i></button>
-                <button style="border:none; background:none; cursor:pointer; color:#ef4444"  onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
+                <button id="editardbtn"  style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px" onclick="editarItem('${item.id}')"><i data-lucide="edit" style="width:16px"></i></button>
+                <button id="apagarbtn" style="border:none; background:none; cursor:pointer; color:#ef4444"  onclick="deleteProduct('${item.id}')"><i data-lucide="trash-2" style="width:16px"></i></button>
             </div>
         `;
+    }
+    else {
+      div.innerHTML = `
+            <span style="font-weight:700; color:var(--text-muted)">${item.idProduto}</span>
+            <span style="font-weight:600">${item.nome}</span>
+            <span style="color:var(--text-muted)">${item.unidade}</span>
+            <div style="text-align:right;">
+                <button id="editardbtn"  style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px" onclick="avisoDePermissao()"><i data-lucide="edit" style="width:16px"></i></button>
+                <button id="apagarbtn" style="border:none; background:none; cursor:pointer; color:#ef4444"  onclick="avisoDePermissao()"><i data-lucide="trash-2" style="width:16px"></i></button>
+            </div>
+        `;
+    }
+
+
     container.appendChild(div);
   });
 
@@ -455,10 +499,6 @@ if (btnFinalizar) {
         lProdutos: listaProdutos,
         usuario: nomeUsuario
       }
-      const divProdutos = document.getElementById("listaProduto") as HTMLDivElement
-      const spanProdutos = document.getElementById("spanProduto") as HTMLSpanElement
-      const buttonProdutos = document.getElementById("buttonProduto") as HTMLButtonElement
-
       const resposta = await requestBack("pedido", "POST", dadosPedido);
       location.reload();
     }
@@ -608,12 +648,17 @@ function mostrarLista() {
         const undMedida = element.undMedida;
         const quantidade = element.quant;
         const quantEnviada = element.quantEnviada
+        let blockElement = true;
+        if (sessionStorage.getItem("userAccess") === 'ADM') {
+          blockElement = false;
+        }
+
         lista.innerHTML += `<div class="table-row-pro">
                         <span class="text-muted">${idProduto}</span>
                         <span>${nome}</span>
                         <span class="text-muted">${undMedida}</span>
                         <span>${quantidade}</span>
-                        <span><input type="number" class="input-qtd-pro" data-id-produto="${element.id}" value="${quantEnviada}"></span>
+                        <span><input type="number" class="input-qtd-pro" data-id-produto="${element.id}" value="${quantEnviada}" ${blockElement ? 'readonly' : ''}></span>
                         <span><button class="btn-icon-danger"><i data-lucide="trash-2"
                                   style="width:18px; position: fixed; right: 32%;"></i></button></span>
                     </div>`
@@ -707,6 +752,27 @@ function editarItem(idDoBanco: Number) {
 }
 
 
+if (sessionStorage.getItem("userAccess") === "ADM") {
+  const btnAddProduto = document.getElementById("btnAddProduto") as HTMLButtonElement;
+  const nStatus = document.getElementById("nStatus") as HTMLSelectElement;
+  const tObservacoes = document.getElementById("tObservacoes") as HTMLTextAreaElement;
+  const btnFooterSave = document.getElementById("btnFooterSave") as HTMLButtonElement;
+
+  btnAddProduto.disabled = false;
+  nStatus.disabled = false;
+  tObservacoes.disabled = false;
+}
+else {
+  const btnAddProduto = document.getElementById("btnAddProduto") as HTMLButtonElement;
+  const nStatus = document.getElementById("nStatus") as HTMLSelectElement;
+  const tObservacoes = document.getElementById("tObservacoes") as HTMLTextAreaElement;
+  const btnFooterSave = document.getElementById("btnFooterSave") as HTMLButtonElement;
+
+  btnAddProduto.disabled = true;
+  nStatus.disabled = true;
+  tObservacoes.disabled = true;
+  btnFooterSave.onclick = fecharAba;
+}
 
 
 //#endregion
