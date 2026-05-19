@@ -9,15 +9,31 @@ let usuario: String;
 
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho: string, metodo: string, dados: unknown): Promise<Response> {
+  // 1. Cria a base das opções da requisição
   const opcoes: RequestInit = {
     method: metodo,
     headers: {
-      "Content-Type": "application/json",
-    },
+      "Content-Type": "application/json"
+    }
   };
+
+  // 2. Busca o token no sessionStorage
+  const token = sessionStorage.getItem("token");
+
+  // 3. Se o token existir, adiciona no cabeçalho de forma segura para o TS
+  if (token) {
+    opcoes.headers = {
+      ...opcoes.headers,
+      "Authorization": `Bearer ${token}`
+    };
+  }
+
+  // 4. Adiciona o corpo da requisição se não for um GET
   if (dados && metodo.toUpperCase() !== "GET") {
     opcoes.body = JSON.stringify(dados);
   }
+
+  // 5. Faz o fetch final
   const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
   return resposta;
 }
@@ -34,7 +50,6 @@ interface Produto {
 interface LoginData {
   email: string;
   password: string;
-  nome: string | null;
 }
 
 interface ProdutosRegistrados {
@@ -71,10 +86,11 @@ function showPage(pageId: string): void {
 //#region LOGIN
 const b_login = document.querySelector("#b-login") as HTMLButtonElement | null;
 const user = document.querySelector("#user") as HTMLElement | null;
+
 // --- LÓGICA DE LOGIN ---
 if (b_login) {
   const loginForm = document.querySelector("form") as HTMLFormElement | null;
-  // Tipamos o evento como Event
+
   const tentarLogin = async (e: Event) => {
     e.preventDefault();
     const emailEl = document.querySelector("#email-login") as HTMLInputElement | null;
@@ -83,20 +99,17 @@ if (b_login) {
     if (emailEl && senhaEl) {
       const loginData: LoginData = {
         email: emailEl.value,
-        password: senhaEl.value,
-        nome: null
+        password: senhaEl.value
       };
 
       try {
-        const resposta = await requestBack("users/login", "POST", loginData);
+        const resposta = await requestBack("auth/login", "POST", loginData);
+
         if (resposta.ok) {
           const dadosDoUsuario = await resposta.json();
-          const nomeReal = dadosDoUsuario.nome;
-          const acesso = dadosDoUsuario.acesso;
-
-          sessionStorage.setItem("userName", nomeReal);
-          sessionStorage.setItem("userAccess", acesso);
-
+          sessionStorage.setItem("token", dadosDoUsuario.token);
+          sessionStorage.setItem("userName", dadosDoUsuario.name);
+          sessionStorage.setItem("userAccess", dadosDoUsuario.access);
           window.location.href = "index.html";
         } else if (resposta.status === 401) {
           alert("Email ou senha incorretos. Tente novamente!");
@@ -107,7 +120,6 @@ if (b_login) {
         console.error("Erro de conexão:", erro);
         alert("Não foi possível conectar ao servidor. Verifique se o Spring Boot está rodando.");
       }
-
     }
   };
   if (loginForm) {
@@ -116,13 +128,16 @@ if (b_login) {
     b_login.addEventListener("click", tentarLogin);
   }
 }
+if(user){
+  const nomeGuardado = sessionStorage.getItem("userName");
+  const tokenGuardado = sessionStorage.getItem("token");
 
-
-if (user) {
-  usuario = sessionStorage.getItem("userName") || "Name";
-  user.innerText = sessionStorage.getItem("userName") || "Name";
+  if(!tokenGuardado){
+    window.location.href = "login.html";
+  }else{
+    user.innerText = nomeGuardado || "Name";
+  }
 }
-if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html") window.location.href = "login.html";
 
 function pegarIniciais(nomeCompleto: string): string {
   const conectivos = ["de", "da", "do", "dos", "das", "e"];
@@ -139,7 +154,6 @@ if (avatarLogo) {
 
   const nomeUsuario = sessionStorage.getItem("userName") || 'Usuário';
   const iniciais = pegarIniciais(nomeUsuario);
-console.log("O nome que veio do sessionStorage é:", nomeUsuario);
 
   const avatarContainer = document.getElementById("avatarLogo") as HTMLDivElement;
   avatarContainer.textContent = iniciais;
@@ -666,7 +680,6 @@ function mostrarLista() {
       const tObservacoes = document.getElementById("tObservacoes") as HTMLTextAreaElement;
       if (tObservacoes) {
         tObservacoes.value = consulta.observacao ?? "Obervação";
-        console.log("Observação carregada no campo:", tObservacoes.value);
       }
       const operadorPedido = document.getElementById("operadorPedido") as HTMLInputElement;
       if (operadorPedido) {
@@ -784,7 +797,6 @@ function pegarNome(elemento: HTMLElement): string {
   if (iElement) {
     filialNome = iElement.innerText;
   }
-  console.log(filialNome);
   return filialNome;
 }
 //#region

@@ -30,7 +30,7 @@ public class PedidoController {
     public ResponseEntity<String> save(@RequestBody Pedido pedido){
         Boolean saved = pedidoService.save(pedido);
         if(saved){
-            return ResponseEntity.ok("Registrado");
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Produto Invalido");
     }

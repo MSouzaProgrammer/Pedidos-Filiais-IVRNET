@@ -1,6 +1,5 @@
 package com.ivr.pedidosfiliais.services;
 
-import com.ivr.pedidosfiliais.repository.ProdutoRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,17 +17,12 @@ import com.ivr.pedidosfiliais.repository.ProdutoPedidoRepository;
 @Service
 public class PedidoService {
 
-    private final ProdutoRepository produtoRepository;
     @Autowired
     private PedidosRepository pedidosRepository;
     @Autowired
     private ProdutoPedidoRepository produtoPedidoRepository;
 
     private Pedido pedido;
-
-    PedidoService(ProdutoRepository produtoRepository) {
-        this.produtoRepository = produtoRepository;
-    }
 
     // #region CRUD
     public Boolean save(Pedido pedido) {

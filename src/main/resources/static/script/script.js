@@ -7,15 +7,27 @@ let filial;
 let usuario;
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho, metodo, dados) {
+    // 1. Cria a base das opções da requisição
     const opcoes = {
         method: metodo,
         headers: {
-            "Content-Type": "application/json",
-        },
+            "Content-Type": "application/json"
+        }
     };
+    // 2. Busca o token no sessionStorage
+    const token = sessionStorage.getItem("token");
+    // 3. Se o token existir, adiciona no cabeçalho de forma segura para o TS
+    if (token) {
+        opcoes.headers = {
+            ...opcoes.headers,
+            "Authorization": `Bearer ${token}`
+        };
+    }
+    // 4. Adiciona o corpo da requisição se não for um GET
     if (dados && metodo.toUpperCase() !== "GET") {
         opcoes.body = JSON.stringify(dados);
     }
+    // 5. Faz o fetch final
     const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
     return resposta;
 }
@@ -47,7 +59,6 @@ const user = document.querySelector("#user");
 // --- LÓGICA DE LOGIN ---
 if (b_login) {
     const loginForm = document.querySelector("form");
-    // Tipamos o evento como Event
     const tentarLogin = async (e) => {
         e.preventDefault();
         const emailEl = document.querySelector("#email-login");
@@ -55,17 +66,15 @@ if (b_login) {
         if (emailEl && senhaEl) {
             const loginData = {
                 email: emailEl.value,
-                password: senhaEl.value,
-                nome: null
+                password: senhaEl.value
             };
             try {
-                const resposta = await requestBack("users/login", "POST", loginData);
+                const resposta = await requestBack("auth/login", "POST", loginData);
                 if (resposta.ok) {
                     const dadosDoUsuario = await resposta.json();
-                    const nomeReal = dadosDoUsuario.nome;
-                    const acesso = dadosDoUsuario.acesso;
-                    sessionStorage.setItem("userName", nomeReal);
-                    sessionStorage.setItem("userAccess", acesso);
+                    sessionStorage.setItem("token", dadosDoUsuario.token);
+                    sessionStorage.setItem("userName", dadosDoUsuario.name);
+                    sessionStorage.setItem("userAccess", dadosDoUsuario.access);
                     window.location.href = "index.html";
                 }
                 else if (resposta.status === 401) {
@@ -89,11 +98,15 @@ if (b_login) {
     }
 }
 if (user) {
-    usuario = sessionStorage.getItem("userName") || "Name";
-    user.innerText = sessionStorage.getItem("userName") || "Name";
+    const nomeGuardado = sessionStorage.getItem("userName");
+    const tokenGuardado = sessionStorage.getItem("token");
+    if (!tokenGuardado) {
+        window.location.href = "login.html";
+    }
+    else {
+        user.innerText = nomeGuardado || "Name";
+    }
 }
-if (user?.textContent == "Name" && window.location.pathname == "/src/main/resources/static/index.html")
-    window.location.href = "login.html";
 function pegarIniciais(nomeCompleto) {
     const conectivos = ["de", "da", "do", "dos", "das", "e"];
     return nomeCompleto
@@ -107,7 +120,6 @@ const avatarLogo = document.getElementById("avatarLogo");
 if (avatarLogo) {
     const nomeUsuario = sessionStorage.getItem("userName") || 'Usuário';
     const iniciais = pegarIniciais(nomeUsuario);
-    console.log("O nome que veio do sessionStorage é:", nomeUsuario);
     const avatarContainer = document.getElementById("avatarLogo");
     avatarContainer.textContent = iniciais;
     if (!sessionStorage.getItem("userAccess")) {
@@ -582,7 +594,6 @@ function mostrarLista() {
             const tObservacoes = document.getElementById("tObservacoes");
             if (tObservacoes) {
                 tObservacoes.value = consulta.observacao ?? "Obervação";
-                console.log("Observação carregada no campo:", tObservacoes.value);
             }
             const operadorPedido = document.getElementById("operadorPedido");
             if (operadorPedido) {
@@ -687,7 +698,6 @@ function pegarNome(elemento) {
     if (iElement) {
         filialNome = iElement.innerText;
     }
-    console.log(filialNome);
     return filialNome;
 }
 function gerarImpressaoPicking(consulta) {
