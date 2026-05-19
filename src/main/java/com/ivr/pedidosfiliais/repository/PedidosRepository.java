@@ -11,4 +11,7 @@ import com.ivr.pedidosfiliais.enums.Filiais;
 @Repository
 public interface PedidosRepository extends JpaRepository<Pedido, Long>{
     List<Pedido> findTop7ByFilialOrderByIdDesc(Filiais filial);
+
+    long countByFilial(Filiais filial);
+    List<Pedido> findByFilialOrderByDataCriacaoAsc(Filiais filial);
 }

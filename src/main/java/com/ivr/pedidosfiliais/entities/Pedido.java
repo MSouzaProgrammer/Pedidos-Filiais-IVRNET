@@ -46,7 +46,7 @@ public class Pedido {
         this.dataCriacao = LocalDateTime.now();
     }
 
-    @JoinColumn(name = "nome_usuario")
+    @Column(name = "nome_usuario")
     private String usuario;
 
     @JsonManagedReference

@@ -28,7 +28,7 @@ async function requestBack(caminho, metodo, dados) {
         opcoes.body = JSON.stringify(dados);
     }
     // 5. Faz o fetch final
-    const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
+    const resposta = await fetch("http://192.168.30.16:8080/" + caminho, opcoes);
     return resposta;
 }
 //#endregion
@@ -81,7 +81,7 @@ if (b_login) {
                     alert("Email ou senha incorretos. Tente novamente!");
                 }
                 else {
-                    alert("Erro inesperado no servidor.");
+                    alert("Email ou senha incorreto!");
                 }
             }
             catch (erro) {

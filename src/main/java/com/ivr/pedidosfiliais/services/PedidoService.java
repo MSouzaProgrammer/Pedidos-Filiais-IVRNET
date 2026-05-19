@@ -27,12 +27,34 @@ public class PedidoService {
     // #region CRUD
     public Boolean save(Pedido pedido) {
         if (pedido != null) {
+            // Vincula os produtos ao pedido para preencher a FK no banco
             if (pedido.getLProdutos() != null) {
                 for (ProdutoPedido item : pedido.getLProdutos()) {
-                    item.setPedido(pedido); // <--- É ISSO AQUI QUE PREENCHE A COLUNA NO BANCO!
+                    item.setPedido(pedido);
                 }
             }
-            pedidosRepository.save(pedido);
+
+            // 1. Salva o pedido atual
+            Pedido pedidoSalvo = pedidosRepository.save(pedido);
+
+            // 2. Conta quantos pedidos essa filial específica tem agora no banco
+            long totalPedidosFilial = pedidosRepository.countByFilial(pedidoSalvo.getFilial());
+
+            // 3. Se passou do limite de 8, deleta o mais antigo dela
+            if (totalPedidosFilial > 8) {
+                // Busca os pedidos daquela filial ordenados do mais antigo para o mais novo
+                List<Pedido> pedidosDaFilial = pedidosRepository
+                        .findByFilialOrderByDataCriacaoAsc(pedidoSalvo.getFilial());
+
+                if (!pedidosDaFilial.isEmpty()) {
+                    // O primeiro da lista [0] é o mais antigo devido à ordenação ASC
+                    Pedido maisAntigo = pedidosDaFilial.get(0);
+
+                    // Deleta o mais antigo (e o CASCADE apaga os itens dele automaticamente no
+                    // MySQL)
+                    pedidosRepository.delete(maisAntigo);
+                }
+            }
             return true;
         }
         return false;
