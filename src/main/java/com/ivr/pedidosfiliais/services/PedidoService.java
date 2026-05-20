@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ivr.pedidosfiliais.dto.request.PedidoRequest;
+import com.ivr.pedidosfiliais.dto.request.ProdutoPedidoRequest;
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
 import com.ivr.pedidosfiliais.enums.Filiais;
@@ -26,33 +28,52 @@ public class PedidoService {
     private Pedido pedido;
 
     // #region CRUD
-    public Boolean save(Pedido pedido) {
-        if (pedido != null) {
-            // Vincula os produtos ao pedido para preencher a FK no banco
-            if (pedido.getLProdutos() != null) {
-                for (ProdutoPedido item : pedido.getLProdutos()) {
-                    item.setPedido(pedido);
+    public Boolean save(PedidoRequest pedidoRequest) {
+        if (pedidoRequest != null) {
+            // 1. Instancia a Entidade de banco real
+            Pedido pedido = new Pedido();
+
+            // Transfere os dados básicos usando os métodos nativos do record
+            pedido.setFilial(pedidoRequest.filial());
+            pedido.setObservacao(pedidoRequest.observacao());
+            pedido.setUsuario(pedidoRequest.usuario()); // ou pedidoRequest.usuario(), conforme declarou no record
+
+            // Mantém a regra de negócio segura forçando o status como PENDENTE
+            pedido.setStatus(Status.PENDENTE);
+
+            // Inicializa a lista de produtos para evitar NullPointerException
+            pedido.setLProdutos(new ArrayList<>());
+
+            // CORREÇÃO CRUCIAL: Percorre a lista do DTO e converte para Entidades de Banco
+            if (pedidoRequest.lProdutos() != null) { // Altere para .lProduto() se manteve esse nome no record
+                for (ProdutoPedidoRequest itemDTO : pedidoRequest.lProdutos()) {
+
+                    // Cria o objeto real que o banco de dados entende
+                    ProdutoPedido itemBanco = new ProdutoPedido();
+                    itemBanco.setIdProduto(itemDTO.idProduto());
+                    itemBanco.setPedido(pedido);
+                    itemBanco.setName(itemDTO.name());
+                    itemBanco.setUndMedida(itemDTO.undMedida());
+                    itemBanco.setQuant(itemDTO.quant());
+
+                    // Adiciona o item já preenchido à lista do pedido
+                    pedido.addProduto(itemBanco);
                 }
             }
 
-            pedido.setStatus(Status.PENDENTE);
+            // Grava o pedido e os produtos no banco de dados
             Pedido pedidoSalvo = pedidosRepository.save(pedido);
 
-            // 2. Conta quantos pedidos essa filial específica tem agora no banco
+            // 2. Sua lógica perfeita de contagem por filial
             long totalPedidosFilial = pedidosRepository.countByFilial(pedidoSalvo.getFilial());
 
             // 3. Se passou do limite de 8, deleta o mais antigo dela
             if (totalPedidosFilial > 8) {
-                // Busca os pedidos daquela filial ordenados do mais antigo para o mais novo
                 List<Pedido> pedidosDaFilial = pedidosRepository
                         .findByFilialOrderByDataCriacaoAsc(pedidoSalvo.getFilial());
 
                 if (!pedidosDaFilial.isEmpty()) {
-                    // O primeiro da lista [0] é o mais antigo devido à ordenação ASC
                     Pedido maisAntigo = pedidosDaFilial.get(0);
-
-                    // Deleta o mais antigo (e o CASCADE apaga os itens dele automaticamente no
-                    // MySQL)
                     pedidosRepository.delete(maisAntigo);
                 }
             }
@@ -105,8 +126,6 @@ public class PedidoService {
             return false;
         }
 
-        // REMOVA a busca no banco aqui.
-        // Use a lista que veio no parâmetro da função!
         List<ProdutoPedido> listaVindaDoFront = nPedido.getLProdutos();
 
         return pedidosRepository.findById(nPedido.getId()).map(pedidoExistente -> {

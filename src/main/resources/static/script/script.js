@@ -283,7 +283,6 @@ if (btnNovoProduto) {
                 unidade: unitP ? unitP.value : "",
                 quantidade: 0
             };
-            // Quando for ligar o backend novamente, descomente aqui:
             try {
                 const resposta = await requestBack("produto", "POST", {
                     idProduto: produto.idProduto,
@@ -437,7 +436,6 @@ if (btnFinalizar) {
                 };
             });
             const dadosPedido = {
-                status: "PENDENTE",
                 filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
                 lProdutos: listaProdutos,
                 usuario: nomeUsuario
@@ -466,6 +464,7 @@ async function produtosLista(numero) {
         const resposta = (await requestBack("pedido/" + numero, "GET", null));
         if (resposta && resposta.ok) {
             const dadosPedidos = await resposta.json();
+            console.log(dadosPedidos);
             dadosPedidos.forEach((element) => {
                 const idPedido = element.id;
                 const usuarioPedido = element.usuario;
@@ -648,7 +647,6 @@ function editarItem(idDoBanco) {
                     unidade: unitP ? unitP.value : "",
                     quantidade: 0
                 };
-                // Quando for ligar o backend novamente, descomente aqui:
                 try {
                     const resposta = await requestBack("produto/update", "PUT", {
                         id: idDoBanco,

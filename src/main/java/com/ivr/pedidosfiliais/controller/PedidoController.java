@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ivr.pedidosfiliais.dto.request.PedidoRequest;
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.services.PedidoService;
 
@@ -27,7 +28,7 @@ public class PedidoController {
     private PedidoService pedidoService;
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody Pedido pedido){
+    public ResponseEntity<String> save(@RequestBody PedidoRequest pedido){
         Boolean saved = pedidoService.save(pedido);
         if(saved){
             return ResponseEntity.status(HttpStatus.CREATED).build();

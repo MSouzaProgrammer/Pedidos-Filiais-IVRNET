@@ -540,6 +540,7 @@ async function produtosLista(numero: Number) {
     const resposta = (await requestBack("pedido/" + numero, "GET", null));
     if (resposta && resposta.ok) {
       const dadosPedidos = await resposta.json();
+      console.log(dadosPedidos);
       dadosPedidos.forEach((element: any) => {
         const idPedido = element.id;
         const usuarioPedido = element.usuario;
