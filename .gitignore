@@ -34,3 +34,10 @@ build/
 
 # Ignorar metadados automáticos da IDE
 src/main/resources/META-INF/additional-spring-configuration-metadata.json
+
+##########################################
+### CONFIGURAÇÕES PARA O FRONTEND (Cole isso aqui) ###
+##########################################
+node_modules/
+.env
+dist/
