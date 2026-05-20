@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignorar metadados automáticos da IDE
+src/main/resources/META-INF/additional-spring-configuration-metadata.json

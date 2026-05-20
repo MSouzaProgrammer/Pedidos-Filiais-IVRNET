@@ -38,7 +38,7 @@
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
-    font-family: 'Inter', sans-serif;
+    font-family: Arial, sans-serif, 'Inter', sans-serif;
 }
 
 body {
@@ -473,7 +473,9 @@ body {
 
 .statusPedidoTela {
     width: 78%;
-    padding: 4px 0px 5px 7px;
+    justify-content: center;
+    text-align: center;
+    padding: 4px 0px 5px 0px;
 }
 
 /* Modais e Detalhes do Pedido */

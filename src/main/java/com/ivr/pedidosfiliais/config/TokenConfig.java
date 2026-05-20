@@ -3,6 +3,7 @@ package com.ivr.pedidosfiliais.config;
 import java.time.Instant;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -14,7 +15,9 @@ import com.ivr.pedidosfiliais.entities.User;
 
 @Component
 public class TokenConfig {
-    private String secret = "azulejo";
+    
+    @Value("${api.security.token.secret}")
+    private String secret;
 
     public String generateToken(User user) {
         Algorithm algorithm = Algorithm.HMAC256(secret);

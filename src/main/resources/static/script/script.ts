@@ -34,7 +34,7 @@ async function requestBack(caminho: string, metodo: string, dados: unknown): Pro
   }
 
   // 5. Faz o fetch final
-  const resposta = await fetch("http://192.168.30.16:8080/" + caminho, opcoes);
+  const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
   return resposta;
 }
 
