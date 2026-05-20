@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
 import com.ivr.pedidosfiliais.enums.Filiais;
+import com.ivr.pedidosfiliais.enums.Status;
 import com.ivr.pedidosfiliais.repository.PedidosRepository;
 import com.ivr.pedidosfiliais.repository.ProdutoPedidoRepository;
 
@@ -34,7 +35,7 @@ public class PedidoService {
                 }
             }
 
-            // 1. Salva o pedido atual
+            pedido.setStatus(Status.PENDENTE);
             Pedido pedidoSalvo = pedidosRepository.save(pedido);
 
             // 2. Conta quantos pedidos essa filial específica tem agora no banco

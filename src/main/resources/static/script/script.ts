@@ -336,7 +336,6 @@ if (btnNovoProduto) {
         quantidade: 0
       };
 
-      // Quando for ligar o backend novamente, descomente aqui:
       try {
         const resposta = await requestBack("produto", "POST", {
           idProduto: produto.idProduto,
@@ -508,7 +507,6 @@ if (btnFinalizar) {
       })
 
       const dadosPedido = {
-        status: "PENDENTE",
         filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
         lProdutos: listaProdutos,
         usuario: nomeUsuario
@@ -741,7 +739,6 @@ function editarItem(idDoBanco: Number) {
           quantidade: 0
         };
 
-        // Quando for ligar o backend novamente, descomente aqui:
         try {
           const resposta = await requestBack("produto/update", "PUT", {
             id: idDoBanco,

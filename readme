@@ -1,0 +1,36 @@
+# 📦 Pedidos-Filiais-IVRNET
+
+Sistema completo para o gerenciamento, controle e centralização de pedidos entre filiais. O projeto foi estruturado utilizando um ecossistema moderno e profissional, contando com um backend robusto em camadas e uma interface de usuário interativa e tipada.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+### Backend
+* **Java 21:** Versão estável mais recente de suporte a longo prazo (LTS), trazendo as últimas melhorias de performance e sintaxe.
+* **Spring Boot 4.0.6:** Framework base para a construção da API RESTful de alta escalabilidade.
+* **Spring Security & Auth0 JWT:** Camada de segurança corporativa para autenticação e autorização baseada em tokens protegidos.
+* **Spring Data JPA:** Abstração de persistência de dados e mapeamento objeto-relacional (ORM).
+* **Flyway Migration:** Ferramenta para controle de versão e evolução histórica do banco de dados de forma automatizada.
+* **Lombok & Validation:** Redução de código boilerplate (repetitivo) e validação nativa de contratos da API (Beans Validation).
+* **H2 Console / MySQL Connector:** Suporte a banco de dados em memória para testes ágeis e MySQL para persistência persistente.
+
+### Frontend
+* **HTML5 & CSS3:** Estruturação semântica e estilização customizada dos componentes visuais.
+* **TypeScript (v6.0.3):** Adição de tipagem estática e prevenção de bugs em tempo de desenvolvimento na camada de cliente.
+
+---
+
+## 🏗️ Estrutura Arquitetural do Projeto
+
+O backend segue o padrão de desenvolvimento de mercado baseado em **Arquitetura em Camadas (MVC)**, garantindo uma excelente separação de responsabilidades:
+
+```text
+src/main/java/com/ivr/pedidosfiliais/
+├── config/       # Configurações de segurança (SecurityConfig, SecurityFilter, TokenConfig)
+├── controller/   # Controladores REST que expõem os endpoints da API (Auth, Pedido, Produto)
+├── dto/          # Objetos de Transferência de Dados (Requests e Responses de login/cadastro)
+├── entities/     # Modelos de dados mapeados para o banco (User, Pedido, Produto, ProdutoPedido)
+├── enums/        # Tipos enumerados de controle interno (Access, Filiais, Status)
+├── repository/   # Interfaces de comunicação direta e queries com o banco de dados
+└── services/     # Camada de regras de negócio lógicas e fluxos de dados principais

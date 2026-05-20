@@ -25,20 +25,4 @@ public class Produto {
 
     private String name;
     private String undMedida;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUndMedida() {
-        return undMedida;
-    }
-
-    public void setUndMedida(String undMedida) {
-        this.undMedida = undMedida;
-    }
 }

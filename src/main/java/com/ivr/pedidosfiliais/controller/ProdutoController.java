@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ivr.pedidosfiliais.dto.request.ProdutoRequest;
 import com.ivr.pedidosfiliais.entities.Produto;
 import com.ivr.pedidosfiliais.services.ProdutoService;
 
@@ -27,9 +28,8 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody Produto produto){
-        System.out.println("NOME RECEBIDO: " + produto.getName() + ", " + produto.getIdProduto());
-        Boolean saved = produtoService.save(produto);
+    public ResponseEntity<String> save(@RequestBody ProdutoRequest produtoRequest){
+        Boolean saved = produtoService.save(produtoRequest);
         if(saved){
             return ResponseEntity.ok("Registrado");
         }
@@ -51,7 +51,7 @@ public class ProdutoController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody Produto produto){
+    public ResponseEntity<String> update(@RequestBody ProdutoRequest produto){
         Boolean nProduto = produtoService.update(produto);
         if(nProduto){
             return ResponseEntity.ok("Produto Atualizado!");

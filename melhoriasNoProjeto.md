@@ -3,17 +3,17 @@
 URGENTE
 ├──[x] Remover /node_modules do GitHub 
 ├──[x] Criar .gitignore correto
-├──[] Melhorar README
-├──[] Criar .env
+├──[x] Melhorar README
+├──[x] Criar .env
 ├──[x] Proteger senhas com BCrypt
-└──[] Melhorar organização do frontend
+└──[x] Melhorar organização do frontend
 
 BACKEND
 ├──[] Criar DTOs
 ├──[x] Adicionar validações
 ├──[x] Melhorar tratamento de erros
 ├──[x] Implementar @ControllerAdvice
-├──[x] Melhorar CORS
+├──[] Melhorar CORS
 ├──[] Evitar retornar entidades diretamente
 ├──[x] Melhorar estrutura de services
 ├──[] Adicionar logs

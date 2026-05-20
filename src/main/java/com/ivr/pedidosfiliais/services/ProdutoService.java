@@ -1,11 +1,11 @@
 package com.ivr.pedidosfiliais.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ivr.pedidosfiliais.dto.request.ProdutoRequest;
 import com.ivr.pedidosfiliais.entities.Produto;
 import com.ivr.pedidosfiliais.repository.ProdutoRepository;
 
@@ -16,29 +16,32 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     // #region CRUD
-    public Boolean save(Produto produto) {
-        if (produto != null) {
+    public Boolean save(ProdutoRequest produtorRequest) {
+        if (produtorRequest != null) {
+            Produto produto = new Produto();
+            produto.setIdProduto(produtorRequest.idProduto());
+            produto.setName(produtorRequest.name());
+            produto.setUndMedida(produtorRequest.undMedida());
             produtoRepository.save(produto);
             return true;
         }
         return false;
     }
 
-    public Boolean update(Produto produto) {
-        if (produto == null || produto.getId() == null) {
+    public Boolean update(ProdutoRequest produtorRequest) {
+        if (produtorRequest == null || produtorRequest.id() == null) {
             return false;
         }
-        Optional<Produto> prodOptional = produtoRepository.findById(produto.getId());
-        if (prodOptional.isPresent()) {
-            Produto produtoE = prodOptional.get();
-            produtoE.setIdProduto(produto.getIdProduto());
-            produtoE.setName(produto.getName());
-            produtoE.setUndMedida(produto.getUndMedida());
 
-            produtoRepository.save(produtoE);
+        return produtoRepository.findById(produtorRequest.id()).map(prodAntigo ->{
+            prodAntigo.setIdProduto(produtorRequest.idProduto());
+            prodAntigo.setName(produtorRequest.name());
+            prodAntigo.setUndMedida(produtorRequest.undMedida());
+
+            produtoRepository.save(prodAntigo);
             return true;
-        }
-        return false;
+        }).orElse(false);
+        
     }
 
     public Boolean delete(long id) {
