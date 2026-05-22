@@ -32,7 +32,9 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Status status;
+    @Column(nullable = false)
     private Filiais filial;
 
     @Column(updatable = false)
@@ -46,8 +48,8 @@ public class Pedido {
     }
 
     
-
-    @Column(name = "nome_usuario")
+    
+    @Column(name = "nome_usuario", nullable = false)
     private String usuario;
 
     @JsonManagedReference

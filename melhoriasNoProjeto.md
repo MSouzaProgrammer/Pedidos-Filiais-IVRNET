@@ -9,22 +9,22 @@ URGENTE
 └──[x] Melhorar organização do frontend
 
 BACKEND
-├──[] Criar DTOs
+├──[x] Criar DTOs
 ├──[x] Adicionar validações
 ├──[x] Melhorar tratamento de erros
 ├──[x] Implementar @ControllerAdvice
-├──[] Melhorar CORS
-├──[] Evitar retornar entidades diretamente
+├──[Depois] Melhorar CORS
+├──[x] Evitar retornar entidades diretamente
 ├──[x] Melhorar estrutura de services
-├──[] Adicionar logs
-└──[] Padronizar respostas da API
+├──[x] Adicionar logs
+└──[x] Padronizar respostas da API
 
 FRONTEND
 ├──[] Dividir script.ts
 ├──[] Separar API/services
 ├──[] Criar componentes
 ├──[x] Melhorar responsividade
-├──[] Adicionar loading/spinner
+├──[x] Adicionar loading/spinner
 ├──[] Melhorar feedback visual
 ├──[x] Melhorar tabelas
 ├──[] Adicionar paginação

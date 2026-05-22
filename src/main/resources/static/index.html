@@ -30,8 +30,9 @@
         <header class="header">
             <h1 id="page-title" style="font-size: 20px;">Dashboard</h1>
             <div style="display:flex; gap:15px; align-items:center">
-                
-                <div id="avatarLogo" style="width:32px; height:32px; border-radius:50%; background:#475569; color:white; display:flex; align-items:center; justify-content:center; font-size:12px">
+
+                <div id="avatarLogo"
+                    style="width:32px; height:32px; border-radius:50%; background:#475569; color:white; display:flex; align-items:center; justify-content:center; font-size:12px">
                     MS</div>
             </div>
         </header>
@@ -47,10 +48,12 @@
                         <div class="menuEsquerda">
                             <h2>Filiais</h2>
                             <div>
-                                <a onclick="produtosLista(1); pegarNome(this)" class="navFiliais"><i>Bonito | Bodoquena</i></a>
+                                <a onclick="produtosLista(1); pegarNome(this)" class="navFiliais"><i>Bonito |
+                                        Bodoquena</i></a>
                                 <a onclick="produtosLista(2); pegarNome(this)" class="navFiliais"><i>Aquidauana</i></a>
                                 <a onclick="produtosLista(3); pegarNome(this)" class="navFiliais"><i>Dois irmaos</i></a>
-                                <a onclick="produtosLista(4); pegarNome(this)" class="navFiliais"><i>Jardim | Nioaque</i></a>
+                                <a onclick="produtosLista(4); pegarNome(this)" class="navFiliais"><i>Jardim |
+                                        Nioaque</i></a>
                                 <div class="imgDasboard">
                                     <img src="img/logoIVRNET.png" alt="LogoDashboard" class="logoBaixo">
                                 </div>
@@ -130,7 +133,8 @@
                                 placeholder="Pesquisar catálogo..." style="padding-left:40px"
                                 oninput="filterProducts()">
                         </div>
-                        <button id="btnAddProduto" class="btn-primary" onclick="openModal()"><i data-lucide="plus"></i> Novo
+                        <button id="btnAddProduto" class="btn-primary" onclick="openModal()"><i data-lucide="plus"></i>
+                            Novo
                             Produto</button>
                     </div>
                     <button style="margin-bottom: 20px;" class="btn-primary" id="atualizar">Atualizar</button>
@@ -148,7 +152,8 @@
     </div>
 
     <div id="modal-produto" class="modal-overlay-pro">
-        <div class="card" style="width:100%; max-width:450px; height: 50%; max-height: 390px; position: fixed; left: 40%; top: 20%;">
+        <div class="card"
+            style="width:100%; max-width:450px; height: 50%; max-height: 390px; position: fixed; left: 40%; top: 20%;">
             <h2 class="card-title">Novo Produto</h2>
             <div class="form-group"><label>Nome</label><input type="text" id="new-prod-name" class="form-control"></div>
             <div class="form-group"><label>ID PRODUTO</label><input type="text" id="new-prod-id" class="form-control">
@@ -172,9 +177,11 @@
     </div>
 
     <div id="modal-produto-edit" class="modal-overlay-pro">
-        <div class="card" style="width:100%; max-width:450px; height: 50%; max-height: 390px; position: fixed; left: 40%; top: 20%;">
+        <div class="card"
+            style="width:100%; max-width:450px; height: 50%; max-height: 390px; position: fixed; left: 40%; top: 20%;">
             <h2 class="card-title">Novo Produto</h2>
-            <div class="form-group"><label>Nome</label><input type="text" id="edit-prod-name" class="form-control"></div>
+            <div class="form-group"><label>Nome</label><input type="text" id="edit-prod-name" class="form-control">
+            </div>
             <div class="form-group"><label>ID PRODUTO</label><input type="text" id="edit-prod-id" class="form-control">
             </div>
             <div class="form-group">
@@ -213,7 +220,8 @@
                         <option>SEPARADO</option>
                         <option>ENVIADO</option>
                     </select>
-                    <button class="btn-outline-pro" onclick="gerarImpressaoPicking(consulta)"><i data-lucide="printer" style="width:25px;"></i> Imprimir
+                    <button class="btn-outline-pro" onclick="gerarImpressaoPicking(consulta)"><i data-lucide="printer"
+                            style="width:25px;"></i> Imprimir
                         Pedido</button>
                     <button class="btn-close-pro" onclick="fecharAba()"><i data-lucide="x"></i></button>
                 </div>
@@ -222,9 +230,9 @@
             <div class="modal-body-pro">
 
                 <div class="table-container-pro" id="table-container-pro">
-                
+
                 </div>
-                
+
                 <div class="sidebar-panels-pro">
 
                     <div class="panel-card-pro">
@@ -235,7 +243,8 @@
                         <label
                             style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Observações</label>
                         <textarea class="form-control" rows="3"
-                            style="resize: none; border-color: var(--border-color); background-color: var(--bg-body);" id="tObservacoes">Observações</textarea>
+                            style="resize: none; border-color: var(--border-color); background-color: var(--bg-body);"
+                            id="tObservacoes">Observações</textarea>
                     </div>
 
                     <div class="panel-card-pro">
@@ -255,14 +264,21 @@
 
             <div class="modal-footer-pro">
                 <button class="btn-footer-cancel" onclick="fecharAba()">Cancelar / Fechar</button>
-                <button id="btnFooterSave" class="btn-footer-save" onclick="salvarAlteracao(); fecharAba();">Salvar Alterações e Finalizar Pedido <i data-lucide="check"
-                        style="width:18px;"></i></button>
+                <button id="btnFooterSave" class="btn-footer-save" onclick="salvarAlteracao(); fecharAba();">Salvar
+                    Alterações e Finalizar Pedido <i data-lucide="check" style="width:18px;"></i></button>
             </div>
         </section>
     </div>
 
     <script src="script/script.js"></script>
     <iframe id="iframeImpressao" style="display:none;"></iframe>
+
+    <div id="loading-global" class="loading-overlay">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <span>Carregando dados...</span>
+        </div>
+    </div>
 </body>
 
 </html>

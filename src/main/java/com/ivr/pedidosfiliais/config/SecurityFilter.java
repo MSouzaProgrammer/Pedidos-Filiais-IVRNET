@@ -41,6 +41,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         }
     }
 
+    @SuppressWarnings("unused")
     private UsernamePasswordAuthenticationToken UsernamePasswordAuthenticationToken(JWTUserData userData, Object object,
             Object object2) {
         throw new UnsupportedOperationException("Unimplemented method 'UsernamePasswordAuthenticationToken'");

@@ -7,6 +7,7 @@ let filial;
 let usuario;
 //FUNÇÃO PARA BUSCAR COISAS DO BACK
 async function requestBack(caminho, metodo, dados) {
+    ligarLoading();
     // 1. Cria a base das opções da requisição
     const opcoes = {
         method: metodo,
@@ -29,6 +30,7 @@ async function requestBack(caminho, metodo, dados) {
     }
     // 5. Faz o fetch final
     const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
+    desligarLoading();
     return resposta;
 }
 //#endregion
@@ -190,7 +192,7 @@ function closeModal() {
 async function carregarProdutos() {
     try {
         const resposta = await requestBack("produto", "GET", null);
-        if (resposta.ok) {
+        if (resposta.status === 302) {
             const dadosBack = await resposta.json();
             // Atualiza a variável (lembre-se que tem que ser "let estoque" lá no topo)
             estoque = dadosBack.map((itemDoJava) => {
@@ -289,6 +291,7 @@ if (btnNovoProduto) {
                     name: produto.nome,
                     undMedida: produto.unidade
                 });
+                console.log(resposta);
             }
             catch (err) {
                 console.error("Erro ao enviar produto para o backend:", err);
@@ -462,7 +465,7 @@ async function produtosLista(numero) {
     sectionPedidos.innerHTML = '';
     try {
         const resposta = (await requestBack("pedido/" + numero, "GET", null));
-        if (resposta && resposta.ok) {
+        if (resposta && resposta.status === 302) {
             const dadosPedidos = await resposta.json();
             console.log(dadosPedidos);
             dadosPedidos.forEach((element) => {
@@ -525,7 +528,7 @@ let consulta = null;
 async function consultarLista(id) {
     try {
         const resposta = await requestBack("pedido/pedidoId/" + id, "GET", null);
-        if (resposta && resposta.ok) {
+        if (resposta && resposta.status === 302) {
             const dadosPedido = await resposta.json();
             // AQUI ESTÁ O SEGREDO: Salva na global para outras funções usarem
             consulta = dadosPedido;
@@ -814,5 +817,20 @@ function gerarImpressaoPicking(consulta) {
         iframe.contentWindow?.focus();
         iframe.contentWindow?.print();
     }, 300);
+}
+function ligarLoading(mensagem = "Carregando dados...") {
+    const overlay = document.getElementById("loading-global");
+    if (overlay) {
+        const texto = overlay.querySelector("span");
+        if (texto)
+            texto.textContent = mensagem; // Permite mudar a mensagem (ex: "Salvando pedido...")
+        overlay.classList.add("ativo");
+    }
+}
+function desligarLoading() {
+    const overlay = document.getElementById("loading-global");
+    if (overlay) {
+        overlay.classList.remove("ativo");
+    }
 }
 //#endregion
