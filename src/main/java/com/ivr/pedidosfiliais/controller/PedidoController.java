@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ivr.pedidosfiliais.dto.request.PedidoRequest;
+import com.ivr.pedidosfiliais.dto.response.PedidoResponse;
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.services.PedidoService;
 
@@ -37,12 +38,12 @@ public class PedidoController {
     }
 
     @GetMapping("/{filial}")
-    public List<Pedido> findByIdFilial(@PathVariable Long filial){
+    public List<PedidoResponse> findByIdFilial(@PathVariable Long filial){
         return pedidoService.findByIdFilial(filial);
     }
 
     @GetMapping("/pedidoId/{id}")
-    public Optional<Pedido> findByIdProdutos(@PathVariable Long id){
+    public Optional<PedidoResponse> findByIdProdutos(@PathVariable Long id){
         return pedidoService.findByIdProdutos(id);
     }
 

@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ivr.pedidosfiliais.dto.request.PedidoRequest;
 import com.ivr.pedidosfiliais.dto.request.ProdutoPedidoRequest;
+import com.ivr.pedidosfiliais.dto.response.PedidoResponse;
+import com.ivr.pedidosfiliais.dto.response.ProdutoPedidoResponse;
 import com.ivr.pedidosfiliais.entities.Pedido;
 import com.ivr.pedidosfiliais.entities.ProdutoPedido;
 import com.ivr.pedidosfiliais.enums.Filiais;
@@ -98,26 +100,64 @@ public class PedidoService {
         return false;
     }
 
-    public List<Pedido> findByIdFilial(Long filial) {
+    public List<PedidoResponse> findByIdFilial(Long filial) {
         try {
+
             // Converte o ID para o Enum de forma mais segura
             Filiais filialEnum = Filiais.values()[filial.intValue()];
-            return pedidosRepository.findTop7ByFilialOrderByIdDesc(filialEnum);
+            List<Pedido> listaPedidos = pedidosRepository.findTop7ByFilialOrderByIdDesc(filialEnum);
+            List<PedidoResponse> pedidoResponseList = new ArrayList<>();
+
+            for (Pedido pedido : listaPedidos) {
+                List<ProdutoPedidoResponse> listaProdutos = new ArrayList<>();
+                if (pedido.getLProdutos() != null) {
+                    
+                    for (ProdutoPedido item : pedido.getLProdutos()) {
+                        ProdutoPedidoResponse pResponse = new ProdutoPedidoResponse(item.getId(), item.getIdProduto(),
+                                item.getPedido(), item.getName(), item.getUndMedida(), item.getQuant(),
+                                item.getQuantEnviada());
+                        listaProdutos.add(pResponse);
+                    }
+                }
+
+                PedidoResponse pedidoResponse = new PedidoResponse(pedido.getId(), pedido.getStatus(), filialEnum,
+                pedido.getObservacao(), pedido.getUsuario(), listaProdutos, pedido.getDataCriacao());
+                pedidoResponseList.add(pedidoResponse);
+            }
+            return pedidoResponseList;
         } catch (ArrayIndexOutOfBoundsException e) {
             return new ArrayList<>(); // Retorna lista vazia se o ID da filial não existir no Enum
         }
     }
 
-    public List<ProdutoPedido> findByIdPedido(Long id) {
+    public List<ProdutoPedidoResponse> findByIdProdutoPedido(Long id) {
         try {
-            return produtoPedidoRepository.findByPedidoId(id);
+            List<ProdutoPedido> listaProdutoPedidos = produtoPedidoRepository.findByPedidoId(id);
+            List<ProdutoPedidoResponse> lPedidoResponses = new ArrayList<>();
+
+            for(ProdutoPedido produtoPedido : listaProdutoPedidos){
+                ProdutoPedidoResponse produtoPedidoResponse = new ProdutoPedidoResponse(produtoPedido.getId(), produtoPedido.getIdProduto(), produtoPedido.getPedido(), produtoPedido.getName(), produtoPedido.getUndMedida(), produtoPedido.getQuant(), produtoPedido.getQuantEnviada());
+                lPedidoResponses.add(produtoPedidoResponse);
+            }
+            return lPedidoResponses;
         } catch (ArrayIndexOutOfBoundsException e) {
             return new ArrayList<>();
         }
     }
 
-    public Optional<Pedido> findByIdProdutos(Long pedido) {
-        return pedidosRepository.findById(pedido);
+    public Optional<PedidoResponse> findByIdProdutos(Long pedido) {
+        Optional<Pedido> ped = pedidosRepository.findById(pedido);
+        if(ped.isPresent()){
+            List<ProdutoPedidoResponse> lPedidoResponses = new ArrayList<>();
+            Pedido realPedido = ped.get();
+            for(ProdutoPedido produtoPedido : realPedido.getLProdutos()){
+                ProdutoPedidoResponse produtoPedidoResponse = new ProdutoPedidoResponse(produtoPedido.getId(), produtoPedido.getIdProduto(), produtoPedido.getPedido(), produtoPedido.getName(), produtoPedido.getUndMedida(), produtoPedido.getQuant(), produtoPedido.getQuantEnviada());
+                lPedidoResponses.add(produtoPedidoResponse);
+            }
+            PedidoResponse pedidoResponse = new PedidoResponse(realPedido.getId(), realPedido.getStatus(), realPedido.getFilial(), realPedido.getObservacao(), realPedido.getUsuario(), lPedidoResponses, realPedido.getDataCriacao());
+            return Optional.ofNullable(pedidoResponse);
+        }
+        return Optional.empty();
     }
 
     @Transactional

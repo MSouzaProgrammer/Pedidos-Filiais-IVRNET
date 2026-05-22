@@ -36,7 +36,7 @@ build/
 src/main/resources/META-INF/additional-spring-configuration-metadata.json
 
 ##########################################
-### CONFIGURAÇÕES PARA O FRONTEND (Cole isso aqui) ###
+### CONFIGURAÇÕES PARA O FRONTEND ###
 ##########################################
 node_modules/
 .env

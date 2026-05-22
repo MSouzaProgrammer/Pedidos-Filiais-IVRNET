@@ -34,8 +34,8 @@ SEGURANÇA
 ├──[x] Implementar JWT
 ├──[x] Implementar autenticação real
 ├──[x] Criar permissões/roles
-├──[] Ocultar informações sensíveis
-└──[] Validar entradas corretamente
+├──[x] Ocultar informações sensíveis
+└──[x] Validar entradas corretamente
 
 BANCO DE DADOS
 ├──[x] Melhorar modelagem

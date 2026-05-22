@@ -45,6 +45,8 @@ public class Pedido {
         this.dataCriacao = LocalDateTime.now();
     }
 
+    
+
     @Column(name = "nome_usuario")
     private String usuario;
 

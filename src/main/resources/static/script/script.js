@@ -469,12 +469,11 @@ async function produtosLista(numero) {
                 const idPedido = element.id;
                 const usuarioPedido = element.usuario;
                 const statusPedido = element.status;
-                const dataFormatada = new Date(element.dataCriacao).toLocaleString('pt-BR', {
+                console.log(element);
+                const dataFormatada = new Date(element.data).toLocaleString('pt-BR', {
                     day: '2-digit',
                     month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
+                    year: 'numeric'
                 });
                 let bordaStatus = "";
                 let fundoStatus = "";
