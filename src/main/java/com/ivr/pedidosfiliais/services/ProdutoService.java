@@ -62,5 +62,9 @@ public class ProdutoService {
     public List<Produto> findAll() {
         return produtoRepository.findAll();
     }
+
+    public Boolean existeProduto(Long id){
+        return produtoRepository.existsByIdProduto(id);
+    }
     // #endregion
 }

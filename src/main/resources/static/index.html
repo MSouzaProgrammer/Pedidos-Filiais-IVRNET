@@ -22,8 +22,7 @@
                     data-lucide="shopping-cart"></i> Novo Pedido</a>
             <a class="nav-link" id="nav-produtos" onclick="showPage('produtos')"><i data-lucide="box"></i> Produtos</a>
         </nav>
-        <h1 id="user">
-            </h2>
+        <h1 id="user"></h1>
     </aside>
 
     <div class="main-wrapper">
@@ -264,13 +263,11 @@
 
             <div class="modal-footer-pro">
                 <button class="btn-footer-cancel" onclick="fecharAba()">Cancelar / Fechar</button>
-                <button id="btnFooterSave" class="btn-footer-save" onclick="salvarAlteracao(); fecharAba();">Salvar
+                <button id="btnFooterSave" class="btn-footer-save" onclick="salvarAlteracao();">Salvar
                     Alterações e Finalizar Pedido <i data-lucide="check" style="width:18px;"></i></button>
             </div>
         </section>
     </div>
-
-    <script src="script/script.js"></script>
     <iframe id="iframeImpressao" style="display:none;"></iframe>
 
     <div id="loading-global" class="loading-overlay">
@@ -279,6 +276,7 @@
             <span>Carregando dados...</span>
         </div>
     </div>
+    <script type="module" src="script/script.js"></script>
 </body>
 
 </html>

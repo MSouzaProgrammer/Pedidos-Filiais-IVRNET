@@ -13,19 +13,19 @@ BACKEND
 ├──[x] Adicionar validações
 ├──[x] Melhorar tratamento de erros
 ├──[x] Implementar @ControllerAdvice
-├──[Depois] Melhorar CORS
+├──[x] Melhorar CORS
 ├──[x] Evitar retornar entidades diretamente
 ├──[x] Melhorar estrutura de services
 ├──[x] Adicionar logs
 └──[x] Padronizar respostas da API
 
 FRONTEND
-├──[] Dividir script.ts
-├──[] Separar API/services
+├──[x] Dividir script.ts
+├──[x] Separar API/services
 ├──[] Criar componentes
 ├──[x] Melhorar responsividade
 ├──[x] Adicionar loading/spinner
-├──[] Melhorar feedback visual
+├──[x] Melhorar feedback visual
 ├──[x] Melhorar tabelas
 ├──[] Adicionar paginação
 └──[] Melhorar UX/UI

@@ -32,33 +32,49 @@ public class ProdutoController {
     @Autowired
     private ProdutoService produtoService;
 
+    @GetMapping("/idP/{id}")
+    public ResponseEntity<?> verificarIdProduto(@PathVariable Long id) {
+        boolean existe = produtoService.existeProduto(id);
+
+        if (existe) {
+            // Se já existe, você avisa o TypeScript (pode retornar um JSON ou só o status)
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Este ID de produto já está cadastrado.");
+        }
+
+        // Se não existe, retorna 204 No Content (indica sucesso, mas sem corpo) ou 200
+        // OK
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody ProdutoRequest produtoRequest){
+    public ResponseEntity<String> save(@RequestBody ProdutoRequest produtoRequest) {
         log.info("Requisição POST recebida em /produto para cadastrar o produto: '{}'", produtoRequest.name());
 
         Boolean saved = produtoService.save(produtoRequest);
-        if(saved){
+        if (saved) {
             log.info("Produto '{}' registrado com sucesso no banco de dados.", produtoRequest.name());
             return ResponseEntity.ok("Registrado");
         }
-        
+
         log.warn("Falha ao registrar produto: Dados inválidos enviados no payload.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Produto Invalido");
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll(){
+    public ResponseEntity<?> findAll() {
         log.info("Requisição GET recebida em /produto para listar todos os produtos.");
 
         List<ProdutoResponse> lProdutoResponses = new ArrayList<>();
         List<Produto> produtos = produtoService.findAll();
-        
-        for(Produto produto : produtos){
-            ProdutoResponse pResponse = new ProdutoResponse(produto.getId(), produto.getIdProduto(), produto.getName(), produto.getUndMedida());
+
+        for (Produto produto : produtos) {
+            ProdutoResponse pResponse = new ProdutoResponse(produto.getId(), produto.getIdProduto(), produto.getName(),
+                    produto.getUndMedida());
             lProdutoResponses.add(pResponse);
         }
-        
-        if(!lProdutoResponses.isEmpty()){
+
+        if (!lProdutoResponses.isEmpty()) {
             log.info("Listagem concluída. Total de produtos retornados: {}.", lProdutoResponses.size());
             return ResponseEntity.status(HttpStatus.FOUND).body(lProdutoResponses);
         }
@@ -67,25 +83,25 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id){
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
         log.info("Requisição DELETE recebida em /produto/{} para remover produto.", id);
 
         Boolean deleted = produtoService.delete(id);
-        if(deleted){
+        if (deleted) {
             log.info("Produto ID: {} deletado com sucesso do sistema.", id);
             return ResponseEntity.ok("Deleted");
         }
-        
+
         log.warn("Falha ao deletar: Produto ID: {} não existe para exclusão.", id);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado!");
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody ProdutoRequest produto){
+    public ResponseEntity<String> update(@RequestBody ProdutoRequest produto) {
         log.info("Requisição PUT recebida em /produto/update para atualizar dados do produto ID: {}.", produto.id());
 
         Boolean nProduto = produtoService.update(produto);
-        if(nProduto){
+        if (nProduto) {
             log.info("Produto ID: {} alterado e salvo com sucesso.", produto.id());
             return ResponseEntity.ok("Produto Atualizado!");
         }

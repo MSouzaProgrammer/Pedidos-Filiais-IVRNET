@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.ivr.pedidosfiliais.entities.Produto;
 
 
+
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
-    Produto findByIdProduto(Long idProduto);
+    boolean existsByIdProduto(Long idProduto);
 }
