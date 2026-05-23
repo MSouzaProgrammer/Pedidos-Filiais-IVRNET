@@ -42,14 +42,3 @@ if(user){
   else user.innerText = nomeGuardado || "Name";
 }
 
-export function pegarIniciais(nomeCompleto: string): string {
-  const conectivos = ["de", "da", "do", "dos", "das", "e"];
-  return nomeCompleto.trim().split(/\s+/).filter(p => !conectivos.includes(p.toLowerCase())).map(p => p.charAt(0).toUpperCase()).join('');
-}
-
-const avatarLogo = document.getElementById("avatarLogo") as HTMLDivElement;
-if (avatarLogo) {
-  const nomeUsuario = sessionStorage.getItem("userName") || 'Usuário';
-  avatarLogo.textContent = pegarIniciais(nomeUsuario);
-  if (!sessionStorage.getItem("userAccess")) window.location.href = "login.html";
-}
