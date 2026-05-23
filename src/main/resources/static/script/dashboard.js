@@ -92,6 +92,10 @@ export function mostrarLista() {
               <span><button class="btn-icon-danger"><i data-lucide="trash-2" style="width:18px;"></i></button></span>
           </div>`;
             });
+            const numberCircle = document.getElementById("numberCircle");
+            if (numberCircle) {
+                numberCircle.innerText = consultaGlobal.lProdutos.length;
+            }
             const tObservacoes = document.getElementById("tObservacoes");
             if (tObservacoes)
                 tObservacoes.value = consultaGlobal.observacao ?? "Observação";
