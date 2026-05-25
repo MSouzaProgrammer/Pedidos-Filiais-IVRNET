@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # CONTAINER DO BANCO DE DADOS (MySQL)
+  banco-logistica:
+    image: mysql:8.0
+    container_name: container_mysql_logistica
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: db_logistica
+      MYSQL_ROOT_PASSWORD: root_password_segura
+    volumes:
+      - dados_logistica_mysql:/var/lib/mysql
+
+  # CONTAINER DA SUA API JAVA + FRONTEND
+  api-logistica:
+    build: .
+    container_name: container_java_logistica
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - banco-logistica
+    environment:
+      - DB_HOST=banco-logistica
+      - DB_PORT=3306
+      - DB_NAME=db_logistica
+      - DB_USER=root
+      - DB_PASSWORD=root_password_segura
+      - JWT_SECRET=uma_chave_secreta_e_segura_para_o_seu_jwt_aqui
+
+volumes:
+  dados_logistica_mysql:

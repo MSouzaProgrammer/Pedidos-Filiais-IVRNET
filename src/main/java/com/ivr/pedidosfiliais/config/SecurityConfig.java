@@ -32,29 +32,36 @@ public class SecurityConfig {
 
     // Faz o seguinte, por linha
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable()) // desativa a proteção secundária contra csrf
-                .cors(Customizer.withDefaults()) // Puxa automaticamente o Bean do CorsConfigurationSource abaixo
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Diz que sistema nunca vai lembrar do usuário, sempre vai perguntar
-                .authorizeHttpRequests(authorize  -> authorize
-                    .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll() // Se der algum erro o usuário vai ver
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // LIBERA O NAVEGADOR PARA TESTAR A CONEXÃO (CORS PREFLIGHT)
-                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Todo mundo pode usar e mandar coisas pelo login
-                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Todo mundo pode se registrar
-                    .anyRequest().authenticated()) // Qualquer outra coisa ele tem que ser um usuário autenticado
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // 🌟 A CORREÇÃO ESTÁ AQUI: Libera as páginas HTML e pastas de arquivos
+                        // estáticos
+                        .requestMatchers("/", "/login.html", "/index.html").permitAll()
+                        .requestMatchers("/styles/**", "/script/**", "/img/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .anyRequest().authenticated())
                 .addFilterBefore((Filter) securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build(); // Bota tudo pra funcionar
+                .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     // Essa é a função que criptografa tudo
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -63,11 +70,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Permite o seu frontend (Live Server, Vite, etc) acessar o backend
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); 
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         // Permite os métodos que você usa no fetch
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); 
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         // Permite o envio do Token (Authorization)
-        configuration.setAllowedHeaders(Arrays.asList("*")); 
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
