@@ -6,10 +6,10 @@ declare const lucide: any;
 
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") lucide.createIcons();
-  
+
   // CORRIGIDO: Ativa o botão usando a variável de estado correta (consultaGlobal)
   document.getElementById("btnImprimirPedido")?.addEventListener("click", () => {
-    if (consultaGlobal) { 
+    if (consultaGlobal) {
       (window as any).gerarImpressaoPicking(consultaGlobal);
     } else {
       alert("Nenhum pedido selecionado para impressão.");
@@ -48,16 +48,62 @@ document.addEventListener("DOMContentLoaded", () => {
   setCarrinhoDePedidos(carrinhoDePedidos.filter(produto => String(produto.nome) !== String(idParaRemover)));
 };
 
+function mostrarConfirmCustomizado(titulo: string, mensagem: string): Promise<boolean> {
+  return new Promise((resolve) => {
+    const overlay = document.getElementById("custom-confirm");
+    const txtTitulo = document.getElementById("confirm-title");
+    const txtMensagem = document.getElementById("confirm-message");
+    const btnCancelar = document.getElementById("confirm-btn-cancel");
+    const btnSucesso = document.getElementById("confirm-btn-success");
+
+    if (!overlay || !txtTitulo || !txtMensagem || !btnCancelar || !btnSucesso) {
+      resolve(false);
+      return;
+    }
+
+    // Injeta os textos customizados dinamicamente
+    txtTitulo.textContent = titulo;
+    txtMensagem.textContent = mensagem;
+
+    // Exibe o modal na tela
+    overlay.classList.add("ativo");
+    if (typeof lucide !== "undefined") lucide.createIcons();
+
+    // Função interna para fechar a tela e devolver a resposta
+    const fecharEEnviarResposta = (resposta: boolean) => {
+      overlay.classList.remove("ativo");
+      // Remove os cliques antigos para não acumular em cliques futuros
+      btnCancelar.onclick = null;
+      btnSucesso.onclick = null;
+      resolve(resposta);
+    };
+
+    // Atribui os eventos de clique temporários nos botões do Modal
+    btnCancelar.onclick = () => fecharEEnviarResposta(false);
+    btnSucesso.onclick = () => fecharEEnviarResposta(true);
+  });
+}
+
 (window as any).deleteProduct = async function (idDoBanco: string) {
-  const querMesmoApagar = confirm("Tem certeza que deseja apagar este produto?");
-  if (!querMesmoApagar) return;
+  // Troca do confirm nativo antigo para o seu novo Modal Customizado e Moderno
+  const querMesmoApagar = await mostrarConfirmCustomizado(
+    "Excluir Produto?",
+    "Esta ação não poderá ser desfeita. Tem certeza que deseja apagar este produto?",
+  );
+
+  if (!querMesmoApagar) return; // Se o usuário clicar em Cancelar, para a execução aqui
+
   try {
     const resposta = await requestBack("produto/" + idDoBanco, "DELETE", null);
     if (resposta.ok) {
       setEstoque(estoque.filter((p) => String(p.id) !== String(idDoBanco)));
       renderProductList(estoque);
-    } else { alert("Não foi possível apagar."); }
-  } catch (erro) { alert("Erro de conexão."); }
+    } else {
+      alert("Não foi possível apagar.");
+    }
+  } catch (erro) {
+    alert("Erro de conexão.");
+  }
 };
 
 (window as any).consultarLista = async function (id: number) {
@@ -113,7 +159,7 @@ if (avatarLogo) {
   if (!sessionStorage.getItem("userAccess")) window.location.href = "login.html";
 }
 
-(window as any).gerarImpressaoPicking = function(consulta: any) {
+(window as any).gerarImpressaoPicking = function (consulta: any) {
   const iframe = document.getElementById('iframeImpressao') as HTMLIFrameElement;
   if (!iframe) return;
 
@@ -194,12 +240,12 @@ if (avatarLogo) {
         </body>
         </html>`;
 
-  doc.open(); 
-  doc.write(htmlFinal); 
+  doc.open();
+  doc.write(htmlFinal);
   doc.close();
 
-  setTimeout(() => { 
-      iframe.contentWindow?.focus(); 
-      iframe.contentWindow?.print(); 
+  setTimeout(() => {
+    iframe.contentWindow?.focus();
+    iframe.contentWindow?.print();
   }, 300);
 };

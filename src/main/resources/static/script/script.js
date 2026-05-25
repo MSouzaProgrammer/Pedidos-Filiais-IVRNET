@@ -44,10 +44,42 @@ window.fecharAba = fecharAba;
 window.apagarCarrinho = function (idParaRemover) {
     setCarrinhoDePedidos(carrinhoDePedidos.filter(produto => String(produto.nome) !== String(idParaRemover)));
 };
+function mostrarConfirmCustomizado(titulo, mensagem) {
+    return new Promise((resolve) => {
+        const overlay = document.getElementById("custom-confirm");
+        const txtTitulo = document.getElementById("confirm-title");
+        const txtMensagem = document.getElementById("confirm-message");
+        const btnCancelar = document.getElementById("confirm-btn-cancel");
+        const btnSucesso = document.getElementById("confirm-btn-success");
+        if (!overlay || !txtTitulo || !txtMensagem || !btnCancelar || !btnSucesso) {
+            resolve(false);
+            return;
+        }
+        // Injeta os textos customizados dinamicamente
+        txtTitulo.textContent = titulo;
+        txtMensagem.textContent = mensagem;
+        // Exibe o modal na tela
+        overlay.classList.add("ativo");
+        if (typeof lucide !== "undefined")
+            lucide.createIcons();
+        // Função interna para fechar a tela e devolver a resposta
+        const fecharEEnviarResposta = (resposta) => {
+            overlay.classList.remove("ativo");
+            // Remove os cliques antigos para não acumular em cliques futuros
+            btnCancelar.onclick = null;
+            btnSucesso.onclick = null;
+            resolve(resposta);
+        };
+        // Atribui os eventos de clique temporários nos botões do Modal
+        btnCancelar.onclick = () => fecharEEnviarResposta(false);
+        btnSucesso.onclick = () => fecharEEnviarResposta(true);
+    });
+}
 window.deleteProduct = async function (idDoBanco) {
-    const querMesmoApagar = confirm("Tem certeza que deseja apagar este produto?");
+    // Troca do confirm nativo antigo para o seu novo Modal Customizado e Moderno
+    const querMesmoApagar = await mostrarConfirmCustomizado("Excluir Produto?", "Esta ação não poderá ser desfeita. Tem certeza que deseja apagar este produto?");
     if (!querMesmoApagar)
-        return;
+        return; // Se o usuário clicar em Cancelar, para a execução aqui
     try {
         const resposta = await requestBack("produto/" + idDoBanco, "DELETE", null);
         if (resposta.ok) {

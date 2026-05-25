@@ -22,13 +22,11 @@ BACKEND
 FRONTEND
 ├──[x] Dividir script.ts
 ├──[x] Separar API/services
-├──[] Criar componentes
 ├──[x] Melhorar responsividade
 ├──[x] Adicionar loading/spinner
 ├──[x] Melhorar feedback visual
 ├──[x] Melhorar tabelas
-├──[] Adicionar paginação
-└──[] Melhorar UX/UI
+└──[x] Melhorar UX/UI
 
 SEGURANÇA
 ├──[x] Implementar JWT
@@ -39,9 +37,8 @@ SEGURANÇA
 
 BANCO DE DADOS
 ├──[x] Melhorar modelagem
-├──[] Adicionar constraints
-├──[] Melhorar relacionamentos
-└──[] Migrar para PostgreSQL
+├──[x] Adicionar constraints
+└──[x] Melhorar relacionamentos
 
 DEVOPS
 ├──[] Dockerizar aplicação
