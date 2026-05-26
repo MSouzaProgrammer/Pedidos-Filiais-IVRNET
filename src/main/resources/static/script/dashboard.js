@@ -71,7 +71,6 @@ export function mostrarLista() {
         overlayPedido.classList.add('ativo');
     }
     const dataText = document.getElementById("dataText");
-    console.log(consultaGlobal);
     if (dataText)
         dataText.textContent = new Date(consultaGlobal.data).toLocaleString('pt-BR');
     const tituloLista = document.getElementById("tituloLista");

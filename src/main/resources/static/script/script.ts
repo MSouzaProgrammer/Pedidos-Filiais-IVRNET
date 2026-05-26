@@ -153,8 +153,6 @@ function pegarIniciais(nomeCompleto: string): string {
 const avatarLogo = document.getElementById("avatarLogo") as HTMLDivElement;
 if (avatarLogo) {
   const nomeUsuario = sessionStorage.getItem("userName") || 'Usuário';
-  console.log(pegarIniciais(nomeUsuario));
-  console.log(nomeUsuario);
   avatarLogo.textContent = pegarIniciais(nomeUsuario);
   if (!sessionStorage.getItem("userAccess")) window.location.href = "login.html";
 }
