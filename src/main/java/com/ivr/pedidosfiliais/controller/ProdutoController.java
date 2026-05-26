@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
 @Slf4j // Anotação do Lombok ativada!
 @RestController
 @RequestMapping("/produto")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://pedidos-filiais-ivrnet.onrender.com")
 public class ProdutoController {
 
     @Autowired

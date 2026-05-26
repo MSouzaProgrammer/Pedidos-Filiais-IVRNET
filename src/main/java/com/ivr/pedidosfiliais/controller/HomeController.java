@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
 public class HomeController {
 
     @GetMapping("/")
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "https://pedidos-filiais-ivrnet.onrender.com")
     public String index(){
         log.info("Acesso à URL raiz (/) recebido. Redirecionando usuário para /login.html");
         
