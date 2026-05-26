@@ -27,9 +27,10 @@ export async function requestBack(caminho, metodo, dados) {
     const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
     // Define a URL do Back-end baseado nisso
     const API_BASE_URL = isLocalhost
-        ? "http://localhost:8080/" // URL do seu Java local
-        : "https://URL-DO-SEU-BACKEND-NA-RENDER.onrender.com/"; // URL do seu Java na Render
-    const resposta = await fetch(isLocalhost + caminho, opcoes);
+        ? "http://localhost:8080/" // Sem a barra no final para não duplicar
+        : "https://pedidos-filiais-ivrnet.onrender.com/"; // Seu link do Render
+    // CORRIGIDO AQUI EMBAIXO:
+    const resposta = await fetch(API_BASE_URL + caminho, opcoes);
     desligarLoading();
     return resposta;
 }

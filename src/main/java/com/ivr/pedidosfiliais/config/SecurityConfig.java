@@ -68,7 +68,7 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Value("${app.frontend.url:http://localhost:3000}")
+    @Value("${app.frontend.url:http://127.0.0.1:5500}")
     private String frontendUrl;
 
     // A MÁGICA ACONTECE AQUI: Configuração global de CORS
