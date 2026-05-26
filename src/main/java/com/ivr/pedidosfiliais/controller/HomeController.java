@@ -1,7 +1,6 @@
 package com.ivr.pedidosfiliais.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
 
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
 public class HomeController {
 
     @GetMapping("/")
-    @CrossOrigin(origins = "https://pedidos-filiais-ivrnet.onrender.com")
     public String index(){
         log.info("Acesso à URL raiz (/) recebido. Redirecionando usuário para /login.html");
         

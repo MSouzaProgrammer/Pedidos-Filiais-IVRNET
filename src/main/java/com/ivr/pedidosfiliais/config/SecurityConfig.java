@@ -1,5 +1,6 @@
 package com.ivr.pedidosfiliais.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,6 +25,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     private final SecurityFilter securityFilter;
 
     public SecurityConfig(SecurityFilter securityFilter) {
@@ -33,6 +35,7 @@ public class SecurityConfig {
     // Faz o seguinte, por linha
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
@@ -65,15 +68,18 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
+
     // A MÁGICA ACONTECE AQUI: Configuração global de CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Permite o seu frontend (Live Server, Vite, etc) acessar o backend
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        // Permite os métodos que você usa no fetch
+
+        // Agora ele aceita o localhost em casa E a Render na nuvem dinamicamente
+        configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        // Permite o envio do Token (Authorization)
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
 

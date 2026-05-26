@@ -15,7 +15,7 @@ import com.ivr.pedidosfiliais.entities.User;
 
 @Component
 public class TokenConfig {
-    
+
     @Value("${api.security.token.secret}")
     private String secret;
 
