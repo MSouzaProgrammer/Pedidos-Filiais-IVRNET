@@ -73,7 +73,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterUserResponse(newUser.getName(), newUser.getEmail(), newUser.getAccess()));
     }
 
-    @PutMapping("/alterar-senha")
+    @PutMapping("/altPassword")
     public ResponseEntity<String> alterarSenha(@Valid @RequestBody AlterarSenhaRequest request) {
         log.info("Solicitação para alterar senha do e-mail: {}", request.email());
 
