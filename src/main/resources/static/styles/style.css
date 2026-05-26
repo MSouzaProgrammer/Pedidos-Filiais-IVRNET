@@ -257,6 +257,7 @@ body {
     align-items: center;
     gap: 8px;
     transition: 0.2s;
+    width:90px
 }
 
 .btn-primary:hover:not(:disabled) {
