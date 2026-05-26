@@ -23,7 +23,7 @@ export async function requestBack(caminho, metodo, dados) {
     if (dados && metodo.toUpperCase() !== "GET") {
         opcoes.body = JSON.stringify(dados);
     }
-    const resposta = await fetch("http://localhost:8080/" + caminho, opcoes);
+    const resposta = await fetch("https://pedidos-filiais-ivrnet.onrender.com/" + caminho, opcoes);
     desligarLoading();
     return resposta;
 }
