@@ -62,7 +62,6 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
         }
         
-        // Segue o fluxo da requisição
         filterChain.doFilter(request, response);
     }
 }

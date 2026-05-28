@@ -1,6 +1,7 @@
 package com.ivr.pedidosfiliais.entities;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -44,7 +45,7 @@ public class Pedido {
     
     @PrePersist
     protected void onCreate(){
-        this.dataCriacao = LocalDateTime.now();
+        this.dataCriacao = LocalDateTime.now(ZoneId.of("America/Campo_Grande"));
     }
 
     
