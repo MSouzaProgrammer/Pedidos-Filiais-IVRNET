@@ -41,8 +41,8 @@ BANCO DE DADOS
 └──[x] Melhorar relacionamentos
 
 DEVOPS
-├──[] Dockerizar aplicação
-├──[] Fazer deploy online
+├──[x] Dockerizar aplicação
+├──[x] Fazer deploy online
 ├──[] Configurar Nginx
 ├──[] Criar ambiente produção
 └──[] Automatizar deploy
