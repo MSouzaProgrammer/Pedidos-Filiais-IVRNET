@@ -69,8 +69,8 @@ public class PedidoService {
             // 2. Sua lógica perfeita de contagem por filial
             long totalPedidosFilial = pedidosRepository.countByFilial(pedidoSalvo.getFilial());
 
-            // 3. Se passou do limite de 8, deleta o mais antigo dela
-            if (totalPedidosFilial > 8) {
+            // 3. Se passou do limite de 15, deleta o mais antigo dela
+            if (totalPedidosFilial > 15) {
                 List<Pedido> pedidosDaFilial = pedidosRepository
                         .findByFilialOrderByDataCriacaoAsc(pedidoSalvo.getFilial());
 
