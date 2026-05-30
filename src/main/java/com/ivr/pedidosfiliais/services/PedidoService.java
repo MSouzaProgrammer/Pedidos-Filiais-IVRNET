@@ -70,7 +70,7 @@ public class PedidoService {
             long totalPedidosFilial = pedidosRepository.countByFilial(pedidoSalvo.getFilial());
 
             // 3. Se passou do limite de 15, deleta o mais antigo dela
-            if (totalPedidosFilial > 15) {
+            if (totalPedidosFilial > 20) {
                 List<Pedido> pedidosDaFilial = pedidosRepository
                         .findByFilialOrderByDataCriacaoAsc(pedidoSalvo.getFilial());
 
