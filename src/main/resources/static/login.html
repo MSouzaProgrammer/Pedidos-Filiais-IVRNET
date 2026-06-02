@@ -6,6 +6,7 @@
     <title>Login | Pedidos Matriz</title>
     <link rel="stylesheet" href="styles/style.css">
     <link rel="shortcut icon" href="img/icone.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
@@ -13,15 +14,24 @@
     <img src="img/logo.png" alt="imagem" class="img-logo">
     <div class="login-container">
         <div style="width: 100%; max-width: 400px;">
-            <h1 style="margin-bottom: 24px;">Login Matriz</h1>
+            <h1 style="margin-bottom: 24px;">Login Pedidos</h1>
             <form>
                 <div style="margin-bottom: 20px;">
                     <label>E-mail</label>
                     <input type="email" class="form-control" placeholder="nome@empresa.com" id="email-login" required>
                 </div>
                 <div style="margin-bottom: 20px;">
-                    <label>Senha</label>
-                    <input type="password" class="form-control" placeholder="••••••••" id="senhaLogin" required>
+                    <label style="color: #fff; display: block; margin-bottom: 5px;">Senha</label>
+                    <div class="input-group" style="display: flex; width: 100%;">
+
+                        <input type="password" class="form-control" placeholder="••••••••" id="senhaLogin" required
+                            style="border-top-right-radius: 0; border-bottom-right-radius: 0; background-color: #151b2b; color: #fff; border: 1px solid #2d3748; height: 43px;">
+
+                        <button class="btn" type="button" id="btnMudarSenha"
+                            style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 5px; border-top-right-radius: 5px; background-color: #151b2b; border: 1px solid #2d3748; border-left: none; color: #fff; display: flex; align-items: center; justify-content: center; padding: 0 15px; height: 43px;">
+                            <i class="material-icons" id="iconeOlho" style="font-size: 20px;">visibility</i>
+                        </button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;" id="b-login">Acessar Sistema</button>
             </form>
@@ -34,6 +44,28 @@
         </div>
     </div>
     <script type="module" src="script/login.js"></script>
+    <!-- Cole isso no final do seu arquivo HTML -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const senhaInput = document.getElementById('senhaLogin');
+            const btnMudarSenha = document.getElementById('btnMudarSenha');
+            const iconeOlho = document.getElementById('iconeOlho');
+
+            if (btnMudarSenha && senhaInput && iconeOlho) {
+                btnMudarSenha.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    if (senhaInput.type === 'password') {
+                        senhaInput.type = 'text';
+                        iconeOlho.textContent = 'visibility_off'; // Muda para o olho cortado
+                    } else {
+                        senhaInput.type = 'password';
+                        iconeOlho.textContent = 'visibility'; // Volta para o olho aberto
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

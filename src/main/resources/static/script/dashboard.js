@@ -14,7 +14,12 @@ export function iniciarDashboard() {
     });
     const btnFooterSave = document.getElementById("btnFooterSave");
     if (btnFooterSave) {
-        btnFooterSave.onclick = salvarAlteracao;
+        if (sessionStorage.getItem("userAccess") == "ADM") {
+            btnFooterSave.onclick = salvarAlteracao;
+        }
+        else {
+            btnFooterSave.onclick = fecharAba;
+        }
     }
 }
 export async function produtosLista(numero) {

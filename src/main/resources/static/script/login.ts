@@ -37,10 +37,10 @@ if (b_login) {
   else b_login.addEventListener("click", tentarLogin);
 }
 
-if(user){
+if (user) {
   const nomeGuardado = sessionStorage.getItem("userName");
   const tokenGuardado = sessionStorage.getItem("token");
-  if(!tokenGuardado) window.location.href = "login.html";
+  if (!tokenGuardado) window.location.href = "login.html";
   else user.innerText = nomeGuardado || "Name";
 }
 
