@@ -16,7 +16,12 @@ export function iniciarDashboard() {
 
   const btnFooterSave = document.getElementById("btnFooterSave") as HTMLButtonElement;
   if (btnFooterSave) {
+    if(sessionStorage.getItem("userAccess") == "ADM"){
       btnFooterSave.onclick = salvarAlteracao;
+    }
+    else{
+      btnFooterSave.onclick = fecharAba;
+    }
   }
 }
 
