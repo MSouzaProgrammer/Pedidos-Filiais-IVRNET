@@ -25,6 +25,7 @@ export function configurarDropdownProdutos() {
                     quantValor.disabled = false;
                     btAdd.style.backgroundColor = '#041033';
                     btAdd.disabled = false;
+                    inputProduto.disabled = true;
                 });
                 listaSugestoes.appendChild(li);
             });
@@ -83,6 +84,7 @@ export function iniciarNovoPedido() {
             btAdd.disabled = true;
             btAdd.style.backgroundColor = 'red';
             quantValor.disabled = true;
+            inputProduto.disabled = false;
         });
     }
     const btnFinalizar = document.getElementById("btn-finalizar");
