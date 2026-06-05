@@ -70,13 +70,16 @@ public class SecurityConfig {
     @Value("${app.frontend.url:http://127.0.0.1:5500}")
     private String frontendUrl;
 
+    @Value("http://127.0.0.1:5500")
+    private String local;
+
     // A MÁGICA ACONTECE AQUI: Configuração global de CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Agora ele aceita o localhost em casa E a Render na nuvem dinamicamente
-        configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
+        configuration.setAllowedOrigins(Arrays.asList(local));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
