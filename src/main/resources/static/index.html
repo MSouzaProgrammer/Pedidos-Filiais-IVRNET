@@ -21,6 +21,7 @@
             <a class="nav-link" id="nav-novo-pedido" onclick="showPage('novo-pedido')"><i
                     data-lucide="shopping-cart"></i> Novo Pedido</a>
             <a class="nav-link" id="nav-produtos" onclick="showPage('produtos')"><i data-lucide="box"></i> Produtos</a>
+            <a class="nav-link" id="nav-relatorio" onclick="showPage('relatorio')"><i data-lucide="bar-chart-2"></i> Relatório</a>
         </nav>
         <h1 id="user"></h1>
     </aside>
@@ -146,6 +147,83 @@
                     <div id="global-product-list"></div>
                 </div>
 
+            </section>
+
+            <section id="relatorio-page" class="page-content">
+                
+                <div class="card" style="margin-bottom: 24px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h2 class="card-title" style="margin: 0;"><i data-lucide="pie-chart"></i> Distribuição por Filial</h2>
+                        <button class="btn-primary" style="display: flex; gap: 8px; align-items: center;">
+                            <i data-lucide="download" style="width: 18px;"></i> Exportar Excel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 24px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label>Período / Mês [Inicio]</label>
+                            <input type="month" class="form-control" id="filtro-data">
+                        </div>
+                        <div class="form-group">
+                            <label>Período / Mês [Final]</label>
+                            <input type="month" class="form-control" id="filtro-data">
+                        </div>
+                        <div class="form-group" style="display: flex; align-items: flex-end;">
+                            <button class="btn-primary" style="width: 100%; justify-content: center; height: 42px;">
+                                <i data-lucide="search" style="width: 18px; margin-right: 5px;"></i> Filtrar Resultados
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="overflow-x: auto;">
+                        <table class="tabela-relatorio">
+                            <thead>
+                                <tr>
+                                    <th>Id Produto</th>
+                                    <th>Produto</th>
+                                    <th style="text-align: center;">Qtd Total</th>
+                                    <th class="col-filial">📍 Bonito/Bodoquena</th>
+                                    <th class="col-filial">📍 Aquidauana</th>
+                                    <th class="col-filial">📍 Dois Irmãos</th>
+                                    <th class="col-filial">📍 Jardim/Nioaque</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class=".id-produto">#384</td>
+                                    <td>Bobina Drop</td>
+                                    <td align="center"><span class="badge-total">150</span></td>
+                                    <td class="qtd-enviada">50</td>
+                                    <td class="qtd-enviada">100</td>
+                                    <td class="qtd-zero">0</td>
+                                    <td class="qtd-zero">0</td>
+                                </tr>
+                                <tr>
+                                    <td class=".id-produto">#467</td>
+                                    <td>Conector RJ45 [100und]</td>
+                                    <td align="center"><span class="badge-total">80</span></td>
+                                    <td class="qtd-enviada">40</td>
+                                    <td class="qtd-zero">0</td>
+                                    <td class="qtd-enviada">20</td>
+                                    <td class="qtd-enviada">20</td>
+                                </tr>
+                                <tr>
+                                    <td class=".id-produto">#875</td>
+                                    <td>Cabo de rede CAT5e</td>
+                                    <td align="center"><span class="badge-total">10</span></td>
+                                    <td class="qtd-zero">0</td>
+                                    <td class="qtd-zero">0</td>
+                                    <td class="qtd-zero">0</td>
+                                    <td class="qtd-enviada">10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </section>
         </main>
     </div>
@@ -290,6 +368,8 @@
             </div>
         </div>
     </div>
+
+    
 
     <script type="module" src="script/script.js"></script>
 </body>

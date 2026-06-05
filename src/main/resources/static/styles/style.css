@@ -1294,3 +1294,92 @@ body {
     background-color: #64748b;
     /* Cor cinza escuro no hover */
 }
+
+/* =========================================
+   ESTILOS DA TABELA DE RELATÓRIO
+   ========================================= */
+
+.tabela-relatorio {
+    width: 100%;
+    border-collapse: collapse;
+    color: #f8fafc; /* Texto claro */
+    font-size: 14px;
+}
+
+.tabela-relatorio thead tr {
+    border-bottom: 2px solid #334155; /* Linha sutil separando cabeçalho */
+}
+
+.tabela-relatorio th {
+    padding: 12px 10px;
+    text-align: left;
+    color: #94a3b8; /* Cor mutada para os títulos */
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Destaque para as colunas das Filiais */
+.tabela-relatorio th.col-filial {
+    color: #38bdf8; /* Azul claro do Lucide/Tailwind */
+    text-align: center;
+}
+
+.tabela-relatorio tbody tr {
+    border-bottom: 1px solid #1e293b; /* Divisória entre linhas */
+    transition: background-color 0.2s;
+}
+
+.tabela-relatorio tbody tr:hover {
+    background-color: #1e293b; /* Efeito hover do Dark Mode */
+}
+
+.tabela-relatorio td {
+    padding: 14px 10px;
+    vertical-align: middle;
+}
+
+.id-pedido {
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+/* Tipografia de quantidades */
+.qtd-enviada {
+    text-align: center;
+    font-weight: 600;
+    color: #22c55e; /* Verde indicando que foi algo pra lá */
+}
+
+.qtd-zero {
+    text-align: center;
+    color: #475569; /* Cinza escuro para o zero não poluir a tela */
+}
+
+/* Badges da Tabela */
+.badge-total {
+    background-color: #334155;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.badge-status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-status.concluido {
+    background-color: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-status.parcial {
+    background-color: rgba(234, 179, 8, 0.2);
+    color: #facc15;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+}
