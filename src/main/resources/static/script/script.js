@@ -2,6 +2,7 @@ import { showPage, avisoDePermissao, requestBack, estoque, setEstoque, carrinhoD
 import { carregarProdutos, renderProductList, filterProducts, openModal, closeModal } from './produtos.js';
 import { configurarDropdownProdutos, iniciarNovoPedido } from './novoPedido.js';
 import { iniciarDashboard, produtosLista, salvarAlteracao, mostrarLista, fecharAba } from './dashboard.js';
+import { exibirRelatorio, excel } from './relatorio.js';
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined")
         lucide.createIcons();
@@ -19,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
     configurarDropdownProdutos();
     iniciarNovoPedido();
     iniciarDashboard();
+    exibirRelatorio();
+    excel();
     // 2. Trava campos para não-administradores na tela de dashboard
     if (sessionStorage.getItem("userAccess") === "ADM") {
         document.getElementById("btnAddProduto").disabled = false;
@@ -31,7 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("tObservacoes").disabled = true;
     }
 });
-// --- AMARRANDO AO WINDOW PARA O HTML ENCONTRAR OS ONCLICK ---
 window.showPage = showPage;
 window.avisoDePermissao = avisoDePermissao;
 window.filterProducts = filterProducts;

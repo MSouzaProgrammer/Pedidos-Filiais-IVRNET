@@ -1304,39 +1304,41 @@ body {
     border-collapse: collapse;
     color: #f8fafc; /* Texto claro */
     font-size: 14px;
+    table-layout: fixed; /* 🌟 FORÇA as colunas do header e body a terem o mesmíssimo tamanho */
 }
 
-.tabela-relatorio thead tr {
-    border-bottom: 2px solid #334155; /* Linha sutil separando cabeçalho */
-}
-
-.tabela-relatorio th {
-    padding: 12px 10px;
-    text-align: left;
-    color: #94a3b8; /* Cor mutada para os títulos */
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-/* Destaque para as colunas das Filiais */
-.tabela-relatorio th.col-filial {
-    color: #38bdf8; /* Azul claro do Lucide/Tailwind */
-    text-align: center;
-}
-
-.tabela-relatorio tbody tr {
-    border-bottom: 1px solid #1e293b; /* Divisória entre linhas */
-    transition: background-color 0.2s;
-}
-
-.tabela-relatorio tbody tr:hover {
-    background-color: #1e293b; /* Efeito hover do Dark Mode */
-}
-
+.tabela-relatorio th, 
 .tabela-relatorio td {
-    padding: 14px 10px;
+    padding: 12px 10px; /* 🌟 Aumentei o padding para dar respiro e alinhar perfeitamente */
     vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
 }
+.tabela-relatorio-produtos tr:hover{
+    background-color: var(--border-color);
+    border-radius: 6px;
+}
+
+/* Forçar os alinhamentos de forma rígida */
+.tabela-relatorio .text-left {
+    text-align: left !important;
+}
+
+.tabela-relatorio .text-center {
+    text-align: center !important;
+}
+
+/* Deixar as colunas de filiais bonitas e centralizadas */
+.tabela-relatorio .col-filial {
+    color: #38bdf8; /* Azul claro */
+    text-align: center !important;
+}
+
+/* =========================================
+   ESTILOS DA TABELA DE RELATÓRIO
+   ========================================= */
+
 
 .id-produto {
     font-weight: 700;

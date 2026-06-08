@@ -48,7 +48,7 @@ public class SecurityConfig {
                         // estáticos
                         .requestMatchers("/", "/login.html", "/index.html").permitAll()
                         .requestMatchers("/styles/**", "/script/**", "/img/**").permitAll()
-
+                        .requestMatchers("/api/relatorios/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore((Filter) securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -73,13 +73,12 @@ public class SecurityConfig {
     @Value("http://127.0.0.1:5500")
     private String local;
 
-    // A MÁGICA ACONTECE AQUI: Configuração global de CORS
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Agora ele aceita o localhost em casa E a Render na nuvem dinamicamente
-        configuration.setAllowedOrigins(Arrays.asList(local));
+        configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
