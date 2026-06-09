@@ -29,7 +29,7 @@ export function exibirRelatorio() {
                     const novaLinha = tabelaBody.insertRow(-1);
                     novaLinha.innerHTML = `
                         <td class="text-left">${item.nomeProduto}</td>
-                        <td class="text-center"><strong>${item.quantidadeTotal}</strong></td>
+                        <td class="text-center">${item.undMedida || 'UND'}</td> <td class="text-center"><strong>${item.quantidadeTotal}</strong></td>
                         <td class="col-filial">${item.distribuicaoFiliais["Bonito/Bodoquena"] || 0}</td>
                         <td class="col-filial">${item.distribuicaoFiliais["Aquidauana"] || 0}</td>
                         <td class="col-filial">${item.distribuicaoFiliais["Dois Irmãos"] || 0}</td>

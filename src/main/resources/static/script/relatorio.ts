@@ -42,7 +42,7 @@ export function exibirRelatorio() {
                     const novaLinha = tabelaBody.insertRow(-1);
                     novaLinha.innerHTML = `
                         <td class="text-left">${item.nomeProduto}</td>
-                        <td class="text-center"><strong>${item.quantidadeTotal}</strong></td>
+                        <td class="text-center">${item.undMedida || 'UND'}</td> <td class="text-center"><strong>${item.quantidadeTotal}</strong></td>
                         <td class="col-filial">${item.distribuicaoFiliais["Bonito/Bodoquena"] || 0}</td>
                         <td class="col-filial">${item.distribuicaoFiliais["Aquidauana"] || 0}</td>
                         <td class="col-filial">${item.distribuicaoFiliais["Dois Irmãos"] || 0}</td>
@@ -81,7 +81,7 @@ export function excel() {
                 if (cellRef[0] === '!') continue;
 
                 const celula = ws[cellRef];
-                
+
                 // Descobre a linha da célula (ex: 'A1' -> linha 1, 'B5' -> linha 5)
                 const numeroLinha = parseInt(cellRef.replace(/[^0-9]/g, ''), 10);
 
@@ -96,13 +96,13 @@ export function excel() {
                 } else {
                     // Caso contrário, são as linhas de DADOS (TBODY)
                     const ehColunaProduto = cellRef.startsWith('A'); // Coluna A é o nome do produto
-                    
+
                     celula.s = {
                         font: { name: "Arial", size: 10, color: { rgb: "334155" } },
-                        alignment: { 
-                            vertical: "center", 
+                        alignment: {
+                            vertical: "center",
                             // Alinha o produto à esquerda e o resto (números) ao centro
-                            horizontal: ehColunaProduto ? "left" : "center" 
+                            horizontal: ehColunaProduto ? "left" : "center"
                         },
                         border: {
                             bottom: { style: "thin", color: { rgb: "E2E8F0" } } // Linha divisória sutil cinza

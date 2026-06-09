@@ -16,6 +16,7 @@ public interface ProdutoPedidoRepository  extends JpaRepository<ProdutoPedido, L
         SELECT 
             pp.pedido_id as pedidoId,
             pp.name as name,
+            pp.und_medida as undMedida,
             p.filial as filial,
             pp.quant_enviada as quantEnviada
         FROM produto_pedido pp

@@ -4,6 +4,7 @@ import java.util.Map;
 
 public record RelatorioPedidoResponse(
     String nomeProduto, 
-    Integer quantidadeTotal, 
+    String undMedida,
+    Integer quantidadeTotal,
     Map<String, Integer> distribuicaoFiliais
 ){}

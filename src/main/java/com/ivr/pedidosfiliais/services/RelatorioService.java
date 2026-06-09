@@ -59,15 +59,16 @@ public class RelatorioService {
 
             // Só adiciona se a quantidade for maior que zero
             if (somaQuantidadeTotal > 0) {
+                // 🌟 ATUALIZADO: Agora incluindo o primeiroItem.getUndMedida()
                 listaRelatorioFinal.add(new RelatorioPedidoResponse(
                     primeiroItem.getName(),
+                    primeiroItem.getUndMedida(), 
                     somaQuantidadeTotal,
                     distribuicao
                 ));
             }
         }
 
-        // 🌟 A NOVA LINHA ESTÁ AQUI:
         // Ordena a lista do MAIOR para o MENOR com base na 'quantidadeTotal'
         listaRelatorioFinal.sort((a, b) -> b.quantidadeTotal().compareTo(a.quantidadeTotal()));
 

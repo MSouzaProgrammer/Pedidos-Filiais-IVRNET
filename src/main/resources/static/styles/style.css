@@ -1335,6 +1335,51 @@ body {
     text-align: center !important;
 }
 
+.tabela-container {
+    max-height: 500px; /* Altere para a altura máxima que preferir (ex: 400px, 600px) */
+    overflow-y: auto;  /* Ativa a rolagem vertical apenas se passar da altura máxima */
+    border: 1px solid var(--bg-sidebar); /* Bordinha combinando com o tema escuro */
+    border-radius: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #334155 #0f172a;
+}
+
+.tabela-relatorio thead th {
+    position: sticky;
+    top: 0;
+    background-color: #151b2b; /* Coloque EXATAMENTE a mesma cor de fundo da sua página/card */
+    z-index: 1; /* Garante que os títulos fiquem por cima dos números ao rolar */
+    box-shadow: inset 0 -2px 0 #334155; /* Substitui a borda de baixo para não sumir no scroll */
+}
+
+/* Modifique a regra antiga tirando o border-bottom que dava bug no sticky */
+.tabela-relatorio thead tr {
+    border-bottom: none; /* Removido daqui, pois a sombra acima faz o papel da linha */
+}
+
+/* 1. Define a largura da barra vertical e altura da horizontal */
+.tabela-container::-webkit-scrollbar {
+    width: 8px;  /* Deixa ela fininha */
+    height: 8px; /* Para o scroll horizontal, se houver */
+}
+
+/* 2. O "Trilho" da barra (a parte que fica estática no fundo) */
+.tabela-container::-webkit-scrollbar-track {
+    background: #2a3441; /* Mesma cor de fundo escura do seu sistema */
+    border-radius: 6px;
+}
+
+/* 3. O "Alvo" ou "Ponteiro" (a pecinha que mexe quando você arrasta) */
+.tabela-container::-webkit-scrollbar-thumb {
+    background-color: #334155; /* Um cinza azulado discreto (Slate-700) */
+    border-radius: 6px;       /* Deixa as pontas arredondadas */
+    border: 2px solid #2a3441; /* Cria um espaçamento sutil nas laterais */
+}
+
+/* 4. Efeito quando o usuário passa o mouse por cima do ponteiro */
+.tabela-container::-webkit-scrollbar-thumb:hover {
+    background-color: #475569; /* Fica levemente mais claro (Slate-600) */
+}
 /* =========================================
    ESTILOS DA TABELA DE RELATÓRIO
    ========================================= */
@@ -1385,3 +1430,4 @@ body {
     color: #facc15;
     border: 1px solid rgba(234, 179, 8, 0.3);
 }
+
