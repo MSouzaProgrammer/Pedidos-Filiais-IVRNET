@@ -1,9 +1,7 @@
 import { requestBack } from './funcoes.js';
 export function exibirRelatorio() {
     const btnFiltro = document.getElementById("btnFiltro");
-    // Captura o tbody usando o tipo correto que vimos antes (HTMLTableSectionElement)
     const tabelaBody = document.getElementById("produtosRelatorios");
-    // Captura os inputs de data da sua tela HTML
     const dataInicioInput = document.getElementById("dataInicioInput");
     const dataFimInput = document.getElementById("dataFimInput");
     if (btnFiltro) {
@@ -15,21 +13,16 @@ export function exibirRelatorio() {
                 return;
             }
             const urlComFiltro = `api/relatorios/distribuicao?inicio=${dataInicio}&fim=${dataFim}`;
-            // 1. Faz a requisição (guarda o "embrulho" do Response)
             const response = await requestBack(urlComFiltro, "GET", null);
-            // 2. 🌟 O SEGREDO ESTÁ AQUI: Extrai os dados de verdade do embrulho!
-            // Se a sua função 'requestBack' já devolve o response puro do fetch, fazemos assim:
             const dadosRelatorio = await response.json();
-            // Vamos dar um log para ver a lista de produtos linda e mastigada no console
-            console.log("DADOS REAIS:", dadosRelatorio);
-            // 3. Agora sim, varre os dados reais para desenhar na tabela
             if (dadosRelatorio && Array.isArray(dadosRelatorio)) {
-                tabelaBody.innerHTML = ""; // Limpa as linhas antigas
+                tabelaBody.innerHTML = "";
                 dadosRelatorio.forEach(item => {
                     const novaLinha = tabelaBody.insertRow(-1);
                     novaLinha.innerHTML = `
                         <td class="text-left">${item.nomeProduto}</td>
-                        <td class="text-center">${item.undMedida || 'UND'}</td> <td class="text-center"><strong>${item.quantidadeTotal}</strong></td>
+                        <td class="text-center">${item.undMedida || 'UND'}</td> 
+                        <td class="text-center"><strong>${item.quantidadeTotal}</strong></td>
                         <td class="col-filial">${item.distribuicaoFiliais["Bonito/Bodoquena"] || 0}</td>
                         <td class="col-filial">${item.distribuicaoFiliais["Aquidauana"] || 0}</td>
                         <td class="col-filial">${item.distribuicaoFiliais["Dois Irmãos"] || 0}</td>
@@ -44,61 +37,109 @@ export function excel() {
     const btnExportar = document.getElementById("btnExportarExcel");
     if (btnExportar) {
         btnExportar.addEventListener("click", () => {
-            const tabela = document.querySelector(".tabela-relatorio");
-            if (!tabela) {
-                alert("Não há dados na tabela para exportar!");
+            const dataInicioInput = document.getElementById("dataInicioInput");
+            const dataFimInput = document.getElementById("dataFimInput");
+            const tabelaBody = document.getElementById("produtosRelatorios");
+            if (!tabelaBody || tabelaBody.rows.length === 0) {
+                alert("Não há dados na tabela para exportar! Gere o relatório primeiro.");
                 return;
             }
-            // 1. Converte a tabela HTML para um objeto de aba (Worksheet)
-            const ws = XLSX.utils.table_to_sheet(tabela);
-            // 2. 🌟 AJUSTE AUTOMÁTICO DE LARGURA DAS COLUNAS (Evita o texto cortado)
-            // Varre a tabela para descobrir qual o maior texto de cada coluna e ajusta o tamanho
-            const colunasLargura = [{ wch: 30 }, { wch: 12 }, { wch: 22 }, { wch: 18 }, { wch: 18 }, { wch: 18 }];
-            ws['!cols'] = colunasLargura;
-            // 3. 🌟 ESTILIZAÇÃO DAS CÉLULAS (Cores, Fontes e Alinhamentos)
-            // Vamos passar por todas as células da planilha aplicando o design executivo
-            for (let cellRef in ws) {
-                // Ignora propriedades internas que começam com '!'
-                if (cellRef[0] === '!')
-                    continue;
-                const celula = ws[cellRef];
-                // Descobre a linha da célula (ex: 'A1' -> linha 1, 'B5' -> linha 5)
-                const numeroLinha = parseInt(cellRef.replace(/[^0-9]/g, ''), 10);
-                // Se for a linha 1, é o CABEÇALHO (THEAD)
-                if (numeroLinha === 1) {
-                    celula.s = {
-                        fill: { fgColor: { rgb: "1E293B" } }, // Fundo Slate Escuro (Estilo Dark do seu app)
-                        font: { name: "Arial", size: 11, bold: true, color: { rgb: "FFFFFF" } }, // Texto Branco
-                        alignment: { vertical: "center", horizontal: "center", wrapText: true },
-                        border: { bottom: { style: "medium", color: { rgb: "334155" } } }
-                    };
+            const formatarDataBr = (dataStr) => {
+                if (!dataStr)
+                    return "";
+                const [ano, mes, dia] = dataStr.split("-");
+                return `${dia}/${mes}/${ano}`;
+            };
+            const periodoTexto = `Período Solicitado: ${formatarDataBr(dataInicioInput?.value)} até ${formatarDataBr(dataFimInput?.value)}`;
+            // Guarda o total de linhas para sabermos exatamente qual será a última
+            const totalLinhas = tabelaBody.rows.length;
+            // 1. Início da montagem do HTML - Mantendo seu layout e estilo azul
+            let htmlExcel = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="utf-8">
+                <style>
+                    /* Força o Excel a colar as bordas e respeitar os estilos de contorno */
+                    table { border-collapse: collapse; }
+                    td, th { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10pt; vertical-align: middle; }
+                    
+                    /* Cabeçalho de Identificação */
+                    .titulo-empresa { font-size: 20pt; font-weight: bold; color: #0056B3; letter-spacing: 0.5px; }
+                    .destaque-logo { color: #0056B3; font-size: 22pt; } 
+                    .subtitulo-empresa { font-size: 11pt; color: #0056B3; height: 22px; font-weight: bold; }
+                    .periodo-empresa { font-size: 10pt; font-style: italic; color: #64748B; height: 22px; }
+                    
+                    /* Base do estilo do Cabeçalho da Tabela */
+                    .th-header { background-color: #1A2B4C; color: #FFFFFF; font-weight: bold; text-align: center; height: 32px; }
+                    
+                    /* Formatações de Célula no Excel */
+                    .td-texto { mso-number-format: "\\@"; } 
+                    .td-numero { mso-number-format: "\\#\\,\\#\\#0"; } 
+                </style>
+            </head>
+            <body>
+                <table style="border-collapse: collapse;">
+                    <colgroup>
+                        <col width="320"> <col width="80">  <col width="110"> <col width="160"> <col width="150"> <col width="150"> <col width="150"> </colgroup>
+                    <tbody>
+                        <tr style="height: 55px;">
+                            <td colspan="7" class="titulo-empresa" style="vertical-align: middle; border: none;">
+                                <span class="destaque-logo">■</span> IVRNET Pedidos
+                            </td>
+                        </tr>
+                        <tr><td colspan="7" class="subtitulo-empresa" style="border: none;">CONSOLIDADO DE DISTRIBUIÇÃO DE ESTOQUE POR FILIAIS</td></tr>
+                        <tr><td colspan="7" class="periodo-empresa" style="border: none;">${periodoTexto}</td></tr>
+                        <tr style="height: 15px;"><td colspan="7" style="border: none;"></td></tr> 
+                        
+                        <tr>
+                            <th class="th-header" style="text-align: left; padding-left: 5px; border-top: 1.5pt solid black; border-left: 1.5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">Nome do Produto</th>
+                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">Unid.</th>
+                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">Qtd Total</th>
+                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">📍 Bonito/Bodoquena</th>
+                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">📍 Aquidauana</th>
+                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">📍 Dois Irmãos</th>
+                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: 1.5pt solid black;">📍 Jardim/Nioaque</th>
+                        </tr>
+            `;
+            // 2. Injeta os dados com o Zebrado e aplicando a Borda Grossa apenas nas extremidades
+            Array.from(tabelaBody.rows).forEach((row, index) => {
+                const celulas = row.cells;
+                const corFundo = index % 2 === 0 ? "#FFFFFF" : "#F2F5F9";
+                // 🌟 Descobre se é a última linha de dados para fechar o contorno grosso embaixo
+                const ehUltimaLinha = index === totalLinhas - 1;
+                const bordaBaixo = ehUltimaLinha ? "1.5pt solid black" : ".5pt solid black";
+                if (celulas.length >= 7) {
+                    htmlExcel += `
+                        <tr style="background-color: ${corFundo}; height: 26px; color: #000000;">
+                            <td class="td-texto" style="text-align: left; padding-left: 5px; border-top: .5pt solid black; border-left: 1.5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[0].textContent?.trim() || ""}</td>
+                            
+                            <td class="td-texto" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[1].textContent?.trim() || ""}</td>
+                            <td class="td-numero" style="text-align: center; font-weight: bold; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[2].textContent?.trim() || "0"}</td>
+                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[3].textContent?.trim() || "0"}</td>
+                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[4].textContent?.trim() || "0"}</td>
+                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[5].textContent?.trim() || "0"}</td>
+                            
+                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: 1.5pt solid black; border-bottom: ${bordaBaixo};">${celulas[6].textContent?.trim() || "0"}</td>
+                        </tr>
+                    `;
                 }
-                else {
-                    // Caso contrário, são as linhas de DADOS (TBODY)
-                    const ehColunaProduto = cellRef.startsWith('A'); // Coluna A é o nome do produto
-                    celula.s = {
-                        font: { name: "Arial", size: 10, color: { rgb: "334155" } },
-                        alignment: {
-                            vertical: "center",
-                            // Alinha o produto à esquerda e o resto (números) ao centro
-                            horizontal: ehColunaProduto ? "left" : "center"
-                        },
-                        border: {
-                            bottom: { style: "thin", color: { rgb: "E2E8F0" } } // Linha divisória sutil cinza
-                        }
-                    };
-                    // Se for a coluna "Qtd Total" (Coluna B), vamos deixar o número em negrito
-                    if (cellRef.startsWith('B')) {
-                        celula.s.font.bold = true;
-                    }
-                }
-            }
-            // 4. Cria o livro e adiciona a aba estilizada
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Distribuição de Estoque");
-            // 5. Dispara o download
+            });
+            htmlExcel += `
+                    </tbody>
+                </table>
+            </body>
+            </html>
+            `;
+            // 3. Dispara o arquivo para o navegador baixar
+            const blob = new Blob([htmlExcel], { type: "application/vnd.ms-excel;charset=utf-8" });
+            const urlUrl = URL.createObjectURL(blob);
+            const linkDownload = document.createElement("a");
             const dataHoje = new Date().toISOString().split('T')[0];
-            XLSX.writeFile(wb, `Relatorio_Estoque_Consolidado_${dataHoje}.xlsx`);
+            linkDownload.href = urlUrl;
+            linkDownload.download = `IVRNET_Relatorio_Estoque_${dataHoje}.xls`;
+            document.body.appendChild(linkDownload);
+            linkDownload.click();
+            document.body.removeChild(linkDownload);
         });
     }
 }
