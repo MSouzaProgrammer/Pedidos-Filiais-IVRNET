@@ -1431,3 +1431,35 @@ body {
     border: 1px solid rgba(234, 179, 8, 0.3);
 }
 
+/* ==========================================================================
+   ESTILIZAÇÃO DA BARRA DE ROLAGEM GLOBAL (Navegador)
+   ========================================================================== */
+
+/* Suporte para Firefox (O Firefox usa uma regra mais simples) */
+html {
+    scrollbar-width: thin; /* Deixa a barra fininha */
+    scrollbar-color: #334155 #0F172A; /* Cor do "pegador" e Cor do fundo */
+}
+
+/* Suporte para Chrome, Edge, Safari e Opera (Família Webkit) */
+::-webkit-scrollbar {
+    width: 8px;  /* Largura da barra vertical */
+    height: 8px; /* Altura da barra horizontal (se houver) */
+}
+
+/* O fundo da barra (O trilho por onde ela corre) */
+::-webkit-scrollbar-track {
+    background: #0F172A; /* Um azul/cinza bem escuro para mesclar com o seu fundo */
+    border-radius: 4px;
+}
+
+/* O "Pegador" da barra (A parte que você clica e arrasta) */
+::-webkit-scrollbar-thumb {
+    background: #334155; /* Uma cor um pouco mais clara que o fundo para dar destaque */
+    border-radius: 4px;  /* Deixa as pontas arredondadas */
+}
+
+/* O "Pegador" quando você passa o mouse por cima */
+::-webkit-scrollbar-thumb:hover {
+    background: #475569; /* Fica um pouquinho mais claro no hover */
+}
