@@ -1,6 +1,8 @@
 import { requestBack } from './funcoes.js';
+
+declare const ExcelJS: any;
+declare const saveAs: any;
 declare const lucide: any;
-declare const XLSX: any;
 
 export function exibirRelatorio() {
     const btnFiltro = document.getElementById("btnFiltro") as HTMLButtonElement;
@@ -45,7 +47,9 @@ export function excel() {
     const btnExportar = document.getElementById("btnExportarExcel") as HTMLButtonElement;
 
     if (btnExportar) {
-        btnExportar.addEventListener("click", () => {
+        btnExportar.addEventListener("click", async () => {
+            console.log("Gerando Relatório - Layout Empresarial Premium v2!"); 
+            
             const dataInicioInput = document.getElementById("dataInicioInput") as HTMLInputElement;
             const dataFimInput = document.getElementById("dataFimInput") as HTMLInputElement;
             const tabelaBody = document.getElementById("produtosRelatorios") as HTMLTableSectionElement;
@@ -62,105 +66,168 @@ export function excel() {
             };
 
             const periodoTexto = `Período Solicitado: ${formatarDataBr(dataInicioInput?.value)} até ${formatarDataBr(dataFimInput?.value)}`;
+
+            // 1. Instanciar o Workbook
+            const workbook = new ExcelJS.Workbook(); 
+            const worksheet = workbook.addWorksheet('Relatório');
+
+            // Fundo Branco (Remove as linhas de grade)
+            worksheet.views = [{ showGridLines: false }];
+
+            // =========================================================
+            // 🌟 ESTRUTURA DO CABEÇALHO EMPRESARIAL (Linhas 1 a 4)
+            // =========================================================
             
-            // Guarda o total de linhas para sabermos exatamente qual será a última
-            const totalLinhas = tabelaBody.rows.length;
+            // Dá um espacinho no topo para não colar na borda da tela
+            worksheet.addRow([]).height = 10; 
 
-            // 1. Início da montagem do HTML - Mantendo seu layout e estilo azul
-            let htmlExcel = `
-            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-            <head>
-                <meta charset="utf-8">
-                <style>
-                    /* Força o Excel a colar as bordas e respeitar os estilos de contorno */
-                    table { border-collapse: collapse; }
-                    td, th { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10pt; vertical-align: middle; }
-                    
-                    /* Cabeçalho de Identificação */
-                    .titulo-empresa { font-size: 20pt; font-weight: bold; color: #0056B3; letter-spacing: 0.5px; }
-                    .destaque-logo { color: #0056B3; font-size: 22pt; } 
-                    .subtitulo-empresa { font-size: 11pt; color: #0056B3; height: 22px; font-weight: bold; }
-                    .periodo-empresa { font-size: 10pt; font-style: italic; color: #64748B; height: 22px; }
-                    
-                    /* Base do estilo do Cabeçalho da Tabela */
-                    .th-header { background-color: #1A2B4C; color: #FFFFFF; font-weight: bold; text-align: center; height: 32px; }
-                    
-                    /* Formatações de Célula no Excel */
-                    .td-texto { mso-number-format: "\\@"; } 
-                    .td-numero { mso-number-format: "\\#\\,\\#\\#0"; } 
-                </style>
-            </head>
-            <body>
-                <table style="border-collapse: collapse;">
-                    <colgroup>
-                        <col width="320"> <col width="80">  <col width="110"> <col width="160"> <col width="150"> <col width="150"> <col width="150"> </colgroup>
-                    <tbody>
-                        <tr style="height: 55px;">
-                            <td colspan="7" class="titulo-empresa" style="vertical-align: middle; border: none;">
-                                <span class="destaque-logo">■</span> IVRNET Pedidos
-                            </td>
-                        </tr>
-                        <tr><td colspan="7" class="subtitulo-empresa" style="border: none;">CONSOLIDADO DE DISTRIBUIÇÃO DE ESTOQUE POR FILIAIS</td></tr>
-                        <tr><td colspan="7" class="periodo-empresa" style="border: none;">${periodoTexto}</td></tr>
-                        <tr style="height: 15px;"><td colspan="7" style="border: none;"></td></tr> 
-                        
-                        <tr>
-                            <th class="th-header" style="text-align: left; padding-left: 5px; border-top: 1.5pt solid black; border-left: 1.5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">Nome do Produto</th>
-                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">Unid.</th>
-                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">Qtd Total</th>
-                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">📍 Bonito/Bodoquena</th>
-                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">📍 Aquidauana</th>
-                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: .5pt solid black;">📍 Dois Irmãos</th>
-                            <th class="th-header" style="border-top: 1.5pt solid black; border-left: .5pt solid black; border-bottom: .5pt solid black; border-right: 1.5pt solid black;">📍 Jardim/Nioaque</th>
-                        </tr>
-            `;
+            // Nome da Empresa (🚀 Puxado para a Coluna B)
+            const rowEmpresa = worksheet.addRow(['', 'IVRNET PEDIDOS']);
+            worksheet.mergeCells('B2:G2');
+            rowEmpresa.getCell(2).font = { name: 'Segoe UI', size: 18, bold: true, color: { argb: 'FF1A2B4C' } };
+            rowEmpresa.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
+            rowEmpresa.height = 25;
 
-            // 2. Injeta os dados com o Zebrado e aplicando a Borda Grossa apenas nas extremidades
-            Array.from(tabelaBody.rows).forEach((row: HTMLTableRowElement, index: number) => {
-                const celulas = row.cells;
-                const corFundo = index % 2 === 0 ? "#FFFFFF" : "#F2F5F9";
+            // Título do Relatório (🚀 Puxado para a Coluna B)
+            const rowTitulo = worksheet.addRow(['', 'RELATÓRIO DE MOVIMENTAÇÃO DE PRODUTOS POR FILIAIS']);
+            worksheet.mergeCells('B3:G3');
+            rowTitulo.getCell(2).font = { name: 'Segoe UI', size: 11, bold: true, color: { argb: 'FF475569' } };
+            rowTitulo.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
+            rowTitulo.height = 18;
+
+            // Período (🚀 Puxado para a Coluna B)
+            const rowPeriodo = worksheet.addRow(['', periodoTexto]);
+            worksheet.mergeCells('B4:G4');
+            rowPeriodo.getCell(2).font = { name: 'Segoe UI', size: 10, italic: true, color: { argb: 'FF8E9BAE' } };
+            rowPeriodo.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
+            rowPeriodo.height = 18;
+
+            // Linha Azul de Destaque separando o cabeçalho
+            const rowSeparador = worksheet.addRow([]);
+            rowSeparador.height = 10;
+            for (let i = 1; i <= 7; i++) {
+                // Aplica uma borda azul grossa na parte de baixo
+                worksheet.getCell(5, i).border = { bottom: { style: 'medium', color: { argb: 'FF0056B3' } } };
+            }
+
+            // Espaço vazio antes de começar a tabela
+            worksheet.addRow([]).height = 15;
+
+            // =========================================================
+            // 🌟 INSERÇÃO DA LOGO (Isolada à esquerda nas colunas A e B)
+            // =========================================================
+            try {
+                const urlLogo = './img/logo.png'; // ⚠️ Ajuste o caminho se necessário
+                const res = await fetch(urlLogo);
+                const blob = await res.blob();
+                const base64Text = await new Promise<string>((resolve) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => resolve((reader.result as string).split(',')[1]); 
+                    reader.readAsDataURL(blob);
+                });
+
+                const imageId = workbook.addImage({ base64: base64Text, extension: 'png' });
+
+                // A logo vai ficar flutuando do lado esquerdo (perto do A2), sem distorcer!
+                // DICA: Se a logo ficar esmagada, mexa SÓ aqui:
+                // -> Se a sua logo for REDONDA/QUADRADA: width: 90, height: 90
+                // -> Se a sua logo for RETANGULAR LARGA: width: 150, height: 50
+                worksheet.addImage(imageId, {
+                    tl: { col: 0.2, row: 0.2 },
+                    // 🚀 Menos largura pros lados e mais altura pra baixo!
+                    ext: { width: 190, height: 110 } 
+                });
+            } catch (error) {
+                console.warn("Sem logo disponível", error);
+            }
+
+            // =========================================================
+            // 🌟 TABELA DE DADOS (Começa na Linha 7)
+            // =========================================================
+            const cabecalho = [
+                "Nome do Produto", 
+                "Unid.", 
+                "Qtd Total", 
+                "📍 Bonito/Bodoquena", 
+                "📍 Aquidauana", 
+                "📍 Dois Irmãos", 
+                "📍 Jardim/Nioaque"
+            ];
+            const headerRow = worksheet.addRow(cabecalho);
+            headerRow.height = 30;
+
+            // Estilo do Cabeçalho da Tabela
+            headerRow.eachCell((cell: any, colNumber: number) => {
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1A2B4C' } };
+                cell.font = { name: 'Segoe UI', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
+                cell.alignment = { vertical: 'middle', horizontal: colNumber === 1 ? 'left' : 'center', wrapText: true };
                 
-                // 🌟 Descobre se é a última linha de dados para fechar o contorno grosso embaixo
-                const ehUltimaLinha = index === totalLinhas - 1;
-                const bordaBaixo = ehUltimaLinha ? "1.5pt solid black" : ".5pt solid black";
+                cell.border = {
+                    top: { style: 'medium', color: { argb: 'FF000000' } },
+                    bottom: { style: 'thin', color: { argb: 'FF000000' } },
+                    left: colNumber === 1 ? { style: 'medium', color: { argb: 'FF000000' } } : { style: 'thin', color: { argb: 'FF000000' } },
+                    right: colNumber === 7 ? { style: 'medium', color: { argb: 'FF000000' } } : { style: 'thin', color: { argb: 'FF000000' } }
+                };
+            });
 
+            // Dados Zebrados
+            const rowsHtml = Array.from(tabelaBody.rows);
+            rowsHtml.forEach((rowHtml, index) => {
+                const celulas = (rowHtml as HTMLTableRowElement).cells;
                 if (celulas.length >= 7) {
-                    htmlExcel += `
-                        <tr style="background-color: ${corFundo}; height: 26px; color: #000000;">
-                            <td class="td-texto" style="text-align: left; padding-left: 5px; border-top: .5pt solid black; border-left: 1.5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[0].textContent?.trim() || ""}</td>
-                            
-                            <td class="td-texto" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[1].textContent?.trim() || ""}</td>
-                            <td class="td-numero" style="text-align: center; font-weight: bold; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[2].textContent?.trim() || "0"}</td>
-                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[3].textContent?.trim() || "0"}</td>
-                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[4].textContent?.trim() || "0"}</td>
-                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: .5pt solid black; border-bottom: ${bordaBaixo};">${celulas[5].textContent?.trim() || "0"}</td>
-                            
-                            <td class="td-numero" style="text-align: center; border-top: .5pt solid black; border-left: .5pt solid black; border-right: 1.5pt solid black; border-bottom: ${bordaBaixo};">${celulas[6].textContent?.trim() || "0"}</td>
-                        </tr>
-                    `;
+                    const dataRow = worksheet.addRow([
+                        celulas[0].textContent?.trim() || "",
+                        celulas[1].textContent?.trim() || "",
+                        Number(celulas[2].textContent?.trim() || 0),
+                        Number(celulas[3].textContent?.trim() || 0),
+                        Number(celulas[4].textContent?.trim() || 0),
+                        Number(celulas[5].textContent?.trim() || 0),
+                        Number(celulas[6].textContent?.trim() || 0)
+                    ]);
+                    
+                    dataRow.height = 24;
+                    const isLastRow = index === rowsHtml.length - 1;
+                    const isOddRow = index % 2 !== 0;
+
+                    dataRow.eachCell((cell: any, colNumber: number) => {
+                        cell.font = { name: 'Segoe UI', size: 10, bold: colNumber === 3, color: { argb: 'FF000000' } };
+                        cell.alignment = { vertical: 'middle', horizontal: colNumber === 1 ? 'left' : 'center' };
+                        
+                        if (isOddRow) {
+                            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F7FA' } }; // Azul/Cinza bem clarinho
+                        }
+
+                        if (colNumber !== 1 && colNumber !== 2) {
+                            cell.numFmt = '#,##0';
+                        }
+
+                        cell.border = {
+                            top: { style: 'thin', color: { argb: 'FF000000' } },
+                            bottom: isLastRow ? { style: 'medium', color: { argb: 'FF000000' } } : { style: 'thin', color: { argb: 'FF000000' } },
+                            left: colNumber === 1 ? { style: 'medium', color: { argb: 'FF000000' } } : { style: 'thin', color: { argb: 'FF000000' } },
+                            right: colNumber === 7 ? { style: 'medium', color: { argb: 'FF000000' } } : { style: 'thin', color: { argb: 'FF000000' } }
+                        };
+                    });
                 }
             });
 
-            htmlExcel += `
-                    </tbody>
-                </table>
-            </body>
-            </html>
-            `;
+            // =========================================================
+            // 🌟 LARGURA DAS COLUNAS
+            // =========================================================
+            worksheet.columns = [
+                { width: 38 }, // A - Produto (e parte da logo)
+                { width: 10 }, // B - Unid
+                { width: 14 }, // C - Qtd Total (Início do texto do cabeçalho)
+                { width: 22 }, // D - Bonito
+                { width: 18 }, // E - Aquidauana
+                { width: 18 }, // F - Dois Irmãos
+                { width: 18 }  // G - Jardim
+            ];
 
-            // 3. Dispara o arquivo para o navegador baixar
-            const blob = new Blob([htmlExcel], { type: "application/vnd.ms-excel;charset=utf-8" });
-            const urlUrl = URL.createObjectURL(blob);
-            
-            const linkDownload = document.createElement("a");
+            // Gerar e Salvar
+            const buffer = await workbook.xlsx.writeBuffer();
             const dataHoje = new Date().toISOString().split('T')[0];
-            
-            linkDownload.href = urlUrl;
-            linkDownload.download = `IVRNET_Relatorio_Estoque_${dataHoje}.xls`;
-            
-            document.body.appendChild(linkDownload);
-            linkDownload.click();
-            document.body.removeChild(linkDownload);
+            saveAs(new Blob([buffer]), `Relatorio_Empresarial_${dataHoje}.xlsx`);
         });
     }
 }

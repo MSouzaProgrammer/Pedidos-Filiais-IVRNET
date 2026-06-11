@@ -1,5 +1,12 @@
-import { requestBack, estoque, setEstoque } from './funcoes.js';
-export function renderProductList(itens) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.renderProductList = renderProductList;
+exports.carregarProdutos = carregarProdutos;
+exports.filterProducts = filterProducts;
+exports.openModal = openModal;
+exports.closeModal = closeModal;
+const funcoes_js_1 = require("./funcoes.js");
+function renderProductList(itens) {
     const container = document.getElementById("global-product-list");
     if (!container)
         return;
@@ -22,39 +29,39 @@ export function renderProductList(itens) {
     if (typeof lucide !== "undefined")
         lucide.createIcons();
 }
-export async function carregarProdutos() {
+async function carregarProdutos() {
     try {
-        const resposta = await requestBack("produto", "GET", null);
+        const resposta = await (0, funcoes_js_1.requestBack)("produto", "GET", null);
         if (resposta.status === 302 || resposta.ok) {
             const dadosBack = await resposta.json();
-            setEstoque(dadosBack.map((itemDoJava) => ({
+            (0, funcoes_js_1.setEstoque)(dadosBack.map((itemDoJava) => ({
                 id: String(itemDoJava.id),
                 idProduto: String(itemDoJava.idProduto),
                 nome: String(itemDoJava.name),
                 unidade: String(itemDoJava.undMedida),
                 quantidade: 0
             })));
-            renderProductList(estoque);
+            renderProductList(funcoes_js_1.estoque);
         }
     }
     catch (err) {
         console.error("Erro ao buscar produtos:", err);
     }
 }
-export function filterProducts() {
+function filterProducts() {
     const searchEl = document.getElementById("search-product");
     if (!searchEl)
         return;
     const term = searchEl.value.toLowerCase();
-    const filtered = estoque.filter(p => p.nome.toLowerCase().includes(term) || String(p.id).toLowerCase().includes(term));
+    const filtered = funcoes_js_1.estoque.filter(p => p.nome.toLowerCase().includes(term) || String(p.id).toLowerCase().includes(term));
     renderProductList(filtered);
 }
-export function openModal() {
+function openModal() {
     const modal = document.getElementById("modal-produto");
     if (modal)
         modal.style.display = "flex";
 }
-export function closeModal() {
+function closeModal() {
     const modal = document.getElementById("modal-produto");
     const modalEdit = document.getElementById("modal-produto-edit");
     if (modal)
@@ -78,11 +85,11 @@ if (btnNovoProduto) {
                 id: idP.value, idProduto: idP.value, nome: nomeP.value, unidade: unitP ? unitP.value : "", quantidade: 0
             };
             try {
-                const resposta = await requestBack("produto/idP/" + idP.value, "GET", null);
+                const resposta = await (0, funcoes_js_1.requestBack)("produto/idP/" + idP.value, "GET", null);
                 if (resposta.status !== 409) {
-                    await requestBack("produto", "POST", { idProduto: produto.idProduto, name: produto.nome, undMedida: produto.unidade });
-                    estoque.push(produto);
-                    renderProductList(estoque);
+                    await (0, funcoes_js_1.requestBack)("produto", "POST", { idProduto: produto.idProduto, name: produto.nome, undMedida: produto.unidade });
+                    funcoes_js_1.estoque.push(produto);
+                    renderProductList(funcoes_js_1.estoque);
                     closeModal();
                     nomeP.value = "";
                     idP.value = "";

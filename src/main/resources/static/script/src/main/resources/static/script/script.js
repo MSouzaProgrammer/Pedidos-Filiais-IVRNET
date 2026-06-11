@@ -1,27 +1,29 @@
-import { showPage, avisoDePermissao, requestBack, estoque, setEstoque, carrinhoDePedidos, setCarrinhoDePedidos, setConsultaGlobal, pegarNome, consultaGlobal } from './funcoes.js'; // Adicionado 'consultaGlobal' no import
-import { carregarProdutos, renderProductList, filterProducts, openModal, closeModal } from './produtos.js';
-import { configurarDropdownProdutos, iniciarNovoPedido } from './novoPedido.js';
-import { iniciarDashboard, produtosLista, salvarAlteracao, mostrarLista, fecharAba } from './dashboard.js';
-import { exibirRelatorio, excel } from './relatorio.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const funcoes_js_1 = require("./funcoes.js"); // Adicionado 'consultaGlobal' no import
+const produtos_js_1 = require("./produtos.js");
+const novoPedido_js_1 = require("./novoPedido.js");
+const dashboard_js_1 = require("./dashboard.js");
+const relatorio_js_1 = require("./relatorio.js");
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof lucide !== "undefined")
         lucide.createIcons();
     // CORRIGIDO: Ativa o botão usando a variável de estado correta (consultaGlobal)
     document.getElementById("btnImprimirPedido")?.addEventListener("click", () => {
-        if (consultaGlobal) {
-            window.gerarImpressaoPicking(consultaGlobal);
+        if (funcoes_js_1.consultaGlobal) {
+            window.gerarImpressaoPicking(funcoes_js_1.consultaGlobal);
         }
         else {
             alert("Nenhum pedido selecionado para impressão.");
         }
     });
     // 1. Inicializa dependências visuais e comportamentos
-    carregarProdutos();
-    configurarDropdownProdutos();
-    iniciarNovoPedido();
-    iniciarDashboard();
-    exibirRelatorio();
-    excel();
+    (0, produtos_js_1.carregarProdutos)();
+    (0, novoPedido_js_1.configurarDropdownProdutos)();
+    (0, novoPedido_js_1.iniciarNovoPedido)();
+    (0, dashboard_js_1.iniciarDashboard)();
+    (0, relatorio_js_1.exibirRelatorio)();
+    (0, relatorio_js_1.excel)();
     // 2. Trava campos para não-administradores na tela de dashboard
     if (sessionStorage.getItem("userAccess") === "ADM") {
         document.getElementById("btnAddProduto").disabled = false;
@@ -34,17 +36,17 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("tObservacoes").disabled = true;
     }
 });
-window.showPage = showPage;
-window.avisoDePermissao = avisoDePermissao;
-window.filterProducts = filterProducts;
-window.openModal = openModal;
-window.closeModal = closeModal;
-window.produtosLista = produtosLista;
-window.salvarAlteracao = salvarAlteracao;
-window.pegarNome = pegarNome;
-window.fecharAba = fecharAba;
+window.showPage = funcoes_js_1.showPage;
+window.avisoDePermissao = funcoes_js_1.avisoDePermissao;
+window.filterProducts = produtos_js_1.filterProducts;
+window.openModal = produtos_js_1.openModal;
+window.closeModal = produtos_js_1.closeModal;
+window.produtosLista = dashboard_js_1.produtosLista;
+window.salvarAlteracao = dashboard_js_1.salvarAlteracao;
+window.pegarNome = funcoes_js_1.pegarNome;
+window.fecharAba = dashboard_js_1.fecharAba;
 window.apagarCarrinho = function (idParaRemover) {
-    setCarrinhoDePedidos(carrinhoDePedidos.filter(produto => String(produto.nome) !== String(idParaRemover)));
+    (0, funcoes_js_1.setCarrinhoDePedidos)(funcoes_js_1.carrinhoDePedidos.filter(produto => String(produto.nome) !== String(idParaRemover)));
 };
 function mostrarConfirmCustomizado(titulo, mensagem) {
     return new Promise((resolve) => {
@@ -83,10 +85,10 @@ window.deleteProduct = async function (idDoBanco) {
     if (!querMesmoApagar)
         return; // Se o usuário clicar em Cancelar, para a execução aqui
     try {
-        const resposta = await requestBack("produto/" + idDoBanco, "DELETE", null);
+        const resposta = await (0, funcoes_js_1.requestBack)("produto/" + idDoBanco, "DELETE", null);
         if (resposta.ok) {
-            setEstoque(estoque.filter((p) => String(p.id) !== String(idDoBanco)));
-            renderProductList(estoque);
+            (0, funcoes_js_1.setEstoque)(funcoes_js_1.estoque.filter((p) => String(p.id) !== String(idDoBanco)));
+            (0, produtos_js_1.renderProductList)(funcoes_js_1.estoque);
         }
         else {
             alert("Não foi possível apagar.");
@@ -98,11 +100,11 @@ window.deleteProduct = async function (idDoBanco) {
 };
 window.consultarLista = async function (id) {
     try {
-        const resposta = await requestBack("pedido/pedidoId/" + id, "GET", null);
+        const resposta = await (0, funcoes_js_1.requestBack)("pedido/pedidoId/" + id, "GET", null);
         if (resposta && (resposta.status === 302 || resposta.ok)) {
             const dadosPedido = await resposta.json();
-            setConsultaGlobal(dadosPedido);
-            mostrarLista();
+            (0, funcoes_js_1.setConsultaGlobal)(dadosPedido);
+            (0, dashboard_js_1.mostrarLista)();
         }
     }
     catch (error) {
@@ -120,15 +122,15 @@ window.editarItem = function (idDoBanco) {
             const idP = document.getElementById("edit-prod-id");
             const unitP = document.getElementById("edit-prod-unit");
             if (nomeP && idP && nomeP.value.trim() !== "" && idP.value.trim() !== "") {
-                await requestBack("produto/update", "PUT", {
+                await (0, funcoes_js_1.requestBack)("produto/update", "PUT", {
                     id: idDoBanco, idProduto: idP.value, name: nomeP.value, undMedida: unitP ? unitP.value : ""
                 });
-                closeModal();
+                (0, produtos_js_1.closeModal)();
                 nomeP.value = "";
                 idP.value = "";
                 if (unitP)
                     unitP.value = "";
-                carregarProdutos(); // Atualiza a tela
+                (0, produtos_js_1.carregarProdutos)(); // Atualiza a tela
             }
         };
     }

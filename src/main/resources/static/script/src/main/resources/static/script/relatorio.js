@@ -1,5 +1,44 @@
-import { requestBack } from './funcoes.js';
-export function exibirRelatorio() {
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.exibirRelatorio = exibirRelatorio;
+exports.excel = excel;
+const funcoes_js_1 = require("./funcoes.js");
+const ExcelJS = __importStar(require("exceljs")); // 🌟 CORRIGIDO: Importa tudo como o objeto ExcelJS
+const file_saver_1 = require("file-saver");
+function exibirRelatorio() {
     const btnFiltro = document.getElementById("btnFiltro");
     const tabelaBody = document.getElementById("produtosRelatorios");
     const dataInicioInput = document.getElementById("dataInicioInput");
@@ -13,7 +52,7 @@ export function exibirRelatorio() {
                 return;
             }
             const urlComFiltro = `api/relatorios/distribuicao?inicio=${dataInicio}&fim=${dataFim}`;
-            const response = await requestBack(urlComFiltro, "GET", null);
+            const response = await (0, funcoes_js_1.requestBack)(urlComFiltro, "GET", null);
             const dadosRelatorio = await response.json();
             if (dadosRelatorio && Array.isArray(dadosRelatorio)) {
                 tabelaBody.innerHTML = "";
@@ -33,11 +72,10 @@ export function exibirRelatorio() {
         });
     }
 }
-export function excel() {
+function excel() {
     const btnExportar = document.getElementById("btnExportarExcel");
     if (btnExportar) {
         btnExportar.addEventListener("click", async () => {
-            console.log("Gerando Relatório - Layout Empresarial Premium v2!");
             const dataInicioInput = document.getElementById("dataInicioInput");
             const dataFimInput = document.getElementById("dataFimInput");
             const tabelaBody = document.getElementById("produtosRelatorios");
@@ -52,72 +90,27 @@ export function excel() {
                 return `${dia}/${mes}/${ano}`;
             };
             const periodoTexto = `Período Solicitado: ${formatarDataBr(dataInicioInput?.value)} até ${formatarDataBr(dataFimInput?.value)}`;
-            // 1. Instanciar o Workbook
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Relatório');
-            // Fundo Branco (Remove as linhas de grade)
-            worksheet.views = [{ showGridLines: false }];
-            // =========================================================
-            // 🌟 ESTRUTURA DO CABEÇALHO EMPRESARIAL (Linhas 1 a 4)
-            // =========================================================
-            // Dá um espacinho no topo para não colar na borda da tela
-            worksheet.addRow([]).height = 10;
-            // Nome da Empresa (🚀 Puxado para a Coluna B)
-            const rowEmpresa = worksheet.addRow(['', 'IVRNET PEDIDOS']);
-            worksheet.mergeCells('B2:G2');
-            rowEmpresa.getCell(2).font = { name: 'Segoe UI', size: 18, bold: true, color: { argb: 'FF1A2B4C' } };
-            rowEmpresa.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
-            rowEmpresa.height = 25;
-            // Título do Relatório (🚀 Puxado para a Coluna B)
-            const rowTitulo = worksheet.addRow(['', 'RELATÓRIO DE MOVIMENTAÇÃO DE PRODUTOS POR FILIAIS']);
-            worksheet.mergeCells('B3:G3');
-            rowTitulo.getCell(2).font = { name: 'Segoe UI', size: 11, bold: true, color: { argb: 'FF475569' } };
-            rowTitulo.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
-            rowTitulo.height = 18;
-            // Período (🚀 Puxado para a Coluna B)
-            const rowPeriodo = worksheet.addRow(['', periodoTexto]);
-            worksheet.mergeCells('B4:G4');
-            rowPeriodo.getCell(2).font = { name: 'Segoe UI', size: 10, italic: true, color: { argb: 'FF8E9BAE' } };
-            rowPeriodo.getCell(2).alignment = { vertical: 'middle', horizontal: 'left' };
-            rowPeriodo.height = 18;
-            // Linha Azul de Destaque separando o cabeçalho
-            const rowSeparador = worksheet.addRow([]);
-            rowSeparador.height = 10;
-            for (let i = 1; i <= 7; i++) {
-                // Aplica uma borda azul grossa na parte de baixo
-                worksheet.getCell(5, i).border = { bottom: { style: 'medium', color: { argb: 'FF0056B3' } } };
-            }
-            // Espaço vazio antes de começar a tabela
-            worksheet.addRow([]).height = 15;
-            // =========================================================
-            // 🌟 INSERÇÃO DA LOGO (Isolada à esquerda nas colunas A e B)
-            // =========================================================
-            try {
-                const urlLogo = './img/logo.png'; // ⚠️ Ajuste o caminho se necessário
-                const res = await fetch(urlLogo);
-                const blob = await res.blob();
-                const base64Text = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result.split(',')[1]);
-                    reader.readAsDataURL(blob);
-                });
-                const imageId = workbook.addImage({ base64: base64Text, extension: 'png' });
-                // A logo vai ficar flutuando do lado esquerdo (perto do A2), sem distorcer!
-                // DICA: Se a logo ficar esmagada, mexa SÓ aqui:
-                // -> Se a sua logo for REDONDA/QUADRADA: width: 90, height: 90
-                // -> Se a sua logo for RETANGULAR LARGA: width: 150, height: 50
-                worksheet.addImage(imageId, {
-                    tl: { col: 0.2, row: 0.2 },
-                    // 🚀 Menos largura pros lados e mais altura pra baixo!
-                    ext: { width: 190, height: 110 }
-                });
-            }
-            catch (error) {
-                console.warn("Sem logo disponível", error);
-            }
-            // =========================================================
-            // 🌟 TABELA DE DADOS (Começa na Linha 7)
-            // =========================================================
+            // 1. Instanciar o Workbook de forma correta usando o namespace
+            const workbook = new ExcelJS.Workbook(); // 🌟 CORRIGIDO
+            const worksheet = workbook.addWorksheet('Distribuição');
+            // 2. Título Principal
+            const r1 = worksheet.addRow(['■ IVRNET Pedidos']);
+            worksheet.mergeCells('A1:G1');
+            r1.getCell(1).font = { name: 'Segoe UI', size: 20, bold: true, color: { argb: 'FF0056B3' } };
+            r1.height = 35;
+            // Subtítulo
+            const r2 = worksheet.addRow(['CONSOLIDADO DE DISTRIBUIÇÃO DE ESTOQUE POR FILIAIS']);
+            worksheet.mergeCells('A2:G2');
+            r2.getCell(1).font = { name: 'Segoe UI', size: 11, bold: true, color: { argb: 'FF0056B3' } };
+            r2.height = 20;
+            // Período
+            const r3 = worksheet.addRow([periodoTexto]);
+            worksheet.mergeCells('A3:G3');
+            r3.getCell(1).font = { name: 'Segoe UI', size: 10, italic: true, color: { argb: 'FF64748B' } };
+            r3.height = 20;
+            // Linha em branco de espaço
+            worksheet.addRow([]);
+            // 3. Cabeçalho da Tabela (Linha 5)
             const cabecalho = [
                 "Nome do Produto",
                 "Unid.",
@@ -128,8 +121,8 @@ export function excel() {
                 "📍 Jardim/Nioaque"
             ];
             const headerRow = worksheet.addRow(cabecalho);
-            headerRow.height = 30;
-            // Estilo do Cabeçalho da Tabela
+            headerRow.height = 32;
+            // 🌟 CORRIGIDO: Parâmetros tipados explicitamente para o TS não reclamar
             headerRow.eachCell((cell, colNumber) => {
                 cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1A2B4C' } };
                 cell.font = { name: 'Segoe UI', size: 10, bold: true, color: { argb: 'FFFFFFFF' } };
@@ -141,7 +134,7 @@ export function excel() {
                     right: colNumber === 7 ? { style: 'medium', color: { argb: 'FF000000' } } : { style: 'thin', color: { argb: 'FF000000' } }
                 };
             });
-            // Dados Zebrados
+            // 4. Injetar as linhas de dados da tabela HTML
             const rowsHtml = Array.from(tabelaBody.rows);
             rowsHtml.forEach((rowHtml, index) => {
                 const celulas = rowHtml.cells;
@@ -155,14 +148,15 @@ export function excel() {
                         Number(celulas[5].textContent?.trim() || 0),
                         Number(celulas[6].textContent?.trim() || 0)
                     ]);
-                    dataRow.height = 24;
+                    dataRow.height = 26;
                     const isLastRow = index === rowsHtml.length - 1;
                     const isOddRow = index % 2 !== 0;
+                    // 🌟 CORRIGIDO: Parâmetros tipados explicitamente aqui também
                     dataRow.eachCell((cell, colNumber) => {
                         cell.font = { name: 'Segoe UI', size: 10, bold: colNumber === 3, color: { argb: 'FF000000' } };
                         cell.alignment = { vertical: 'middle', horizontal: colNumber === 1 ? 'left' : 'center' };
                         if (isOddRow) {
-                            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF4F7FA' } }; // Azul/Cinza bem clarinho
+                            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF2F5F9' } };
                         }
                         if (colNumber !== 1 && colNumber !== 2) {
                             cell.numFmt = '#,##0';
@@ -176,22 +170,20 @@ export function excel() {
                     });
                 }
             });
-            // =========================================================
-            // 🌟 LARGURA DAS COLUNAS
-            // =========================================================
+            // 5. Configurar a largura das colunas
             worksheet.columns = [
-                { width: 38 }, // A - Produto (e parte da logo)
+                { width: 38 }, // A - Produto
                 { width: 10 }, // B - Unid
-                { width: 14 }, // C - Qtd Total (Início do texto do cabeçalho)
+                { width: 14 }, // C - Qtd Total
                 { width: 22 }, // D - Bonito
                 { width: 18 }, // E - Aquidauana
                 { width: 18 }, // F - Dois Irmãos
                 { width: 18 } // G - Jardim
             ];
-            // Gerar e Salvar
+            // 6. Gerar o Buffer binário e salvar
             const buffer = await workbook.xlsx.writeBuffer();
             const dataHoje = new Date().toISOString().split('T')[0];
-            saveAs(new Blob([buffer]), `Relatorio_Empresarial_${dataHoje}.xlsx`);
+            (0, file_saver_1.saveAs)(new Blob([buffer]), `IVRNET_Relatorio_Estoque_${dataHoje}.xlsx`);
         });
     }
 }

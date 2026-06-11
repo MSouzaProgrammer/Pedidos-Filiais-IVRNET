@@ -1,16 +1,30 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.consultaGlobal = exports.filialNome = exports.carrinhoDePedidos = exports.produtoEmEspera = exports.estoque = void 0;
+exports.setEstoque = setEstoque;
+exports.setProdutoEmEspera = setProdutoEmEspera;
+exports.setCarrinhoDePedidos = setCarrinhoDePedidos;
+exports.setFilialNome = setFilialNome;
+exports.setConsultaGlobal = setConsultaGlobal;
+exports.requestBack = requestBack;
+exports.ligarLoading = ligarLoading;
+exports.desligarLoading = desligarLoading;
+exports.showPage = showPage;
+exports.avisoDePermissao = avisoDePermissao;
+exports.pegarNome = pegarNome;
 // --- VARIÁVEIS GLOBAIS (ESTADO) ---
-export let estoque = [];
-export function setEstoque(novoEstoque) { estoque = novoEstoque; }
-export let produtoEmEspera = null;
-export function setProdutoEmEspera(prod) { produtoEmEspera = prod; }
-export let carrinhoDePedidos = [];
-export function setCarrinhoDePedidos(novoCarrinho) { carrinhoDePedidos = novoCarrinho; }
-export let filialNome = "";
-export function setFilialNome(nome) { filialNome = nome; }
-export let consultaGlobal = null;
-export function setConsultaGlobal(consulta) { consultaGlobal = consulta; }
+exports.estoque = [];
+function setEstoque(novoEstoque) { exports.estoque = novoEstoque; }
+exports.produtoEmEspera = null;
+function setProdutoEmEspera(prod) { exports.produtoEmEspera = prod; }
+exports.carrinhoDePedidos = [];
+function setCarrinhoDePedidos(novoCarrinho) { exports.carrinhoDePedidos = novoCarrinho; }
+exports.filialNome = "";
+function setFilialNome(nome) { exports.filialNome = nome; }
+exports.consultaGlobal = null;
+function setConsultaGlobal(consulta) { exports.consultaGlobal = consulta; }
 // --- FUNÇÕES UTILITÁRIAS ---
-export async function requestBack(caminho, metodo, dados) {
+async function requestBack(caminho, metodo, dados) {
     ligarLoading();
     const opcoes = {
         method: metodo,
@@ -34,7 +48,7 @@ export async function requestBack(caminho, metodo, dados) {
     desligarLoading();
     return resposta;
 }
-export function ligarLoading(mensagem = "Carregando dados...") {
+function ligarLoading(mensagem = "Carregando dados...") {
     const overlay = document.getElementById("loading-global");
     if (overlay) {
         const texto = overlay.querySelector("span");
@@ -43,12 +57,12 @@ export function ligarLoading(mensagem = "Carregando dados...") {
         overlay.classList.add("ativo");
     }
 }
-export function desligarLoading() {
+function desligarLoading() {
     const overlay = document.getElementById("loading-global");
     if (overlay)
         overlay.classList.remove("ativo");
 }
-export function showPage(pageId) {
+function showPage(pageId) {
     document.querySelectorAll(".page-content").forEach((p) => p.classList.remove("active"));
     document.querySelectorAll(".nav-link").forEach((l) => l.classList.remove("active"));
     const pageTarget = document.getElementById(pageId + "-page");
@@ -62,14 +76,14 @@ export function showPage(pageId) {
     if (titleEl)
         titleEl.innerText = titles[pageId] || "Página";
 }
-export function avisoDePermissao() {
+function avisoDePermissao() {
     alert("Você não tem permissão de administrador");
 }
-export function pegarNome(elemento) {
+function pegarNome(elemento) {
     const iElement = elemento.querySelector('i');
     if (iElement) {
         setFilialNome(iElement.innerText);
     }
-    return filialNome;
+    return exports.filialNome;
 }
 //# sourceMappingURL=funcoes.js.map

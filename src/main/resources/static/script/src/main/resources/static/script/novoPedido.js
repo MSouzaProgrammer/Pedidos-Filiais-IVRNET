@@ -1,9 +1,13 @@
-import { requestBack, estoque, carrinhoDePedidos, produtoEmEspera, setProdutoEmEspera } from './funcoes.js';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.configurarDropdownProdutos = configurarDropdownProdutos;
+exports.iniciarNovoPedido = iniciarNovoPedido;
+const funcoes_js_1 = require("./funcoes.js");
 const btAdd = document.getElementById("btn-add-order");
 const inputProduto = document.getElementById("prod-nome");
 const listaSugestoes = document.getElementById("sugestoes-produtos");
 const quantValor = document.getElementById("prod-qty");
-export function configurarDropdownProdutos() {
+function configurarDropdownProdutos() {
     if (!inputProduto || !listaSugestoes || !quantValor)
         return;
     inputProduto.addEventListener("input", function () {
@@ -13,14 +17,14 @@ export function configurarDropdownProdutos() {
             listaSugestoes.style.display = "none";
             return;
         }
-        const produtosFiltrados = estoque.filter((p) => p.nome.toLowerCase().includes(valorDigitado));
+        const produtosFiltrados = funcoes_js_1.estoque.filter((p) => p.nome.toLowerCase().includes(valorDigitado));
         if (produtosFiltrados.length > 0) {
             produtosFiltrados.forEach((produto) => {
                 const li = document.createElement("li");
                 li.textContent = produto.nome;
                 li.addEventListener("click", function () {
                     inputProduto.value = produto.nome;
-                    setProdutoEmEspera(produto);
+                    (0, funcoes_js_1.setProdutoEmEspera)(produto);
                     listaSugestoes.style.display = "none";
                     quantValor.disabled = false;
                     btAdd.style.backgroundColor = '#041033';
@@ -42,7 +46,7 @@ export function configurarDropdownProdutos() {
     });
 }
 // Configuração inicial dos botões do carrinho
-export function iniciarNovoPedido() {
+function iniciarNovoPedido() {
     if (quantValor && quantValor.value === "") {
         btAdd.disabled = true;
         btAdd.style.backgroundColor = 'red';
@@ -55,7 +59,7 @@ export function iniciarNovoPedido() {
                 return;
             const nome = inputProduto.value;
             const qty = quantValor.value;
-            if (!produtoEmEspera) {
+            if (!funcoes_js_1.produtoEmEspera) {
                 alert("Selecione um produto da lista!");
                 return;
             }
@@ -72,13 +76,13 @@ export function iniciarNovoPedido() {
             if (typeof lucide !== "undefined")
                 lucide.createIcons();
             const itemFinalCarrinho = {
-                id: produtoEmEspera.id,
-                idProduto: produtoEmEspera.idProduto,
-                nome: produtoEmEspera.nome,
-                unidade: produtoEmEspera.unidade,
+                id: funcoes_js_1.produtoEmEspera.id,
+                idProduto: funcoes_js_1.produtoEmEspera.idProduto,
+                nome: funcoes_js_1.produtoEmEspera.nome,
+                unidade: funcoes_js_1.produtoEmEspera.unidade,
                 quantidade: quantValor.valueAsNumber
             };
-            carrinhoDePedidos.push(itemFinalCarrinho);
+            funcoes_js_1.carrinhoDePedidos.push(itemFinalCarrinho);
             inputProduto.value = "";
             quantValor.value = "1";
             btAdd.disabled = true;
@@ -90,10 +94,10 @@ export function iniciarNovoPedido() {
     const btnFinalizar = document.getElementById("btn-finalizar");
     if (btnFinalizar) {
         btnFinalizar.addEventListener("click", async () => {
-            if (carrinhoDePedidos.length !== 0) {
+            if (funcoes_js_1.carrinhoDePedidos.length !== 0) {
                 const filialSelecionada = document.getElementById("select-filial");
                 const nomeUsuario = sessionStorage.getItem("userName") || "Name";
-                const listaProdutos = carrinhoDePedidos.map(item => ({
+                const listaProdutos = funcoes_js_1.carrinhoDePedidos.map(item => ({
                     idProduto: item.idProduto, name: item.nome, undMedida: item.unidade, quant: item.quantidade
                 }));
                 const dadosPedido = {
@@ -101,7 +105,7 @@ export function iniciarNovoPedido() {
                     lProdutos: listaProdutos,
                     usuario: nomeUsuario
                 };
-                await requestBack("pedido", "POST", dadosPedido);
+                await (0, funcoes_js_1.requestBack)("pedido", "POST", dadosPedido);
                 location.reload();
             }
         });
