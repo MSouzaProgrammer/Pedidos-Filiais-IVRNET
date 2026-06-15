@@ -65,7 +65,7 @@ export function iniciarNovoPedido() {
           <div><span style="font-size:14px; font-weight:600">${nome}</span></div>
           <div style="display:flex; align-items:center; gap:12px">
               <span style="background:#eff6ff; color:#1d4ed8; padding:2px 8px; border-radius:4px; font-size:12px; font-weight:700">${qty} un</span>
-              <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagarCarrinho('${nome}')"><i data-lucide="trash-2" style="width:16px"></i></button>
+              <button style="border:none; background:none; color:#ef4444; cursor:pointer" onclick="this.parentElement?.parentElement?.remove(); apagarCarrinho('${nome.trim().replace(/'/g, "\\'").replace(/"/g, '&quot;')}')"><i data-lucide="trash-2" style="width:16px"></i></button>
           </div>
       `;
             list.appendChild(li);
