@@ -1556,3 +1556,19 @@ html {
 .sidebar-panels-pro::-webkit-scrollbar { width: 6px; }
 .sidebar-panels-pro::-webkit-scrollbar-track { background: transparent; }
 .sidebar-panels-pro::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; }
+
+/* ==========================================================================
+   CORREÇÃO DO SCROLL INTERNO (O SEGREDO DO MIN-HEIGHT)
+   ========================================================================== */
+
+/* Força a coluna da esquerda do modal a respeitar o limite do painel */
+.modal-body-pro > div:first-child {
+    min-height: 0 !important;
+}
+
+/* Garante que a tabela (e a lista do novo pedido) criem a barra de rolagem */
+.table-container-pro,
+#order-items-list {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+}
