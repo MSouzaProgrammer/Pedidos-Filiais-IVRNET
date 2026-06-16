@@ -1500,84 +1500,103 @@ html {
    TRAVANDO O SCROLL GERAL E ROLANDO APENAS AS LISTAS (NOVO PEDIDO & MODAL)
    ========================================================================== */
 
-/* --- 1. TELA DE NOVO PEDIDO (Imagem 1) --- */
+/* ==========================================================================
+   TELA DE NOVO PEDIDO (RESOLVIDO DEFINITIVO)
+   ========================================================================== */
 #novo-pedido-page {
-    height: calc(100vh - 120px); /* Aumentamos o desconto para 120px por causa do padding */
-    overflow: hidden;
+    height: calc(100vh - 120px) !important;
+    max-height: calc(100vh - 120px) !important;
+    overflow: hidden !important;
 }
 
 #novo-pedido-page.active {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
+/* Container do Grid */
 #novo-pedido-page .order-container {
-    flex: 1;
-    overflow: hidden; 
-    height: 100%; /* Força o grid a respeitar o limite exato da tela */
+    display: grid !important;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 24px;
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
 }
 
+/* Os dois Cards brancos laterais */
 #novo-pedido-page .order-container .card {
-    height: 100%; /* O card vai até o limite exato */
-    max-height: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0 !important; /* Remove a margem fantasma que empurrava o botão pra fora */
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin-bottom: 0 !important;
+    overflow: hidden !important;
 }
 
-/* A lista de itens especificamente */
+/* 🚀 A LISTA ROLA AQUI DENTRO */
 #order-items-list {
-    flex: 1;
-    overflow-y: auto !important; 
+    flex: 1 !important;
+    overflow-y: auto !important;
     min-height: 0 !important;
-    margin-bottom: 15px;
-    padding-right: 5px; 
+    padding-right: 8px !important;
+    margin-bottom: 10px !important;
 }
 
-/* Protege o botão para ele NUNCA ser esmagado pela lista */
+/* 🚀 O BOTÃO FICA FIXO LOGO ABAIXO */
 #btn-finalizar {
-    flex-shrink: 0; 
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    margin-top: auto !important; /* Cola o botão sempre no rodapé do card */
 }
 
-/* Deixando a barrinha da lista de novo pedido bonita */
+/* Scrollbar do Novo Pedido */
 #order-items-list::-webkit-scrollbar { width: 6px; }
 #order-items-list::-webkit-scrollbar-track { background: transparent; }
 #order-items-list::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; }
 
 
-/* --- 2. MODAL DE EDIÇÃO DE PEDIDO (Imagem 2) --- */
-.modal-body-pro {
-    overflow: hidden !important; /* Arranca o scroll geral que existia no miolo do modal */
-}
-
-.table-container-pro {
-    overflow-y: auto !important; /* Garante o scroll SÓ na tabela da esquerda */
-}
-
-/* Deixa o lado direito (painéis) rolar de forma independente, caso o monitor seja muito pequeno */
-.sidebar-panels-pro {
-    overflow-y: auto;
-    padding-right: 5px;
-    max-height: 100%;
-}
-
-/* Deixando a barrinha do painel direito bonita */
-.sidebar-panels-pro::-webkit-scrollbar { width: 6px; }
-.sidebar-panels-pro::-webkit-scrollbar-track { background: transparent; }
-.sidebar-panels-pro::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; }
-
 /* ==========================================================================
-   CORREÇÃO DO SCROLL INTERNO (O SEGREDO DO MIN-HEIGHT)
+   MODAL DE EDIÇÃO DE PEDIDO (RESOLVIDO DEFINITIVO)
    ========================================================================== */
+.modal-body-pro {
+    overflow: hidden !important; /* Tira o scroll do fundo */
+    height: calc(100% - 80px) !important; /* Segura o corpo dentro do modal */
+}
 
-/* Força a coluna da esquerda do modal a respeitar o limite do painel */
+/* Coluna da Esquerda (Garante o alinhamento da Pesquisa + Tabela) */
 .modal-body-pro > div:first-child {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
     min-height: 0 !important;
 }
 
-/* Garante que a tabela (e a lista do novo pedido) criem a barra de rolagem */
-.table-container-pro,
-#order-items-list {
-    min-height: 0 !important;
+/* A tabela de produtos rola de forma isolada */
+.table-container-pro {
+    flex: 1 !important;
     overflow-y: auto !important;
+    min-height: 0 !important;
+}
+
+/* Coluna da Direita (Painéis) */
+.sidebar-panels-pro {
+    height: 100% !important;
+    overflow-y: auto !important;
+    padding-right: 5px;
+}
+
+/* Scrollbars do Modal */
+.table-container-pro::-webkit-scrollbar,
+.sidebar-panels-pro::-webkit-scrollbar { 
+    width: 6px; 
+}
+.table-container-pro::-webkit-scrollbar-track,
+.sidebar-panels-pro::-webkit-scrollbar-track { 
+    background: transparent; 
+}
+.table-container-pro::-webkit-scrollbar-thumb,
+.sidebar-panels-pro::-webkit-scrollbar-thumb { 
+    background-color: var(--border-color); 
+    border-radius: 5px; 
 }
