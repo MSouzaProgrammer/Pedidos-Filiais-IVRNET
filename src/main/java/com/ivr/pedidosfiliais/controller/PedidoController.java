@@ -3,7 +3,6 @@ package com.ivr.pedidosfiliais.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +25,12 @@ import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
 @RequestMapping("/pedido")
 public class PedidoController {
 
-    @Autowired
-    private PedidoService pedidoService;
+
+    private final PedidoService pedidoService;
+    
+    public PedidoController(PedidoService pedidoService) {
+        this.pedidoService = pedidoService;
+    }
 
     @PostMapping
     public ResponseEntity<String> save(@RequestBody PedidoRequest pedido) {

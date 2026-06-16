@@ -3,7 +3,6 @@ package com.ivr.pedidosfiliais.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,8 +26,13 @@ import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
 @RequestMapping("/produto")
 public class ProdutoController {
 
-    @Autowired
-    private ProdutoService produtoService;
+    
+    private final ProdutoService produtoService;
+    
+
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
 
     @GetMapping("/idP/{id}")
     public ResponseEntity<?> verificarIdProduto(@PathVariable Long id) {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,12 +21,16 @@ import com.ivr.pedidosfiliais.repository.ProdutoPedidoRepository;
 @Service
 public class PedidoService {
 
-    @Autowired
-    private PedidosRepository pedidosRepository;
-    @Autowired
-    private ProdutoPedidoRepository produtoPedidoRepository;
-
+    
+    private final PedidosRepository pedidosRepository;
+    private final ProdutoPedidoRepository produtoPedidoRepository;
     private Pedido pedido;
+    
+
+    public PedidoService(PedidosRepository pedidosRepository, ProdutoPedidoRepository produtoPedidoRepository) {
+        this.pedidosRepository = pedidosRepository;
+        this.produtoPedidoRepository = produtoPedidoRepository;
+    }
 
     // #region CRUD
     public Boolean save(PedidoRequest pedidoRequest) {
