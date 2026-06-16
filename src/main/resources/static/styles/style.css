@@ -1502,7 +1502,7 @@ html {
 
 /* --- 1. TELA DE NOVO PEDIDO (Imagem 1) --- */
 #novo-pedido-page {
-    height: calc(100vh - 100px); /* Trava a altura total não deixando o body rolar */
+    height: calc(100vh - 120px); /* Aumentamos o desconto para 120px por causa do padding */
     overflow: hidden;
 }
 
@@ -1513,21 +1513,30 @@ html {
 
 #novo-pedido-page .order-container {
     flex: 1;
-    overflow: hidden; /* Corta qualquer vazamento */
+    overflow: hidden; 
+    height: 100%; /* Força o grid a respeitar o limite exato da tela */
 }
 
 #novo-pedido-page .order-container .card {
+    height: 100%; /* O card vai até o limite exato */
     max-height: 100%;
     display: flex;
     flex-direction: column;
+    margin-bottom: 0 !important; /* Remove a margem fantasma que empurrava o botão pra fora */
 }
 
 /* A lista de itens especificamente */
 #order-items-list {
     flex: 1;
-    overflow-y: auto; /* A mágica: só a lista rola! */
-    margin-bottom: 10px;
-    padding-right: 5px; /* Dá um respiro para a barrinha não colar no texto */
+    overflow-y: auto !important; 
+    min-height: 0 !important;
+    margin-bottom: 15px;
+    padding-right: 5px; 
+}
+
+/* Protege o botão para ele NUNCA ser esmagado pela lista */
+#btn-finalizar {
+    flex-shrink: 0; 
 }
 
 /* Deixando a barrinha da lista de novo pedido bonita */
