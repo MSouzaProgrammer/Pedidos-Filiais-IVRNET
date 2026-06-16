@@ -23,15 +23,25 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirRelatorio();
     excel();
     // 2. Trava campos para não-administradores na tela de dashboard
+    // 2. Trava campos para não-administradores na tela de dashboard
     if (sessionStorage.getItem("userAccess") === "ADM") {
         document.getElementById("btnAddProduto").disabled = false;
         document.getElementById("nStatus").disabled = false;
         document.getElementById("tObservacoes").disabled = false;
+        document.getElementById("edit-prod-nome").disabled = false; // ✨ LIBERADO PARA ADM
     }
     else {
         document.getElementById("btnAddProduto").disabled = true;
         document.getElementById("nStatus").disabled = true;
         document.getElementById("tObservacoes").disabled = true;
+        // ✨ NOVO: Bloqueia a barra de pesquisa para usuários comuns
+        const barraAdd = document.getElementById("edit-prod-nome");
+        if (barraAdd) {
+            barraAdd.disabled = true;
+            barraAdd.placeholder = "🔒 Bloqueado (Apenas ADM)";
+            barraAdd.style.cursor = "not-allowed";
+            barraAdd.style.opacity = "0.6"; // Dá uma apagadinha para mostrar que está inativo
+        }
     }
 });
 window.showPage = showPage;

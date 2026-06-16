@@ -295,10 +295,27 @@
 
             <div class="modal-body-pro">
 
-                <div class="table-container-pro" id="table-container-pro">
+                <div style="display: flex; flex-direction: column; gap: 15px; min-width: 0;">
+                    
+                    <div style="display: flex; gap: 12px; background-color: var(--bg-body); padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); align-items: center; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);" id="area-add-produto-edit">
+                        
+                        <div style="position: relative; flex: 1;">
+                            <i data-lucide="search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; color: var(--text-muted);"></i>
+                            <input type="search" id="edit-prod-nome" class="form-control" placeholder="Buscar produto para adicionar..." autocomplete="off" style="padding-left: 42px; background-color: var(--bg-sidebar); border-color: transparent;">
+                            <ul id="edit-sugestoes-produtos" class="dropdown-produtos" style="display: none;"></ul>
+                        </div>
+                        
+                        <input type="number" id="edit-prod-qty" class="form-control" style="width: 85px; text-align: center; background-color: var(--bg-sidebar); border-color: transparent;" placeholder="Qtd" disabled>
+                        
+                        <button class="btn-primary" id="btn-add-prod-edit" disabled style="background-color: var(--primary); color: white; border: none; font-weight: bold; padding: 0 24px; height: 43px;">
+                            <i data-lucide="plus" style="width: 18px;"></i> Adicionar
+                        </button>
+                    </div>
+
+                    <div class="table-container-pro" id="table-container-pro" style="flex: 1; height: 100%;">
+                        </div>
 
                 </div>
-
                 <div class="sidebar-panels-pro">
 
                     <div class="panel-card-pro">
@@ -306,6 +323,7 @@
                             style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Usuário</label>
                         <input id="operadorPedido" type="text" class="form-control" value="" readonly
                             style="margin-bottom: 15px; border-color: var(--border-color); background-color: var(--bg-body);">
+
                         <label
                             style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Observações</label>
                         <textarea class="form-control" rows="3"
@@ -315,10 +333,9 @@
 
                     <div class="panel-card-pro">
                         <h3 style="font-size: 16px; margin-bottom: 15px;">Resumo</h3>
-
                         <div class="resumo-row">
                             <span>Total Itens Pedidos</span>
-                            <span class="number-circle" id="numberCircle">3</span>
+                            <span class="number-circle" id="numberCircle">0</span>
                         </div>
                         <div class="resumo-row text-danger-row"
                             style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color);">
@@ -330,8 +347,8 @@
 
             <div class="modal-footer-pro">
                 <button class="btn-footer-cancel" onclick="fecharAba()">Cancelar / Fechar</button>
-                <button id="btnFooterSave" class="btn-footer-save" onclick="salvarAlteracao();">Salvar
-                    Alterações e Finalizar Pedido <i data-lucide="check" style="width:18px;"></i></button>
+                <button id="btnFooterSave" class="btn-footer-save" onclick="salvarAlteracao();">Salvar Alterações e
+                    Finalizar Pedido <i data-lucide="check" style="width:18px;"></i></button>
             </div>
         </section>
     </div>

@@ -1,4 +1,4 @@
-import { requestBack, consultaGlobal, filialNome, setFilialNome } from './funcoes.js';
+import { requestBack, consultaGlobal, filialNome, setFilialNome, estoque } from './funcoes.js';
 export function iniciarDashboard() {
     const caixaFiliais = document.querySelectorAll('.navFiliais');
     caixaFiliais.forEach((botao) => {
@@ -21,6 +21,8 @@ export function iniciarDashboard() {
             btnFooterSave.onclick = fecharAba;
         }
     }
+    // 🚀 CHAME A FUNÇÃO DE PESQUISA AQUI PARA ELA LIGAR!
+    configurarBuscaEditModal();
 }
 export async function produtosLista(numero) {
     const sectionPedidos = document.getElementById('sectionPedidos');
@@ -92,58 +94,55 @@ export function mostrarLista() {
                 lista.innerHTML += `
           <div class="table-row-pro">
               <span class="text-muted">${element.idProduto}</span><span>${element.name}</span><span class="text-muted">${element.undMedida}</span><span>${element.quant}</span>
-              <span><input type="number" class="input-qtd-pro" data-id-produto="${element.id}" value="${element.quantEnviada}" ${blockElement ? 'readonly' : ''}></span>
-              <span><button class="btn-icon-danger"><i data-lucide="trash-2" style="width:18px;"></i></button></span>
+              <span><input type="number" class="input-qtd-pro" data-id-produto-ref="${element.idProduto}" value="${element.quantEnviada}" ${blockElement ? 'readonly' : ''}></span>
+              <span><button class="btn-icon-danger" onclick="removerItemDoPedidoEdit(${element.idProduto})" ${blockElement ? 'disabled' : ''}><i data-lucide="trash-2" style="width:18px;"></i></button></span>
           </div>`;
             });
             const numberCircle = document.getElementById("numberCircle");
-            if (numberCircle) {
+            if (numberCircle)
                 numberCircle.innerText = consultaGlobal.lProdutos.length;
-            }
             const tObservacoes = document.getElementById("tObservacoes");
             if (tObservacoes)
                 tObservacoes.value = consultaGlobal.observacao ?? "Observação";
             const operadorPedido = document.getElementById("operadorPedido");
             if (operadorPedido)
                 operadorPedido.value = consultaGlobal.usuario ?? "Usuário não identificado";
+            if (typeof lucide !== "undefined")
+                lucide.createIcons();
         }
     }
 }
 export async function salvarAlteracao() {
     const statusNovo = document.getElementById("nStatus");
     const tObservacoes = document.getElementById("tObservacoes");
-    if (!consultaGlobal || !consultaGlobal.id) {
-        console.error("ERRO GRAVE: O consultaGlobal está vazio ou sem ID!");
-        alert("Erro interno: Nenhum pedido selecionado.");
+    if (!consultaGlobal || !consultaGlobal.id)
         return;
-    }
     const pedidoAtt = structuredClone(consultaGlobal);
     pedidoAtt.status = statusNovo.value;
     pedidoAtt.observacao = tObservacoes.value;
     const inputs = document.querySelectorAll('.input-qtd-pro');
     inputs.forEach(input => {
-        const idItem = Number(input.getAttribute('data-id-produto'));
+        // Busca pelo idProduto para ser exato
+        const idProdutoRef = Number(input.getAttribute('data-id-produto-ref'));
         const novaQtd = Number(input.value);
-        const produtoEncontrado = pedidoAtt.lProdutos.find((p) => Number(p.id) === idItem);
-        if (produtoEncontrado) {
+        const produtoEncontrado = pedidoAtt.lProdutos.find((p) => Number(p.idProduto) === idProdutoRef);
+        if (produtoEncontrado)
             produtoEncontrado.quantEnviada = novaQtd;
-        }
-        else {
-            console.warn(`Aviso: Produto ID ${idItem} estava no HTML mas não na lista lProdutos!`);
-        }
-        fecharAba();
     });
+    fecharAba();
     try {
         const url = "pedido/" + pedidoAtt.id;
         const resposta = await requestBack(url, "PUT", pedidoAtt);
-        if (resposta && (resposta.ok || resposta.status === 200 || resposta.status === 204)) {
+        if (!resposta || (!resposta.ok && resposta.status !== 200 && resposta.status !== 204)) {
+            alert("O Java recusou a atualização! Status: " + resposta.status);
         }
         else {
-            alert("O Java recusou a atualização! Status: " + resposta.status);
+            // Recarrega a tela depois de salvar pra puxar do banco fresquinho
+            location.reload();
         }
     }
     catch (error) {
-        console.error("PASSO 8: Ocorreu um erro na requisição:", error);
+        console.error("Erro na requisição:", error);
     }
 }
 export function fecharAba() {
@@ -154,4 +153,72 @@ export function gerarImpressaoPicking(consulta) {
     // Mantém a sua string HTML gigantesca aqui sem precisar alterar!
     // Coloque exatamente o mesmo código de impressão que você já tinha.
 }
+let produtoSelecionadoEdit = null;
+export function configurarBuscaEditModal() {
+    const inputEditNome = document.getElementById("edit-prod-nome");
+    const sugestoesEdit = document.getElementById("edit-sugestoes-produtos");
+    const inputEditQtd = document.getElementById("edit-prod-qty");
+    const btnAddEdit = document.getElementById("btn-add-prod-edit");
+    if (!inputEditNome || !sugestoesEdit || !inputEditQtd || !btnAddEdit)
+        return;
+    inputEditNome.addEventListener("input", function () {
+        const valorDigitado = this.value.toLowerCase();
+        sugestoesEdit.innerHTML = "";
+        if (!valorDigitado) {
+            sugestoesEdit.style.display = "none";
+            return;
+        }
+        const produtosFiltrados = estoque.filter((p) => p.nome.toLowerCase().includes(valorDigitado));
+        if (produtosFiltrados.length > 0) {
+            produtosFiltrados.forEach((produto) => {
+                const li = document.createElement("li");
+                li.textContent = produto.nome;
+                li.addEventListener("click", function () {
+                    inputEditNome.value = produto.nome;
+                    produtoSelecionadoEdit = produto;
+                    sugestoesEdit.style.display = "none";
+                    inputEditQtd.disabled = false;
+                    btnAddEdit.disabled = false;
+                    inputEditNome.disabled = true;
+                    inputEditQtd.value = "1";
+                });
+                sugestoesEdit.appendChild(li);
+            });
+            sugestoesEdit.style.display = "block";
+        }
+        else {
+            sugestoesEdit.style.display = "none";
+        }
+    });
+    // Quando clica em ADICIONAR
+    btnAddEdit.addEventListener("click", () => {
+        if (!produtoSelecionadoEdit || !inputEditQtd.value)
+            return;
+        // Joga na lista da tela
+        consultaGlobal.lProdutos.push({
+            id: null, // Deixa null, o Java vai criar o ID real
+            idProduto: produtoSelecionadoEdit.idProduto,
+            name: produtoSelecionadoEdit.nome,
+            undMedida: produtoSelecionadoEdit.unidade,
+            quant: Number(inputEditQtd.value),
+            quantEnviada: 0
+        });
+        // Limpa a barrinha
+        inputEditNome.value = "";
+        inputEditNome.disabled = false;
+        inputEditQtd.value = "";
+        inputEditQtd.disabled = true;
+        btnAddEdit.disabled = true;
+        produtoSelecionadoEdit = null;
+        // Atualiza o visual
+        mostrarLista();
+    });
+}
+// Expõe a função pro HTML conseguir chamar a Lixeira
+window.removerItemDoPedidoEdit = function (idProduto) {
+    // Filtra a lista removendo o produto escolhido
+    consultaGlobal.lProdutos = consultaGlobal.lProdutos.filter((p) => p.idProduto != idProduto);
+    mostrarLista(); // Atualiza a tela
+};
+// Não esqueça de chamar configurarBuscaEditModal() dentro do seu iniciarDashboard() !
 //# sourceMappingURL=dashboard.js.map

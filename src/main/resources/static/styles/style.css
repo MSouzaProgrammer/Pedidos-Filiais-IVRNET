@@ -1463,3 +1463,35 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: #475569; /* Fica um pouquinho mais claro no hover */
 }
+
+/* ==========================================================================
+   EFEITO DE BLOQUEIO (HOVER) NA BARRA DE PESQUISA DO MODAL
+   ========================================================================== */
+
+/* Garante uma transição suave na barra bloqueada */
+#edit-prod-nome:disabled {
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+/* Quando passa o mouse por cima da barra bloqueada */
+#edit-prod-nome:disabled:hover {
+    opacity: 0.3 !important; /* Fica bem transparente */
+    background-color: rgba(255, 255, 255, 0.02) !important; /* Dá uma leve escurecida no fundo */
+    cursor: not-allowed !important; /* Reforça o ícone de proibido no mouse */
+}
+
+/* ==========================================================================
+   EFEITO DE BLOQUEIO NA LIXEIRA DOS PRODUTOS (Apenas ADM)
+   ========================================================================== */
+
+/* Quando o botão de lixeira estiver desativado */
+.btn-icon-danger:disabled {
+    opacity: 0.3 !important; /* Fica transparente/apagado */
+    cursor: not-allowed !important; /* Mostra o ícone de proibido */
+}
+
+/* Evita que ele mude de cor se o utilizador passar o rato por cima do botão desativado */
+.btn-icon-danger:disabled:hover {
+    color: #f87171 !important; /* Mantém a cor vermelha base sem o efeito hover ativo */
+    background: transparent !important;
+}

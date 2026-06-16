@@ -173,20 +173,41 @@ public class PedidoService {
             pedidoExistente.setObservacao(nPedido.getObservacao());
 
             if (listaVindaDoFront != null) {
+                // 🚀 1. DELEÇÃO FORÇADA: Acha quem não está mais na lista e apaga do banco
+                List<ProdutoPedido> paraRemover = new ArrayList<>();
                 for (ProdutoPedido eProduto : pedidoExistente.getLProdutos()) {
-                    for (ProdutoPedido produtoFront : listaVindaDoFront) {
-                        // Agora você compara o item do banco com o item que veio do Front
-                        if (produtoFront.getIdProduto().equals(eProduto.getIdProduto())) {
-                            eProduto.setQuantEnviada(produtoFront.getQuantEnviada());
-                            break;
-                        }
+                    boolean aindaExiste = listaVindaDoFront.stream()
+                            .anyMatch(p -> p.getIdProduto().equals(eProduto.getIdProduto()));
+                    if (!aindaExiste) {
+                        paraRemover.add(eProduto);
                     }
                 }
+                pedidoExistente.getLProdutos().removeAll(paraRemover);
+                produtoPedidoRepository.deleteAll(paraRemover); // 🔪 Apaga de verdade!
+
+                // 🚀 2. ATUALIZAÇÃO E INSERÇÃO
+                for (ProdutoPedido produtoFront : listaVindaDoFront) {
+                    Optional<ProdutoPedido> existente = pedidoExistente.getLProdutos().stream()
+                            .filter(p -> p.getIdProduto().equals(produtoFront.getIdProduto()))
+                            .findFirst();
+
+                    if (existente.isPresent()) {
+                        existente.get().setQuant(produtoFront.getQuant()); // Atualiza Qtd Pedida se mudar
+                        existente.get().setQuantEnviada(produtoFront.getQuantEnviada()); // Atualiza Qtd Enviada
+                    } else {
+                        // 🌟 É NOVO! Adiciona no pedido
+                        produtoFront.setPedido(pedidoExistente);
+                        pedidoExistente.addProduto(produtoFront);
+                    }
+                }
+            } else {
+                produtoPedidoRepository.deleteAll(pedidoExistente.getLProdutos());
+                pedidoExistente.getLProdutos().clear();
             }
+
             pedidosRepository.save(pedidoExistente);
             return true;
         }).orElse(false);
     }
-
     // #endregion
 }
