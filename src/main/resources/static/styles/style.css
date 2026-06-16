@@ -1495,3 +1495,64 @@ html {
     color: #f87171 !important; /* Mantém a cor vermelha base sem o efeito hover ativo */
     background: transparent !important;
 }
+
+/* ==========================================================================
+   TRAVANDO O SCROLL GERAL E ROLANDO APENAS AS LISTAS (NOVO PEDIDO & MODAL)
+   ========================================================================== */
+
+/* --- 1. TELA DE NOVO PEDIDO (Imagem 1) --- */
+#novo-pedido-page {
+    height: calc(100vh - 100px); /* Trava a altura total não deixando o body rolar */
+    overflow: hidden;
+}
+
+#novo-pedido-page.active {
+    display: flex;
+    flex-direction: column;
+}
+
+#novo-pedido-page .order-container {
+    flex: 1;
+    overflow: hidden; /* Corta qualquer vazamento */
+}
+
+#novo-pedido-page .order-container .card {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* A lista de itens especificamente */
+#order-items-list {
+    flex: 1;
+    overflow-y: auto; /* A mágica: só a lista rola! */
+    margin-bottom: 10px;
+    padding-right: 5px; /* Dá um respiro para a barrinha não colar no texto */
+}
+
+/* Deixando a barrinha da lista de novo pedido bonita */
+#order-items-list::-webkit-scrollbar { width: 6px; }
+#order-items-list::-webkit-scrollbar-track { background: transparent; }
+#order-items-list::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; }
+
+
+/* --- 2. MODAL DE EDIÇÃO DE PEDIDO (Imagem 2) --- */
+.modal-body-pro {
+    overflow: hidden !important; /* Arranca o scroll geral que existia no miolo do modal */
+}
+
+.table-container-pro {
+    overflow-y: auto !important; /* Garante o scroll SÓ na tabela da esquerda */
+}
+
+/* Deixa o lado direito (painéis) rolar de forma independente, caso o monitor seja muito pequeno */
+.sidebar-panels-pro {
+    overflow-y: auto;
+    padding-right: 5px;
+    max-height: 100%;
+}
+
+/* Deixando a barrinha do painel direito bonita */
+.sidebar-panels-pro::-webkit-scrollbar { width: 6px; }
+.sidebar-panels-pro::-webkit-scrollbar-track { background: transparent; }
+.sidebar-panels-pro::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; }
