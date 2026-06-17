@@ -5,9 +5,10 @@ const btAdd = document.getElementById("btn-add-order") as HTMLButtonElement;
 const inputProduto = document.getElementById("prod-nome") as HTMLInputElement | null;
 const listaSugestoes = document.getElementById("sugestoes-produtos") as HTMLUListElement | null;
 const quantValor = document.getElementById("prod-qty") as HTMLInputElement | null;
+const unidProdutoMolde = document.getElementById("prod-med") as HTMLInputElement | null;
 
 export function configurarDropdownProdutos(): void {
-  if (!inputProduto || !listaSugestoes || !quantValor) return;
+  if (!inputProduto || !listaSugestoes || !quantValor || !unidProdutoMolde) return;
 
   inputProduto.addEventListener("input", function () {
     const valorDigitado = this.value.toLowerCase();
@@ -18,8 +19,11 @@ export function configurarDropdownProdutos(): void {
     if (produtosFiltrados.length > 0) {
       produtosFiltrados.forEach((produto) => {
         const li = document.createElement("li");
+        console.log(produto);
         li.textContent = produto.nome;
         li.addEventListener("click", function () {
+          
+          unidProdutoMolde.value = produto.unidade;
           inputProduto.value = produto.nome;
           setProdutoEmEspera(produto);
           listaSugestoes.style.display = "none";
@@ -54,10 +58,10 @@ export function iniciarNovoPedido() {
   const list = document.getElementById("order-items-list");
   if (btAdd && list) {
     btAdd.addEventListener("click", () => {
-      if (!inputProduto || !quantValor || !inputProduto.value) return;
+      if (!inputProduto || !quantValor || !inputProduto.value || !unidProdutoMolde) return;
       const nome = inputProduto.value;
       const qty = quantValor.value;
-
+      unidProdutoMolde.value = "";
       if (!produtoEmEspera) {
         alert("Selecione um produto da lista!");
         return;
@@ -81,6 +85,7 @@ export function iniciarNovoPedido() {
         nome: produtoEmEspera.nome,
         unidade: produtoEmEspera.unidade,
         quantidade: quantValor.valueAsNumber
+
       };
       carrinhoDePedidos.push(itemFinalCarrinho);
 

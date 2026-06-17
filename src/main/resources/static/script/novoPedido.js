@@ -3,8 +3,9 @@ const btAdd = document.getElementById("btn-add-order");
 const inputProduto = document.getElementById("prod-nome");
 const listaSugestoes = document.getElementById("sugestoes-produtos");
 const quantValor = document.getElementById("prod-qty");
+const unidProdutoMolde = document.getElementById("prod-med");
 export function configurarDropdownProdutos() {
-    if (!inputProduto || !listaSugestoes || !quantValor)
+    if (!inputProduto || !listaSugestoes || !quantValor || !unidProdutoMolde)
         return;
     inputProduto.addEventListener("input", function () {
         const valorDigitado = this.value.toLowerCase();
@@ -17,8 +18,10 @@ export function configurarDropdownProdutos() {
         if (produtosFiltrados.length > 0) {
             produtosFiltrados.forEach((produto) => {
                 const li = document.createElement("li");
+                console.log(produto);
                 li.textContent = produto.nome;
                 li.addEventListener("click", function () {
+                    unidProdutoMolde.value = produto.unidade;
                     inputProduto.value = produto.nome;
                     setProdutoEmEspera(produto);
                     listaSugestoes.style.display = "none";
@@ -51,10 +54,11 @@ export function iniciarNovoPedido() {
     const list = document.getElementById("order-items-list");
     if (btAdd && list) {
         btAdd.addEventListener("click", () => {
-            if (!inputProduto || !quantValor || !inputProduto.value)
+            if (!inputProduto || !quantValor || !inputProduto.value || !unidProdutoMolde)
                 return;
             const nome = inputProduto.value;
             const qty = quantValor.value;
+            unidProdutoMolde.value = "";
             if (!produtoEmEspera) {
                 alert("Selecione um produto da lista!");
                 return;

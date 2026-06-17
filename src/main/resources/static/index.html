@@ -109,7 +109,8 @@
                                         placeholder="Digite o nome do produto..." autocomplete="off">
                                     <ul id="sugestoes-produtos" class="dropdown-produtos" style="display: none;"></ul>
                                 </div>
-
+                                <input type="text" id="prod-med" class="form-control" style="width:100px" value=""
+                                    disabled>
                                 <input type="number" id="prod-qty" class="form-control" style="width:100px" value="1"
                                     disabled>
                                 <button class="btn-primary" id="btn-add-order" disabled><i
@@ -230,6 +231,7 @@
                     <option value="" disabled selected hidden>Selecione uma unidade...</option>
 
                     <option value="Unidade">Unidade</option>
+                    <option value="Pacote">Par</option>
                     <option value="Metro">Metro</option>
                     <option value="Pacote">Pacote</option>
                 </select>
@@ -256,6 +258,7 @@
                     <option value="" disabled selected hidden>Selecione uma unidade...</option>
 
                     <option value="Unidade">Unidade</option>
+                    <option value="Pacote">Par</option>
                     <option value="Metro">Metro</option>
                     <option value="Pacote">Pacote</option>
                 </select>
