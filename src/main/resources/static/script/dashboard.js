@@ -53,6 +53,7 @@ export async function produtosLista(numero) {
                         letraStatus = "var(--enviadoLetra)";
                         break;
                 }
+                // 🌟 CORRIGIDO: Passando o ID do pedido normalmente. O detalhe completo já é buscado por ID.
                 sectionPedidos.innerHTML += `
             <div class="pedidoInformacoes" id="listaItensPedidoFilial" onclick="consultarLista(${element.id})">
                 <i class="idPedidoTela">${element.id}</i>
@@ -80,6 +81,9 @@ export function mostrarLista() {
     const dataText = document.getElementById("dataText");
     if (dataText)
         dataText.textContent = new Date(consultaGlobal.data).toLocaleString('pt-BR');
+    const nStatus = document.getElementById("nStatus");
+    if (nStatus)
+        nStatus.value = consultaGlobal.status;
     const tituloLista = document.getElementById("tituloLista");
     if (tituloLista) {
         const lista = document.getElementById("table-container-pro");
@@ -115,14 +119,13 @@ export function mostrarLista() {
 export async function salvarAlteracao() {
     const statusNovo = document.getElementById("nStatus");
     const tObservacoes = document.getElementById("tObservacoes");
-    if (!consultaGlobal || !consultaGlobal.id)
+    if (!consultaGlobal || !consultaGlobal.id || !statusNovo)
         return;
     const pedidoAtt = structuredClone(consultaGlobal);
     pedidoAtt.status = statusNovo.value;
     pedidoAtt.observacao = tObservacoes.value;
     const inputs = document.querySelectorAll('.input-qtd-pro');
     inputs.forEach(input => {
-        // Busca pelo idProduto para ser exato
         const idProdutoRef = Number(input.getAttribute('data-id-produto-ref'));
         const novaQtd = Number(input.value);
         const produtoEncontrado = pedidoAtt.lProdutos.find((p) => Number(p.idProduto) === idProdutoRef);
@@ -137,7 +140,6 @@ export async function salvarAlteracao() {
             alert("O Java recusou a atualização! Status: " + resposta.status);
         }
         else {
-            // Recarrega a tela depois de salvar pra puxar do banco fresquinho
             location.reload();
         }
     }
@@ -150,8 +152,7 @@ export function fecharAba() {
     document.getElementById("intensPedidoLista")?.classList.remove('ativo');
 }
 export function gerarImpressaoPicking(consulta) {
-    // Mantém a sua string HTML gigantesca aqui sem precisar alterar!
-    // Coloque exatamente o mesmo código de impressão que você já tinha.
+    // Mantém o código original
 }
 let produtoSelecionadoEdit = null;
 export function configurarBuscaEditModal() {
@@ -190,35 +191,41 @@ export function configurarBuscaEditModal() {
             sugestoesEdit.style.display = "none";
         }
     });
-    // Quando clica em ADICIONAR
+    // Quando clica em ADICIONAR dentro do Modal
     btnAddEdit.addEventListener("click", () => {
         if (!produtoSelecionadoEdit || !inputEditQtd.value)
             return;
-        // Joga na lista da tela
-        consultaGlobal.lProdutos.push({
-            id: null, // Deixa null, o Java vai criar o ID real
-            idProduto: produtoSelecionadoEdit.idProduto,
-            name: produtoSelecionadoEdit.nome,
-            undMedida: produtoSelecionadoEdit.unidade,
-            quant: Number(inputEditQtd.value),
-            quantEnviada: 0
-        });
-        // Limpa a barrinha
+        const qtyASomar = Number(inputEditQtd.value);
+        // 🚀 PROTEÇÃO DE DUPLICIDADE: Verifica se o produto já existe na lista atual do modal
+        const produtoJaExistente = consultaGlobal.lProdutos.find((p) => Number(p.idProduto) === Number(produtoSelecionadoEdit.idProduto));
+        if (produtoJaExistente) {
+            // Se já existe, apenas incrementa a quantidade pedida
+            produtoJaExistente.quant += qtyASomar;
+        }
+        else {
+            // Se não existe, insere o objeto novo na lista
+            consultaGlobal.lProdutos.push({
+                id: null,
+                idProduto: produtoSelecionadoEdit.idProduto,
+                name: produtoSelecionadoEdit.nome,
+                undMedida: produtoSelecionadoEdit.unidade,
+                quant: qtyASomar,
+                quantEnviada: 0
+            });
+        }
+        // Limpa e reseta a área de busca
         inputEditNome.value = "";
         inputEditNome.disabled = false;
         inputEditQtd.value = "";
         inputEditQtd.disabled = true;
         btnAddEdit.disabled = true;
         produtoSelecionadoEdit = null;
-        // Atualiza o visual
+        // Atualiza a tabela na tela do modal
         mostrarLista();
     });
 }
-// Expõe a função pro HTML conseguir chamar a Lixeira
 window.removerItemDoPedidoEdit = function (idProduto) {
-    // Filtra a lista removendo o produto escolhido
     consultaGlobal.lProdutos = consultaGlobal.lProdutos.filter((p) => p.idProduto != idProduto);
-    mostrarLista(); // Atualiza a tela
+    mostrarLista();
 };
-// Não esqueça de chamar configurarBuscaEditModal() dentro do seu iniciarDashboard() !
 //# sourceMappingURL=dashboard.js.map

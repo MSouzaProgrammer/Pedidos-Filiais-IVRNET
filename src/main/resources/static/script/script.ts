@@ -120,7 +120,7 @@ function mostrarConfirmCustomizado(titulo: string, mensagem: string): Promise<bo
   }
 };
 
-(window as any).consultarLista = async function (id: number) {
+(window as any).consultarLista = async function (id: number, status: String) {
   try {
     const resposta = await requestBack("pedido/pedidoId/" + id, "GET", null);
     if (resposta && (resposta.status === 302 || resposta.ok)) {

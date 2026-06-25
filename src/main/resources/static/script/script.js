@@ -106,7 +106,7 @@ window.deleteProduct = async function (idDoBanco) {
         alert("Erro de conexão.");
     }
 };
-window.consultarLista = async function (id) {
+window.consultarLista = async function (id, status) {
     try {
         const resposta = await requestBack("pedido/pedidoId/" + id, "GET", null);
         if (resposta && (resposta.status === 302 || resposta.ok)) {
