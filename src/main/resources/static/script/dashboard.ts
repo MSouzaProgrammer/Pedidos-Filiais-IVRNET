@@ -134,10 +134,9 @@ export async function salvarAlteracao() {
     const resposta = await requestBack(url, "PUT", pedidoAtt);
     if (!resposta || (!resposta.ok && resposta.status !== 200 && resposta.status !== 204)) {
       alert("O Java recusou a atualização! Status: " + resposta.status);
-    } else {
-      location.reload(); 
     }
-  } catch (error) {
+
+  }catch (error) {
     console.error("Erro na requisição:", error);
   }
 }
