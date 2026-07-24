@@ -20,17 +20,18 @@ public class RelatorioService {
     }
 
     public List<RelatorioPedidoResponse> gerarRelatorioPorPeriodo(LocalDate dataInicio, LocalDate dataFim) {
-        List<RegistroBrutoRelatorio> registrosBrutos = produtoPedidoRepository.buscarDadosBrutosRelatorioPorData(dataInicio, dataFim);
+        List<RegistroBrutoRelatorio> registrosBrutos = produtoPedidoRepository
+                .buscarDadosBrutosRelatorioPorData(dataInicio, dataFim);
 
         // Agrupamos apenas pelo nome do produto
         Map<String, List<RegistroBrutoRelatorio>> agrupados = registrosBrutos.stream()
-            .collect(Collectors.groupingBy(RegistroBrutoRelatorio::getName));
+                .collect(Collectors.groupingBy(RegistroBrutoRelatorio::getName));
 
         List<RelatorioPedidoResponse> listaRelatorioFinal = new ArrayList<>();
 
         for (Map.Entry<String, List<RegistroBrutoRelatorio>> entry : agrupados.entrySet()) {
             List<RegistroBrutoRelatorio> itensDoGrupo = entry.getValue();
-            RegistroBrutoRelatorio primeiroItem = itensDoGrupo.get(0); 
+            RegistroBrutoRelatorio primeiroItem = itensDoGrupo.get(0);
 
             Map<String, Integer> distribuicao = new HashMap<>();
             distribuicao.put("Bonito/Bodoquena", 0);
@@ -61,11 +62,10 @@ public class RelatorioService {
             if (somaQuantidadeTotal > 0) {
                 // 🌟 ATUALIZADO: Agora incluindo o primeiroItem.getUndMedida()
                 listaRelatorioFinal.add(new RelatorioPedidoResponse(
-                    primeiroItem.getName(),
-                    primeiroItem.getUndMedida(), 
-                    somaQuantidadeTotal,
-                    distribuicao
-                ));
+                        primeiroItem.getName(),
+                        primeiroItem.getUndMedida(),
+                        somaQuantidadeTotal,
+                        distribuicao));
             }
         }
 
