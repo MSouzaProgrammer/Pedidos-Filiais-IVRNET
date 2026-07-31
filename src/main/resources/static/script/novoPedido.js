@@ -159,7 +159,7 @@ export function iniciarNovoPedido() {
                     idProduto: item.idProduto, name: item.nome, undMedida: item.unidade, quant: item.quantidade
                 }));
                 const dadosPedido = {
-                    filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
+                    filial: filialSelecionada.value,
                     lProdutos: listaProdutos,
                     usuario: nomeUsuario
                 };

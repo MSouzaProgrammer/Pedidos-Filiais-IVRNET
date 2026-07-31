@@ -181,7 +181,7 @@ export function iniciarNovoPedido() {
         }));
 
         const dadosPedido = {
-          filial: filialSelecionada.value.toUpperCase().replace("FILIAL ", "").trim(),
+          filial: filialSelecionada.value,
           lProdutos: listaProdutos,
           usuario: nomeUsuario
         };

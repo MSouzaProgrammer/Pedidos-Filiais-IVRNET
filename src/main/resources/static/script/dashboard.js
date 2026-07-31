@@ -139,9 +139,6 @@ export async function salvarAlteracao() {
         if (!resposta || (!resposta.ok && resposta.status !== 200 && resposta.status !== 204)) {
             alert("O Java recusou a atualização! Status: " + resposta.status);
         }
-        else {
-            location.reload();
-        }
     }
     catch (error) {
         console.error("Erro na requisição:", error);

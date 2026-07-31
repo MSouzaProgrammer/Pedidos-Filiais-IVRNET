@@ -51,12 +51,11 @@
                         <div class="menuEsquerda">
                             <h2>Filiais</h2>
                             <div>
-                                <a onclick="produtosLista(1); pegarNome(this)" class="navFiliais"><i>Bonito |
-                                        Bodoquena</i></a>
-                                <a onclick="produtosLista(2); pegarNome(this)" class="navFiliais"><i>Aquidauana</i></a>
-                                <a onclick="produtosLista(3); pegarNome(this)" class="navFiliais"><i>Dois irmaos</i></a>
-                                <a onclick="produtosLista(4); pegarNome(this)" class="navFiliais"><i>Jardim |
-                                        Nioaque</i></a>
+                                <a onclick="produtosLista(1); pegarNome(this)" class="navFiliais"><i>Filial Bonito</i></a>
+                                <a onclick="produtosLista(2); pegarNome(this)" class="navFiliais"><i>Filial Aquidauana</i></a>
+                                <a onclick="produtosLista(3); pegarNome(this)" class="navFiliais"><i>Filial Dois irmaos</i></a>
+                                <a onclick="produtosLista(4); pegarNome(this)" class="navFiliais"><i>Filial Jardim e Nioaque</i></a>
+                                <a onclick="produtosLista(5); pegarNome(this)" class="navFiliais"><i>Filial Bodoquena</i></a>
                                 <div class="imgDasboard">
                                     <img src="img/logoIVRNET.png" alt="LogoDashboard" class="logoBaixo">
                                 </div>
@@ -94,10 +93,11 @@
                             <label>Filial Solicitante *</label>
                             <select class="form-control" id="select-filial" required>
                                 <option value="" disabled selected hidden>Selecione uma Filial...</option>
-                                <option value="BONITO_BODOQUENA">Filial Bonito | Bodoquena</option>
+                                <option value="BONITO">Filial Bonito</option>
                                 <option value="AQUIDAUANA">Filial Aquidauana</option>
                                 <option value="DOIS_IRMAOS">Filial Dois Irmãos</option>
                                 <option value="JARDIM_GUIA_LOPEZ_NIOAQUE">Filial Jardim | Guia Lopez | Nioaque</option>
+                                <option value="BODOQUENA">Filial Bodoquena</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -188,14 +188,16 @@
                 <div class="card">
                     <div style="overflow-x: auto;" class="tabela-container">
                         <table class="tabela-relatorio">
+                            <!-- Ajustamos as larguras para caber 8 colunas agora -->
                             <colgroup>
-                                <col style="width: 25%;">
-                                <col style="width: 16%;">
-                                <col style="width: 16%;">
-                                <col style="width: 16%;">
-                                <col style="width: 16%;">
-                                <col style="width: 16%;">
-                                <col style="width: 16%;">
+                                <col style="width: 23%;"> <!-- Produto -->
+                                <col style="width: 11%;"> <!-- Unidade -->
+                                <col style="width: 11%;"> <!-- Total -->
+                                <col style="width: 11%;"> <!-- Bonito -->
+                                <col style="width: 11%;"> <!-- Aquidauana -->
+                                <col style="width: 11%;"> <!-- Dois Irmãos -->
+                                <col style="width: 11%;"> <!-- Jardim/Nioaque -->
+                                <col style="width: 11%;"> <!-- Bodoquena -->
                             </colgroup>
 
                             <thead>
@@ -203,10 +205,11 @@
                                     <th class="text-left">Produto</th>
                                     <th class="text-center">Unidade de medida</th>
                                     <th class="text-center">Qtd Total</th>
-                                    <th class="col-filial">📍 Bonito/Bodoquena</th>
+                                    <th class="col-filial">📍 Bonito</th>
                                     <th class="col-filial">📍 Aquidauana</th>
                                     <th class="col-filial">📍 Dois Irmãos</th>
                                     <th class="col-filial">📍 Jardim/Nioaque</th>
+                                    <th class="col-filial">📍 Bodoquena</th>
                                 </tr>
                             </thead>
                             <tbody id="produtosRelatorios" class="tabela-relatorio-produtos">

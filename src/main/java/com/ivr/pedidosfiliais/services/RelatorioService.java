@@ -34,10 +34,11 @@ public class RelatorioService {
             RegistroBrutoRelatorio primeiroItem = itensDoGrupo.get(0);
 
             Map<String, Integer> distribuicao = new HashMap<>();
-            distribuicao.put("Bonito/Bodoquena", 0);
+            distribuicao.put("Bonito", 0);
             distribuicao.put("Aquidauana", 0);
             distribuicao.put("Dois Irmãos", 0);
             distribuicao.put("Jardim/Nioaque", 0);
+            distribuicao.put("Bodoquena", 0);
 
             int somaQuantidadeTotal = 0;
 
@@ -46,15 +47,16 @@ public class RelatorioService {
                 int qtdEnviada = item.getQuantEnviada() != null ? item.getQuantEnviada() : 0;
 
                 if (numeroFilial == 1) {
-                    distribuicao.put("Bonito/Bodoquena", distribuicao.get("Bonito/Bodoquena") + qtdEnviada);
+                    distribuicao.put("Bonito", distribuicao.get("Bonito") + qtdEnviada);
                 } else if (numeroFilial == 2) {
                     distribuicao.put("Aquidauana", distribuicao.get("Aquidauana") + qtdEnviada);
                 } else if (numeroFilial == 3) {
                     distribuicao.put("Dois Irmãos", distribuicao.get("Dois Irmãos") + qtdEnviada);
                 } else if (numeroFilial == 4) {
                     distribuicao.put("Jardim/Nioaque", distribuicao.get("Jardim/Nioaque") + qtdEnviada);
+                } else if(numeroFilial == 5){
+                    distribuicao.put("Bodoquena", distribuicao.get("Bodoquena") + qtdEnviada);
                 }
-
                 somaQuantidadeTotal += qtdEnviada;
             }
 
