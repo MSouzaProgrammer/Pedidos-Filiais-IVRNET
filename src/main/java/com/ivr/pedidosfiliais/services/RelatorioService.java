@@ -25,7 +25,7 @@ public class RelatorioService {
 
         // Agrupamos apenas pelo nome do produto
         Map<String, List<RegistroBrutoRelatorio>> agrupados = registrosBrutos.stream()
-                .collect(Collectors.groupingBy(RegistroBrutoRelatorio::getName));
+                .collect(Collectors.groupingBy(item -> item.getName()));
 
         List<RelatorioPedidoResponse> listaRelatorioFinal = new ArrayList<>();
 
