@@ -26,7 +26,7 @@ export function configurarDropdownProdutos(): void {
           setProdutoEmEspera(produto);
           listaSugestoes.style.display = "none";
           quantValor.disabled = false;
-          btAdd.style.backgroundColor = '#041033';
+          btAdd.style.backgroundColor = 'var(--primary)';
           btAdd.disabled = false;
           inputProduto.disabled = true;
         });

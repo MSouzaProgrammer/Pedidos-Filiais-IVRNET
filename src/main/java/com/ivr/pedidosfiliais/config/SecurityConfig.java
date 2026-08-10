@@ -79,7 +79,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Agora ele aceita o localhost em casa E a Render na nuvem dinamicamente
-        configuration.setAllowedOrigins(Arrays.asList(local));
+        configuration.setAllowedOrigins(Arrays.asList(frontendUrl));
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

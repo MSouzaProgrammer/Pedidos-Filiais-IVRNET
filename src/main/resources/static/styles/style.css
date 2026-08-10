@@ -1,44 +1,110 @@
+/* ==========================================================================
+   DESIGN SYSTEM & ANIMAÇÕES PREMIUM - IVRNET
+   ========================================================================== */
+
 :root {
-    /* Paleta Muted Dark (Sem Neon) */
-    --bg-body: #0b0f19;
-    --bg-sidebar: #151b2b;
-    --white: #1e2536;
+    /* Paleta Deep Dark */
+    --bg-body: #090d16;
+    --bg-sidebar: #111827;
+    --bg-card: #1f2937;
+    --bg-card-hover: #2d3748;
 
-    /* Textos e Bordas */
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border-color: #2a3441;
-    --backId: #5f69773f;
-    --backBtn: #5f69775e;
+    /* Tipografia e Textos */
+    --text-main: #f9fafb;
+    --text-muted: #9ca3af;
+    --text-dark: #64748b;
 
-    /* Cores de Ação (Azul Sóbrio) */
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --sidebar-active: #2a3441;
+    /* Bordas e Divisores */
+    --border-color: #2e374a;
+    --border-subtle: rgba(255, 255, 255, 0.08);
 
-    /* Estrutura */
+    /* Cores de Ação (Acentos) */
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-glow: rgba(37, 99, 235, 0.35);
+    --sidebar-active: rgba(37, 99, 235, 0.15);
+
+    /* Identificadores e Botões */
+    --backId: rgba(99, 102, 241, 0.15);
+    --backBtn: rgba(255, 255, 255, 0.05);
+
+    /* Geometria e Sombras */
+    --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 10px 30px rgba(0, 0, 0, 0.5);
 
-    --pendendeteBorda: #DC2626;
-    --pendenteFundo: rgba(152, 27, 27, 0.247);
-    --pendenteLetra: red;
+    /* Status Badges */
+    --pendendeteBorda: rgba(239, 68, 68, 0.3);
+    --pendenteFundo: rgba(239, 68, 68, 0.12);
+    --pendenteLetra: #fca5a5;
 
-    --separadoBorda: #1D4ED8;
-    --separadoFundo: #202d49;
-    --separadoLetra: #1D4ED8;
+    --separadoBorda: rgba(59, 130, 246, 0.3);
+    --separadoFundo: rgba(59, 130, 246, 0.12);
+    --separadoLetra: #93c5fd;
 
-    --enviadoBorda: green;
-    --enviadoFundo: rgba(0, 128, 0, 0.226);
-    --enviadoLetra: green;
+    --enviadoBorda: rgba(34, 197, 94, 0.3);
+    --enviadoFundo: rgba(34, 197, 94, 0.12);
+    --enviadoLetra: #86efac;
 }
+
+/* ==========================================================================
+   1. KEYFRAMES DE ANIMAÇÕES LOCAIS E GLOBAIS
+   ========================================================================== */
+
+/* Entrada suave de telas e elementos */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Entrada dos itens da lista em cascata */
+@keyframes itemCascade {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Abertura Fluida para Modais */
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -46%) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Spinner de Carregamento */
+@keyframes girar {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   2. RESET & ESTRUTURA GLOBAL
+   ========================================================================== */
 
 * {
     box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
-    font-family: Arial, sans-serif, 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 body {
@@ -46,7 +112,73 @@ body {
     color: var(--text-main);
     display: flex;
     min-height: 100vh;
+    overflow-x: hidden;
 }
+
+/* ==========================================================================
+   TELA DE LOGIN (CORRIGIDO E CENTRALIZADO)
+   ========================================================================== */
+
+.login-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-body);
+    padding: 20px;
+}
+
+/* Trava da Logo para não estourar a tela */
+.img-logo {
+    width: 100%;
+    max-width: 280px; /* Limita o tamanho máximo da logo */
+    height: auto;
+    margin-bottom: 24px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+}
+
+/* Card do Formulário de Login */
+.login-container {
+    background-color: var(--bg-sidebar);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-glow);
+    width: 100%;
+    max-width: 420px; /* Largura perfeita para o formulário */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ajuste nos inputs do formulário de login */
+.login-container .form-control {
+    background-color: var(--bg-body) !important;
+}
+
+/* ==========================================================================
+   OBSERVAÇÕES DO MODAL (EXPANDIDO)
+   ========================================================================== */
+
+/* Faz o painel do usuário/observações ocupar a altura e esticar */
+.sidebar-panels-pro .panel-card-pro:first-child {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Expande a caixa de texto de Observações */
+#tObservacoes {
+    min-height: 180px !important;
+    height: 100% !important;
+    resize: vertical;
+}
+
+/* ==========================================================================
+   3. SIDEBAR E NAVEGAÇÃO
+   ========================================================================== */
 
 .sidebar {
     width: 260px;
@@ -64,57 +196,20 @@ body {
 .brand-area {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 50px;
+    justify-content: center;
+    margin-bottom: 40px;
 }
 
 .brand-logo {
-    margin-top: -15px;
-    margin-left: 10px;
-    height: 105px;
-    width: 192px;
+    height: 85px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
 }
 
-
-.login-body {
-    display: flex;
-    flex-direction: column;
-    background-color: var(--bg-body);
-    justify-content: center;
-    align-items: center;
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
-}
-
-
-
-.login-container {
-    background-color: var(--white);
-    padding: 60px;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
-    margin-bottom: 10px;
-    margin-top: 0px;
-    box-shadow: var(--shadow-sm);
-
-}
-
-.login-visual {
-
-    background-color: var(--bg-sidebar);
-    padding: 15px;
-    border-radius: var(--radius-md);
-}
-
-
-
-.img-logo {
-
-    margin-top: 0;
-
-    width: 35%;
-
+.brand-logo:hover {
+    transform: scale(1.05) rotate(-1deg);
 }
 
 .nav-links {
@@ -132,21 +227,66 @@ body {
     font-weight: 500;
     font-size: 14px;
     border-radius: var(--radius-md);
-    transition: 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     margin-bottom: 8px;
     cursor: pointer;
+    border: 1px solid transparent;
 }
 
 .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.05);
     color: var(--text-main);
+    transform: translateX(5px);
 }
 
 .nav-link.active {
-    background-color: var(--sidebar-active);
+    background-color: var(--primary);
     color: var(--text-main);
     font-weight: 600;
+    box-shadow: 0 4px 16px var(--primary-glow);
+    border-color: rgba(255, 255, 255, 0.15);
 }
+
+#user {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-main);
+    padding: 12px 16px;
+    background: var(--bg-body);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+#user:hover {
+    border-color: var(--primary);
+}
+
+/* LOGO OCULTA NO DASHBOARD (Apenas telas grandes) */
+.imgDasboard {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 0px;
+}
+
+.logoBaixo {
+    width: 0px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+@media screen and (min-width: 1900px) {
+    .logoBaixo {
+        width: 200px;
+        opacity: 0.5;
+    }
+}
+
+/* ==========================================================================
+   4. ESTRUTURA PRINCIPAL & TROCA DE PÁGINAS
+   ========================================================================== */
 
 .main-wrapper {
     margin-left: 260px;
@@ -156,7 +296,8 @@ body {
 }
 
 .header {
-    background: var(--bg-sidebar);
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     padding: 16px 40px;
     display: flex;
@@ -168,17 +309,33 @@ body {
 }
 
 .content {
-    padding: 20px;
+    padding: 24px;
     flex: 1;
 }
 
+/* Troca de Páginas com Animação Smooth */
+.page-content {
+    display: none;
+}
+
+.page-content.active {
+    display: block;
+    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .card {
-    background: var(--white);
+    background: var(--bg-sidebar);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-sm);
     padding: 24px;
     margin-bottom: 24px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .card-title {
@@ -191,32 +348,9 @@ body {
     gap: 8px;
 }
 
-.product-list-header {
-    display: grid;
-    grid-template-columns: 100px 1fr 150px 100px;
-    padding: 12px 16px;
-    background: var(--bg-sidebar);
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-    border-bottom: 1px solid var(--border-color);
-    margin-bottom: 0;
-}
-
-.product-list-item {
-    display: grid;
-    grid-template-columns: 100px 1fr 150px 100px;
-    padding: 16px;
-    border-bottom: 1px solid var(--border-color);
-    align-items: center;
-    transition: 0.2s;
-    background: var(--white);
-}
-
-.product-list-item:hover {
-    background-color: var(--sidebar-active);
-}
+/* ==========================================================================
+   5. FORMULÁRIOS & BOTÕES
+   ========================================================================== */
 
 .form-group {
     margin-bottom: 20px;
@@ -236,84 +370,78 @@ body {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     font-size: 14px;
-    background: var(--bg-sidebar);
+    background: var(--bg-body);
     color: var(--text-main);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-control:focus {
     outline: none;
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+    background: var(--bg-sidebar);
 }
 
 .btn-primary {
-    background: var(--bg-sidebar);
+    background: var(--primary);
     color: var(--text-main);
-    border: 1px solid var(--border-color);
+    border: none;
     padding: 10px 20px;
     border-radius: var(--radius-md);
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px var(--primary-glow);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: var(--sidebar-active);
-    border-color: var(--text-muted);
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .btn-primary:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
-}
-.page-content {
-    display: none;
+    box-shadow: none;
 }
 
-.page-content.active {
-    display: block;
-}
-
-.modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(11, 15, 25, 0.85);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(4px);
-}
+/* ==========================================================================
+   6. AUTOCOMPLETE DROPDOWN
+   ========================================================================== */
 
 .dropdown-produtos {
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
-    background-color: var(--bg-sidebar);
+    background-color: var(--bg-card);
     color: var(--text-main);
     list-style: none;
     padding: 0;
-    margin: 4px 0 0 0;
+    margin: 6px 0 0 0;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
-    max-height: 200px;
+    box-shadow: var(--shadow-glow);
+    max-height: 220px;
     overflow-y: auto;
     z-index: 1000;
+    animation: fadeInUp 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .dropdown-produtos li {
-    padding: 10px 15px;
+    padding: 12px 16px;
     font-size: 14px;
     cursor: pointer;
     border-bottom: 1px solid var(--border-color);
-    transition: 0.2s;
+    transition: background 0.15s ease, padding-left 0.15s ease;
 }
 
 .dropdown-produtos li:last-child {
@@ -321,35 +449,35 @@ body {
 }
 
 .dropdown-produtos li:hover {
-    background-color: var(--sidebar-active);
+    background-color: var(--primary);
+    color: #ffffff;
+    padding-left: 22px;
 }
 
-/* =========================================
-   DASHBOARD E PEDIDOS (LAYOUT CORRIGIDO) 
-   ========================================= */
+/* ==========================================================================
+   7. DASHBOARD & LISTA DE PEDIDOS
+   ========================================================================== */
 
 .dashboardSection {
     display: flex;
     gap: 24px;
     align-items: flex-start;
     flex-wrap: wrap;
-    /* Permite quebrar linha em telas menores */
 }
 
 .menuEsquerda {
     width: 290px;
-    background-color: var(--white);
+    background-color: var(--bg-sidebar);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     list-style: none;
     padding-bottom: 20px;
-    position: relative;
     overflow: hidden;
 }
 
-.menuEsquerda>h2 {
-    font-size: 20px;
-    padding: 24px;
+.menuEsquerda > h2 {
+    font-size: 18px;
+    padding: 20px 24px;
     margin: 0;
     border-bottom: 1px solid var(--border-color);
 }
@@ -358,53 +486,44 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 15px 24px;
+    padding: 14px 20px;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    transition: 0.2s;
+    transition: all 0.2s ease;
     cursor: pointer;
-    border-bottom: 1px solid var(--bg-body);
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-muted);
 }
 
-.navFiliais:hover,
+.navFiliais i {
+    font-style: normal;
+}
+
+.navFiliais:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: var(--text-main);
+    padding-left: 24px;
+}
+
 .navFiliais.ativa {
     background-color: var(--sidebar-active);
-    border-left: 4px solid var(--text-muted);
+    border-left: 4px solid var(--primary);
+    color: #60a5fa;
+    font-weight: 600;
 }
-
-.imgDasboard {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    margin-top: 0px;
-}
-
-.logoBaixo {
-    width: 0px;
-    opacity: 0.5;
-}
-
-
-@media screen and (min-width: 1900px) {
-    .logoBaixo {
-        width: 200px;
-        opacity: 0.5;
-    }
-}
-
 
 .menuPedidos {
     flex: 1;
-    min-width: 300px;
-    background-color: var(--white);
+    min-width: 320px;
+    background-color: var(--bg-sidebar);
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
     padding: 24px;
 }
 
-.menuPedidos>h2 {
-    font-size: 20px;
+.menuPedidos > h2 {
+    font-size: 18px;
     margin-bottom: 20px;
 }
 
@@ -415,19 +534,23 @@ body {
     border-radius: var(--radius-md);
     background-color: var(--bg-body);
     width: 100%;
+    overflow: hidden;
 }
 
-/* Grid para os Pedidos */
 .tagsPedido {
-    display: grid;
-    grid-template-columns: 80px 1fr 120px 150px;
+    display: grid !important;
+    grid-template-columns: 110px 1fr 130px 140px !important; /* Aumentado de 80px para 110px */
     gap: 15px;
     align-items: center;
-    padding: 15px 20px;
+    padding: 14px 20px;
     border-bottom: 1px solid var(--border-color);
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
+    background-color: var(--bg-sidebar);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap; /* Impede a quebra de texto em duas linhas */
 }
 
 .sectionPedidos {
@@ -439,19 +562,20 @@ body {
 }
 
 .pedidoInformacoes {
-    display: grid;
-    grid-template-columns: 80px 1fr 120px 150px;
+    display: grid !important;
+    grid-template-columns: 110px 1fr 130px 140px !important; /* Aumentado de 80px para 110px */
     gap: 15px;
     align-items: center;
-    padding: 15px 20px;
+    padding: 14px 20px;
     border-bottom: 1px solid var(--border-color);
-    transition: 0.2s;
+    transition: background 0.15s ease, transform 0.15s ease;
     color: var(--text-main);
 }
 
 .pedidoInformacoes:hover {
-    background-color: var(--sidebar-active);
+    background-color: rgba(255, 255, 255, 0.04);
     cursor: pointer;
+    transform: translateX(2px);
 }
 
 .idPedidoTela {
@@ -460,111 +584,667 @@ body {
     border-radius: 4px;
     background-color: var(--backId);
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 700;
+    color: #818cf8;
 }
 
 .usuarioPedidoTela,
-.statusPedidoTela,
 .dataPedidoTela {
     font-size: 14px;
     font-style: normal;
 }
 
 .statusPedidoTela {
-    width: 78%;
-    justify-content: center;
-    text-align: center;
-    padding: 4px 0px 5px 0px;
+    width: fit-content;
+    padding: 4px 12px !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
 }
 
-/* Modais e Detalhes do Pedido */
+/* ==========================================================================
+   8. TELA DE PRODUTOS (LAYOUT EM GRID TRAVADO E COMPACTO)
+   ========================================================================== */
+
+#produtos-page {
+    display: none;
+    flex-direction: column;
+    height: calc(100vh - 110px);
+    overflow: hidden;
+}
+
+#produtos-page.active {
+    display: flex;
+}
+
+#produtos-page .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    margin-bottom: 0;
+    padding: 24px;
+}
+
+/* Cabeçalho Fixo do Catálogo */
+.product-list-header {
+    display: grid !important;
+    grid-template-columns: 90px 1fr 150px 100px !important;
+    gap: 15px;
+    align-items: center;
+    padding: 14px 20px;
+    background-color: var(--bg-card);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    border: 1px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+/* Lista de Produtos com Scroll Isolado */
+#global-product-list {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    background-color: var(--bg-body);
+}
+
+/* Linha do Produto */
+.product-list-item {
+    display: grid !important;
+    grid-template-columns: 90px 1fr 150px 100px !important;
+    gap: 15px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-color);
+    align-items: center;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    background-color: var(--bg-sidebar);
+    color: var(--text-main);
+    font-size: 14px;
+    animation: itemCascade 0.2s ease-out forwards;
+}
+
+.product-list-item:last-child {
+    border-bottom: none;
+}
+
+.product-list-item:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    transform: translateX(2px);
+}
+
+.product-list-item > span:first-child {
+    font-weight: 700;
+    color: #818cf8;
+}
+
+.product-list-item > span:last-child {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+/* ==========================================================================
+   9. MODAL PRO (EDIÇÃO DE PEDIDOS) - TELA & SCROLL TRAVADOS
+   ========================================================================== */
+
+.modal-overlay-pro {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 9998;
+}
+
+.modal-overlay-pro.ativo {
+    display: block;
+}
+
 .intensPedido {
     display: none;
-    /* Inicia oculto, o JS mostra com 'flex' ou block */
     flex-direction: column;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: var(--white);
+    background-color: var(--bg-body);
     border: 1px solid var(--border-color);
-    box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 25px 70px rgba(0, 0, 0, 0.85);
     border-radius: var(--radius-lg);
-    width: 90%;
-    max-width: 600px;
-    z-index: 1000;
-    padding: 24px;
+    width: 95%;
+    max-width: 1200px;
+    height: 85vh;
+    max-height: 85vh;
+    z-index: 9999;
+    overflow: hidden;
 }
 
-/* Quando ativo, usar a classe via JS */
 .intensPedido.ativo {
     display: flex;
+    animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.btnFechar {
-    position: fixed;
+.modal-header-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: var(--bg-sidebar);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.title-group h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 0;
+}
+
+.date-text {
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.actions-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.select-status-custom {
+    padding: 8px 12px;
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.select-status-custom:focus {
+    border-color: var(--primary);
+}
+
+.btn-outline-pro {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-outline-pro:hover {
+    border-color: var(--text-muted);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-close-pro {
     background: transparent;
     border: none;
     color: var(--text-muted);
     cursor: pointer;
-    padding: 2px;
-    border-radius: 4px;
-    transition: 0.2s;
-    position: absolute;
-    top: 2%;
-    right: 1%;
+    padding: 6px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
 }
 
-.btnFechar:hover {
+.btn-close-pro:hover {
     color: var(--text-main);
-    background-color: var(--sidebar-active);
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.paginaPedidos {
+.modal-body-pro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 20px;
+    padding: 20px 24px;
+    background-color: var(--bg-sidebar);
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.modal-body-pro > div:first-child {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    margin-top: 20px;
+    height: 100%;
+    min-height: 0;
+    gap: 12px;
 }
 
-.paginaPedidos>h2 {
-    font-size: 20px;
-    padding-bottom: 10px;
+#area-add-produto-edit {
+    flex-shrink: 0;
+}
+
+.table-container-pro {
+    background-color: var(--bg-body);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    position: relative;
+}
+
+.table-row-pro {
+    display: grid;
+    grid-template-columns: 70px 2fr 80px 100px 110px 40px;
+    align-items: center;
+    padding: 10px 16px;
     border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+    transition: background 0.15s;
 }
 
-.btnImprimir {
+.table-row-pro.header-pro {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-color: var(--bg-card);
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.input-qtd-pro {
+    width: 65px;
+    padding: 6px;
+    background-color: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    border-radius: 4px;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-qtd-pro:focus {
+    border-color: var(--primary);
+}
+
+.btn-icon-danger {
+    background: transparent;
+    border: none;
+    color: #f87171;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+}
+
+.btn-icon-danger:hover:not(:disabled) {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.15);
+}
+
+/* Ajusta o card do Usuário/Observações para expandir verticalmente */
+.sidebar-panels-pro .panel-card-pro:first-child {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Força a caixa de texto a esticar para baixo */
+#tObservacoes {
+    min-height: 180px;
+    height: 150%;
+    resize: vertical; /* Permite que o operador ainda ajuste manualmente se quiser */
+}
+
+.panel-card-pro {
+    background-color: var(--bg-body);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 16px;
+}
+
+.resumo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.number-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: var(--primary-glow);
+    color: #818cf8;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.modal-footer-pro {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    padding: 16px 24px;
+    background-color: var(--bg-body);
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.btn-footer-cancel {
+    background-color: var(--bg-sidebar);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-footer-cancel:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.btn-footer-save {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    width: 100%;
+    background-color: var(--primary);
+    color: #fff;
     border: none;
-    border-radius: var(--radius-md);
     padding: 12px;
-    color: var(--text-main);
-    background-color: var(--sidebar-active);
+    border-radius: var(--radius-md);
     font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
-    margin-top: 10px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px var(--primary-glow);
 }
 
-.btnImprimir:hover {
-    background-color: var(--primary);
+.btn-footer-save:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
 }
 
-/* =========================================
-   RESPONSIVIDADE (MOBILE E TABLET)
-   ========================================= */
+/* ==========================================================================
+   10. TABELA DE RELATÓRIO
+   ========================================================================== */
+
+.tabela-relatorio {
+    width: 100%;
+    border-collapse: collapse;
+    color: #f8fafc;
+    font-size: 14px;
+    table-layout: fixed;
+}
+
+.tabela-relatorio th, 
+.tabela-relatorio td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tabela-relatorio-produtos tr {
+    transition: background 0.15s ease;
+}
+
+.tabela-relatorio-produtos tr:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.tabela-relatorio .text-left { text-align: left !important; }
+.tabela-relatorio .text-center { text-align: center !important; }
+
+.tabela-relatorio .col-filial {
+    color: #38bdf8;
+    text-align: center !important;
+}
+
+.tabela-container {
+    max-height: 520px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-body);
+}
+
+.tabela-relatorio thead th {
+    position: sticky;
+    top: 0;
+    background-color: var(--bg-sidebar);
+    z-index: 1;
+    box-shadow: inset 0 -2px 0 var(--border-color);
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+
+
+/* ==========================================================================
+   OVERLAYS (LOADING & CONFIRMAÇÃO) - CENTRALIZADOS
+   ========================================================================== */
+
+.loading-overlay, .confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(9, 13, 22, 0.8);
+    backdrop-filter: blur(6px);
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+}
+
+.loading-overlay.ativo, .confirm-overlay.ativo {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Trava de Centralização da Caixa Interna do Loading */
+.loading-box {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    gap: 16px;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 15px;
+    margin: auto;
+}
+
+/* Spinner Giratório */
+.spinner {
+    width: 46px;
+    height: 46px;
+    border: 4px solid var(--border-color);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: girar 0.8s linear infinite;
+    margin: 0 auto !important; /* Garante alinhamento horizontal cravado no centro */
+    flex-shrink: 0;
+}
+
+
+
+.confirm-box {
+    background: var(--bg-sidebar);
+    border: 1px solid var(--border-color);
+    padding: 28px;
+    border-radius: var(--radius-lg);
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: var(--shadow-glow);
+    transform: scale(0.92);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.confirm-overlay.ativo .confirm-box {
+    transform: scale(1);
+}
+
+.confirm-icon {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 16px auto;
+}
+
+.confirm-box h3 {
+    margin: 0 0 8px 0;
+    color: var(--text-main);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.confirm-box p {
+    margin: 0 0 24px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.confirm-buttons button {
+    padding: 10px 18px;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-cancel {
+    background: var(--bg-body);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* ==========================================================================
+   12. SCROLLBARS PERSONALIZADAS
+   ========================================================================== */
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) var(--bg-body);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-body);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* ==========================================================================
+   13. ESTADOS DESATIVADOS
+   ========================================================================== */
+
+#edit-prod-nome:disabled {
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+#edit-prod-nome:disabled:hover {
+    opacity: 0.35 !important;
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    cursor: not-allowed !important;
+}
+
+.btn-icon-danger:disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+}
+
+.btn-icon-danger:disabled:hover {
+    color: #f87171 !important;
+    background: transparent !important;
+}
+
+/* ==========================================================================
+   14. RESPONSIVIDADE
+   ========================================================================== */
+
 @media screen and (max-width: 900px) {
-
-    /* Sidebar vai para o topo */
     .sidebar {
         width: 100%;
         height: auto;
         position: relative;
-        flex-direction: column;
         padding: 15px;
         border-right: none;
         border-bottom: 1px solid var(--border-color);
@@ -586,7 +1266,6 @@ body {
         margin-bottom: 0;
     }
 
-    /* Zera a margem que reservava espaço pra sidebar */
     .main-wrapper {
         margin-left: 0;
     }
@@ -599,12 +1278,6 @@ body {
         padding: 20px 10px;
     }
 
-    /* Ajuste na Grid do Novo Pedido */
-    .order-container {
-        grid-template-columns: 1fr !important;
-    }
-
-    /* Menu Esquerda e Pedidos empilhados */
     .menuEsquerda {
         width: 100%;
     }
@@ -613,10 +1286,8 @@ body {
         padding: 15px;
     }
 
-    /* Grid da Lista de Pedidos vira cards empilhados no celular */
     .tagsPedido {
         display: none;
-        /* Esconde o cabeçalho no mobile */
     }
 
     .pedidoInformacoes {
@@ -626,977 +1297,6 @@ body {
         border: 1px solid var(--border-color);
         border-radius: var(--radius-md);
         margin-bottom: 10px;
-        background-color: var(--white);
+        background-color: var(--bg-sidebar);
     }
-
-    .idPedidoTela {
-        width: fit-content;
-    }
-
-    /* Adiciona labels que não existem no HTML para melhor entendimento no mobile */
-    .usuarioPedidoTela::before {
-        content: "Usuário: ";
-        font-weight: bold;
-        color: var(--text-muted);
-    }
-
-    .statusPedidoTela::before {
-        content: "Status: ";
-        font-weight: bold;
-        color: var(--text-muted);
-    }
-
-    .dataPedidoTela::before {
-        content: "Data: ";
-        font-weight: bold;
-        color: var(--text-muted);
-    }
-
-    /* Grid da Lista de Produtos vira empilhada */
-    .product-list-header {
-        display: none;
-    }
-
-    .product-list-item {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 15px;
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius-md);
-        margin-bottom: 10px;
-    }
-}
-
-
-/* =========================================
-   MODAL DE DETALHES DO PEDIDO (IMAGEM)
-   ========================================= */
-
-/* Fundo escuro atrás do modal */
-.modal-overlay-pro {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(4px);
-    z-index: 9998;
-}
-
-/* Caixa principal do modal */
-.intensPedido {
-    display: none;
-    /* Fica oculto por padrão */
-    flex-direction: column;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: var(--bg-body);
-    /* Fundo igual ao da imagem */
-    border: 1px solid var(--border-color);
-    box-shadow: 0px 20px 60px rgba(0, 0, 0, 0.8);
-    border-radius: var(--radius-lg);
-    width: 95%;
-    max-width: 1200px;
-    /* Bem largo pra caber tudo */
-    max-height: 90vh;
-    /* Não deixa vazar da tela */
-    z-index: 9999;
-    overflow: hidden;
-}
-
-/* A MÁGICA DE EXIBIR O MODAL */
-.intensPedido.ativo {
-    display: flex;
-}
-
-.modal-overlay-pro.ativo {
-    display: block;
-}
-
-/* --- CABEÇALHO --- */
-.modal-header-pro {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 24px;
-    background-color: var(--bg-body);
-    border-bottom: 1px solid var(--border-color);
-}
-
-.title-group {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.title-group h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--text-main);
-    margin: 0;
-}
-
-.date-text {
-    color: var(--text-muted);
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.actions-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.actions-group label {
-    font-size: 13px;
-    color: var(--text-muted);
-}
-
-.select-status-custom {
-    padding: 8px 12px;
-    background-color: var(--bg-sidebar);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    border-radius: var(--radius-md);
-    outline: none;
-}
-
-.btn-outline-pro {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--sidebar-active);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    padding: 8px 16px;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-outline-pro:hover {
-    border-color: var(--text-muted);
-}
-
-.btn-close-pro {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 5px;
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-}
-
-.btn-close-pro:hover {
-    color: var(--text-main);
-    background: var(--sidebar-active);
-}
-
-/* --- CORPO (GRID) --- */
-.modal-body-pro {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 300px;
-    /* Tabela 1fr | Painéis 300px */
-    gap: 20px;
-    padding: 24px;
-    background-color: var(--bg-sidebar);
-    /* Fundo ligeiramente mais claro no miolo */
-    overflow-y: auto;
-    flex: 1;
-    /* Preenche o espaço disponível */
-}
-
-/* --- TABELA DA ESQUERDA --- */
-.table-container-pro {
-    background-color: var(--bg-body);
-    border-radius: var(--radius-md);
-
-    border: 1px solid var(--border-color);
-    overflow-y: auto;
-    position: relative;
-    flex-direction: column;
-}
-
-.table-row-pro {
-    display: grid;
-    grid-template-columns: 70px 2fr 80px 100px 110px 100px 110px 40px;
-    align-items: center;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 13px;
-}
-
-.table-row-pro.header-pro {
-    position: sticky;
-    top: 0;
-    /* Gruda exatamente no topo do container */
-    z-index: 10;
-    /* Garante que ele fique na frente dos itens que sobem */
-    background-color: var(--bg-sidebar);
-    /* Cor sólida para não ser transparente */
-    border-bottom: 2px solid var(--border-color);
-    /* Uma bordinha pra destacar */
-}
-
-.table-row-pro:last-child {
-    border-bottom: none;
-}
-
-.header-pro {
-    background-color: var(--sidebar-active);
-    font-weight: 600;
-    color: var(--text-main);
-}
-
-.input-qtd-pro {
-    width: 65px;
-    padding: 6px;
-    background-color: var(--bg-sidebar);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    border-radius: 4px;
-    text-align: center;
-    outline: none;
-}
-
-.input-qtd-pro::-webkit-outer-spin-button,
-.input-qtd-pro::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.badge-pro {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.badge-success {
-    color: #4ade80;
-    background-color: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.2);
-}
-
-.badge-danger {
-    color: #f87171;
-    background-color: rgba(248, 113, 113, 0.1);
-    border: 1px solid rgba(248, 113, 113, 0.2);
-}
-
-.btn-icon-danger {
-    background: transparent;
-    border: none;
-    color: #f87171;
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-icon-danger:hover {
-    color: #dc2626;
-
-}
-
-/* --- PAINÉIS LATERAIS --- */
-.sidebar-panels-pro {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.panel-card-pro {
-    background-color: var(--bg-body);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 20px;
-}
-
-.resumo-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-    font-size: 14px;
-    color: var(--text-muted);
-}
-
-.resumo-row:last-child {
-    margin-bottom: 0;
-}
-
-.text-danger-row {
-    color: #f87171;
-}
-
-.number-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    background-color: var(--sidebar-active);
-    color: var(--text-main);
-    border-radius: 50%;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.circle-danger {
-    background-color: #f87171;
-    color: #fff;
-}
-
-/* --- RODAPÉ --- */
-.modal-footer-pro {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 15px;
-    padding: 20px 24px;
-    background-color: var(--bg-body);
-    border-top: 1px solid var(--border-color);
-}
-
-.btn-footer-cancel {
-    background-color: var(--bg-sidebar);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-    padding: 14px;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-footer-cancel:hover {
-    background-color: var(--border-color);
-}
-
-.btn-footer-save {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background-color: #1e3a8a;
-    color: #fff;
-    border: none;
-    padding: 14px;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-footer-save:hover {
-    background-color: #1e40af;
-}
-
-/* --- RESPONSIVIDADE DO MODAL --- */
-@media screen and (max-width: 1100px) {
-    .modal-body-pro {
-        grid-template-columns: 1fr;
-        /* Quebra pra 1 coluna */
-    }
-
-    .table-container-pro {
-        overflow-x: auto;
-        /* Scroll horizontal na tabela se precisar */
-    }
-
-    .table-row-pro {
-        min-width: 800px;
-    }
-
-    .modal-header-pro {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .modal-footer-pro {
-        grid-template-columns: 1fr;
-        /* Empilha os botões */
-    }
-}
-
-
-#sessaoImpressao {
-    display: none;
-}
-
-@media print {
-
-    /* Na hora de imprimir, esconde o sistema todo */
-    body * {
-        display: none !important;
-    }
-
-    /* Mostra apenas a div do papel */
-    #sessaoImpressao,
-    #sessaoImpressao * {
-        display: block !important;
-    }
-}
-
-/* Camada de fundo que bloqueia cliques enquanto carrega */
-.loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    /* Fundo escurinho */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    /* Fica por cima de absolutamente tudo */
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-}
-
-/* Classe que ativa o loading */
-.loading-overlay.ativo {
-    opacity: 1;
-    pointer-events: all;
-}
-
-/* O círculo giratório (Spinner) */
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    /* Cor da ponta que gira */
-    animation: girar 1s linear infinite;
-}
-
-/* Texto opcional abaixo do spinner */
-.loading-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    color: #fff;
-    font-family: sans-serif;
-    font-weight: 600;
-}
-
-@keyframes girar {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Fundo escurecido e desfocado do modal */
-.confirm-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(15, 23, 42, 0.6);
-    /* Slate escuro com transparência */
-    backdrop-filter: blur(4px);
-    /* Efeito de vidro desfocado atrás */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    /* Fica no topo absoluto */
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-}
-
-/* Quando ativo, exibe o modal */
-.confirm-overlay.ativo {
-    opacity: 1;
-    pointer-events: all;
-}
-
-/* Caixa central do modal */
-.confirm-box {
-    background: #ffffff;
-    padding: 24px;
-    border-radius: 12px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-    transform: scale(0.9);
-    transition: transform 0.2s ease;
-}
-
-.confirm-overlay.ativo .confirm-box {
-    transform: scale(1);
-}
-
-/* Ícone de aviso amarelo */
-.confirm-icon {
-    background: #fef3c7;
-    color: #d97706;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 16px auto;
-}
-
-.confirm-icon i {
-    width: 24px;
-    height: 24px;
-}
-
-.confirm-box h3 {
-    margin: 0 0 8px 0;
-    color: #1e293b;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.confirm-box p {
-    margin: 0 0 24px 0;
-    color: #64748b;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-/* Alinhamento dos botões */
-.confirm-buttons {
-    display: flex;
-    gap: 12px;
-    justify-content: flex-end;
-}
-
-.confirm-buttons button {
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: background 0.2s;
-}
-
-.btn-cancel {
-    background: #f1f5f9;
-    color: #475569;
-}
-
-.btn-cancel:hover {
-    background: #e2e8f0;
-}
-
-.btn-danger {
-    background: #ef4444;
-    color: #ffffff;
-}
-
-.btn-danger:hover {
-    background: #dc2626;
-}
-
-/* Força a seção de produtos a ter uma estrutura flexível e limite de altura */
-#produtos-page {
-    display: none;
-    /* Mantém o padrão do seu sistema de páginas */
-    flex-direction: column;
-    height: calc(100vh - 120px);
-    /* Pega a altura total da tela menos o cabeçalho */
-    overflow: hidden;
-    /* Não deixa a seção esticar a página principal */
-}
-
-#produtos-page.active {
-    display: flex;
-    /* Quando ativo, vira flex para controlar os filhos verticalmente */
-}
-
-/* Atualize o card específico da página de produtos, ou use essa regra geral baseada nele */
-#produtos-page .card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    /* Ocupa 100% do espaço calculado do pai */
-    overflow: hidden;
-    /* Trava as bordas do card */
-    margin-bottom: 0;
-    /* Evita quebras de margem no fundo */
-}
-
-/* O SEGREDO ESTÁ AQUI: Trava o cabeçalho da tabela e deixa só a lista rolar */
-.product-list-header {
-    flex-shrink: 0;
-    /* Impede o cabeçalho de encolher ou sumir */
-}
-
-#global-product-list {
-    flex: 1;
-    /* Ocupa todo o espaço vertical restante dentro do card */
-    overflow-y: auto;
-    /* Adiciona a barra de rolagem vertical APENAS aqui dentro! */
-    padding-right: 4px;
-    /* Pequeno respiro para a barra não colar no texto */
-}
-
-/* Customização opcional: deixa a barra de rolagem interna elegante e discreta */
-#global-product-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-#global-product-list::-webkit-scrollbar-track {
-    background: transparent;
-}
-
-#global-product-list::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    border-radius: 5px;
-}
-
-/* 1. Controla a largura total da barrinha no container de produtos */
-.table-container-pro::-webkit-scrollbar {
-    width: 1px;
-    /* Deixa ela fininha e discreta */
-}
-
-/* 2. Controla o fundo do caminho da barrinha (deixando invisível para não poluir) */
-.table-container-pro::-webkit-scrollbar-track {
-    background: transparent;
-
-}
-
-/* 3. Estiliza o bastão que se move na rolagem */
-.table-container-pro::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
-    /* Usa a cor de borda padrão do seu sistema */
-    border-radius: 5px;
-    /* Deixa as pontas arredondadas e modernas */
-}
-
-/* 4. Efeito opcional: deixa a barrinha um pouquinho mais escura quando o mouse passa por cima dela */
-.table-container-pro::-webkit-scrollbar-thumb:hover {
-    background-color: #64748b;
-    /* Cor cinza escuro no hover */
-}
-
-/* =========================================
-   ESTILOS DA TABELA DE RELATÓRIO
-   ========================================= */
-
-.tabela-relatorio {
-    width: 100%;
-    border-collapse: collapse;
-    color: #f8fafc; /* Texto claro */
-    font-size: 14px;
-    table-layout: fixed; /* 🌟 FORÇA as colunas do header e body a terem o mesmíssimo tamanho */
-}
-
-.tabela-relatorio th, 
-.tabela-relatorio td {
-    padding: 12px 10px; /* 🌟 Aumentei o padding para dar respiro e alinhar perfeitamente */
-    vertical-align: middle;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-}
-.tabela-relatorio-produtos tr:hover{
-    background-color: var(--border-color);
-    border-radius: 6px;
-}
-
-/* Forçar os alinhamentos de forma rígida */
-.tabela-relatorio .text-left {
-    text-align: left !important;
-}
-
-.tabela-relatorio .text-center {
-    text-align: center !important;
-}
-
-/* Deixar as colunas de filiais bonitas e centralizadas */
-.tabela-relatorio .col-filial {
-    color: #38bdf8; /* Azul claro */
-    text-align: center !important;
-}
-
-.tabela-container {
-    max-height: 500px; /* Altere para a altura máxima que preferir (ex: 400px, 600px) */
-    overflow-y: auto;  /* Ativa a rolagem vertical apenas se passar da altura máxima */
-    border: 1px solid var(--bg-sidebar); /* Bordinha combinando com o tema escuro */
-    border-radius: 6px;
-    scrollbar-width: thin;
-    scrollbar-color: #334155 #0f172a;
-}
-
-.tabela-relatorio thead th {
-    position: sticky;
-    top: 0;
-    background-color: #151b2b; /* Coloque EXATAMENTE a mesma cor de fundo da sua página/card */
-    z-index: 1; /* Garante que os títulos fiquem por cima dos números ao rolar */
-    box-shadow: inset 0 -2px 0 #334155; /* Substitui a borda de baixo para não sumir no scroll */
-}
-
-/* Modifique a regra antiga tirando o border-bottom que dava bug no sticky */
-.tabela-relatorio thead tr {
-    border-bottom: none; /* Removido daqui, pois a sombra acima faz o papel da linha */
-}
-
-/* 1. Define a largura da barra vertical e altura da horizontal */
-.tabela-container::-webkit-scrollbar {
-    width: 8px;  /* Deixa ela fininha */
-    height: 8px; /* Para o scroll horizontal, se houver */
-}
-
-/* 2. O "Trilho" da barra (a parte que fica estática no fundo) */
-.tabela-container::-webkit-scrollbar-track {
-    background: #2a3441; /* Mesma cor de fundo escura do seu sistema */
-    border-radius: 6px;
-}
-
-/* 3. O "Alvo" ou "Ponteiro" (a pecinha que mexe quando você arrasta) */
-.tabela-container::-webkit-scrollbar-thumb {
-    background-color: #334155; /* Um cinza azulado discreto (Slate-700) */
-    border-radius: 6px;       /* Deixa as pontas arredondadas */
-    border: 2px solid #2a3441; /* Cria um espaçamento sutil nas laterais */
-}
-
-/* 4. Efeito quando o usuário passa o mouse por cima do ponteiro */
-.tabela-container::-webkit-scrollbar-thumb:hover {
-    background-color: #475569; /* Fica levemente mais claro (Slate-600) */
-}
-/* =========================================
-   ESTILOS DA TABELA DE RELATÓRIO
-   ========================================= */
-
-
-.id-produto {
-    font-weight: 700;
-    color: #f8fafc;
-}
-
-/* Tipografia de quantidades */
-.qtd-enviada {
-    text-align: center;
-    font-weight: 600;
-    color: #22c55e; /* Verde indicando que foi algo pra lá */
-}
-
-.qtd-zero {
-    text-align: center;
-    color: #475569; /* Cinza escuro para o zero não poluir a tela */
-}
-
-/* Badges da Tabela */
-.badge-total {
-    background-color: #334155;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.badge-status {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.badge-status.concluido {
-    background-color: rgba(34, 197, 94, 0.2);
-    color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-.badge-status.parcial {
-    background-color: rgba(234, 179, 8, 0.2);
-    color: #facc15;
-    border: 1px solid rgba(234, 179, 8, 0.3);
-}
-
-/* ==========================================================================
-   ESTILIZAÇÃO DA BARRA DE ROLAGEM GLOBAL (Navegador)
-   ========================================================================== */
-
-/* Suporte para Firefox (O Firefox usa uma regra mais simples) */
-html {
-    scrollbar-width: thin; /* Deixa a barra fininha */
-    scrollbar-color: #334155 #0F172A; /* Cor do "pegador" e Cor do fundo */
-}
-
-/* Suporte para Chrome, Edge, Safari e Opera (Família Webkit) */
-::-webkit-scrollbar {
-    width: 8px;  /* Largura da barra vertical */
-    height: 8px; /* Altura da barra horizontal (se houver) */
-}
-
-/* O fundo da barra (O trilho por onde ela corre) */
-::-webkit-scrollbar-track {
-    background: #0F172A; /* Um azul/cinza bem escuro para mesclar com o seu fundo */
-    border-radius: 4px;
-}
-
-/* O "Pegador" da barra (A parte que você clica e arrasta) */
-::-webkit-scrollbar-thumb {
-    background: #334155; /* Uma cor um pouco mais clara que o fundo para dar destaque */
-    border-radius: 4px;  /* Deixa as pontas arredondadas */
-}
-
-/* O "Pegador" quando você passa o mouse por cima */
-::-webkit-scrollbar-thumb:hover {
-    background: #475569; /* Fica um pouquinho mais claro no hover */
-}
-
-/* ==========================================================================
-   EFEITO DE BLOQUEIO (HOVER) NA BARRA DE PESQUISA DO MODAL
-   ========================================================================== */
-
-/* Garante uma transição suave na barra bloqueada */
-#edit-prod-nome:disabled {
-    transition: opacity 0.3s ease, background-color 0.3s ease;
-}
-
-/* Quando passa o mouse por cima da barra bloqueada */
-#edit-prod-nome:disabled:hover {
-    opacity: 0.3 !important; /* Fica bem transparente */
-    background-color: rgba(255, 255, 255, 0.02) !important; /* Dá uma leve escurecida no fundo */
-    cursor: not-allowed !important; /* Reforça o ícone de proibido no mouse */
-}
-
-/* ==========================================================================
-   EFEITO DE BLOQUEIO NA LIXEIRA DOS PRODUTOS (Apenas ADM)
-   ========================================================================== */
-
-/* Quando o botão de lixeira estiver desativado */
-.btn-icon-danger:disabled {
-    opacity: 0.3 !important; /* Fica transparente/apagado */
-    cursor: not-allowed !important; /* Mostra o ícone de proibido */
-}
-
-/* Evita que ele mude de cor se o utilizador passar o rato por cima do botão desativado */
-.btn-icon-danger:disabled:hover {
-    color: #f87171 !important; /* Mantém a cor vermelha base sem o efeito hover ativo */
-    background: transparent !important;
-}
-
-/* ==========================================================================
-   TRAVANDO O SCROLL GERAL E ROLANDO APENAS AS LISTAS (NOVO PEDIDO & MODAL)
-   ========================================================================== */
-
-/* ==========================================================================
-   TELA DE NOVO PEDIDO (RESOLVIDO DEFINITIVO)
-   ========================================================================== */
-#novo-pedido-page {
-    height: calc(100vh - 120px) !important;
-    max-height: calc(100vh - 120px) !important;
-    overflow: hidden !important;
-}
-
-#novo-pedido-page.active {
-    display: flex !important;
-    flex-direction: column !important;
-}
-
-/* Container do Grid */
-#novo-pedido-page .order-container {
-    display: grid !important;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 24px;
-    height: 100% !important;
-    max-height: 100% !important;
-    overflow: hidden !important;
-}
-
-/* Os dois Cards brancos laterais */
-#novo-pedido-page .order-container .card {
-    height: 100% !important;
-    max-height: 100% !important;
-    display: flex !important;
-    flex-direction: column !important;
-    margin-bottom: 0 !important;
-    overflow: hidden !important;
-}
-
-/* 🚀 A LISTA ROLA AQUI DENTRO */
-#order-items-list {
-    flex: 1 !important;
-    overflow-y: auto !important;
-    min-height: 0 !important;
-    padding-right: 8px !important;
-    margin-bottom: 10px !important;
-}
-
-/* 🚀 O BOTÃO FICA FIXO LOGO ABAIXO */
-#btn-finalizar {
-    flex-shrink: 0 !important;
-    width: 100% !important;
-    margin-top: auto !important; /* Cola o botão sempre no rodapé do card */
-}
-
-/* Scrollbar do Novo Pedido */
-#order-items-list::-webkit-scrollbar { width: 6px; }
-#order-items-list::-webkit-scrollbar-track { background: transparent; }
-#order-items-list::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; }
-
-
-/* ==========================================================================
-   MODAL DE EDIÇÃO DE PEDIDO (RESOLVIDO DEFINITIVO)
-   ========================================================================== */
-.modal-body-pro {
-    overflow: hidden !important; /* Tira o scroll do fundo */
-    height: calc(100% - 80px) !important; /* Segura o corpo dentro do modal */
-}
-
-/* Coluna da Esquerda (Garante o alinhamento da Pesquisa + Tabela) */
-.modal-body-pro > div:first-child {
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-    min-height: 0 !important;
-}
-
-/* A tabela de produtos rola de forma isolada */
-.table-container-pro {
-    flex: 1 !important;
-    overflow-y: auto !important;
-    min-height: 0 !important;
-}
-
-/* Coluna da Direita (Painéis) */
-.sidebar-panels-pro {
-    height: 100% !important;
-    overflow-y: auto !important;
-    padding-right: 5px;
-}
-
-/* Scrollbars do Modal */
-.table-container-pro::-webkit-scrollbar,
-.sidebar-panels-pro::-webkit-scrollbar { 
-    width: 6px; 
-}
-.table-container-pro::-webkit-scrollbar-track,
-.sidebar-panels-pro::-webkit-scrollbar-track { 
-    background: transparent; 
-}
-.table-container-pro::-webkit-scrollbar-thumb,
-.sidebar-panels-pro::-webkit-scrollbar-thumb { 
-    background-color: var(--border-color); 
-    border-radius: 5px; 
 }

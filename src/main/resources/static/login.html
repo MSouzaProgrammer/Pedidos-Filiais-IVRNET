@@ -8,10 +8,90 @@
     <link rel="shortcut icon" href="img/icone.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <script src="https://unpkg.com/lucide@latest"></script>
+
+<!-- ESTILO À PROVA DE FALHAS PARA O LOADING DO LOGIN -->
+    <style>
+        /* Força a tela de fundo a ocupar 100% da viewport real */
+        html, body.login-body {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100vh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* O Overlay prende na tela inteira */
+        #loading-global {
+            display: none;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background-color: rgba(9, 13, 22, 0.85) !important;
+            backdrop-filter: blur(6px) !important;
+            z-index: 999999 !important;
+        }
+
+        /* Quando ganha a classe .ativo (injetada pelo TS/JS) */
+        #loading-global.ativo {
+            display: block !important; /* Muda pra block pra usar o transform manual */
+        }
+
+        /* Centralização matemática exata no meio da tela */
+        #loading-global .loading-box {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            gap: 16px !important;
+            width: max-content !important;
+        }
+
+        /* Spinner alinhado */
+        #loading-global .spinner {
+            width: 48px !important;
+            height: 48px !important;
+            border: 4px solid #2e374a !important;
+            border-radius: 50% !important;
+            border-top-color: #2563eb !important;
+            animation: girar 0.8s linear infinite !important;
+            margin: 0 auto !important;
+        }
+
+        /* Texto "Entrando..." */
+        #loading-global span {
+            color: #f9fafb !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            margin: 0 !important;
+            display: block !important;
+            text-align: center !important;
+        }
+
+        @keyframes girar {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 
 <body class="login-body">
+
+    <!-- 🌟 DIV DO LOADING MOVIDA PARA O TOPO DO BODY (DESVINCULADA DO FORMULÁRIO) -->
+    <div id="loading-global" class="loading-overlay">
+        <div class="loading-box">
+            <div class="spinner"></div>
+            <span>Entrando...</span>
+        </div>
+    </div>
+
     <img src="img/logo.png" alt="imagem" class="img-logo">
+    
     <div class="login-container">
         <div style="width: 100%; max-width: 400px;">
             <h1 style="margin-bottom: 24px;">Login Pedidos</h1>
@@ -20,10 +100,10 @@
                     <label>E-mail</label>
                     <input type="email" class="form-control" placeholder="nome@empresa.com" id="email-login" required>
                 </div>
+                
                 <div style="margin-bottom: 20px;">
                     <label style="color: #fff; display: block; margin-bottom: 5px;">Senha</label>
                     <div class="input-group" style="display: flex; width: 100%;">
-
                         <input type="password" class="form-control" placeholder="••••••••" id="senhaLogin" required
                             style="border-top-right-radius: 0; border-bottom-right-radius: 0; background-color: #151b2b; color: #fff; border: 1px solid #2d3748; height: 43px;">
 
@@ -33,18 +113,14 @@
                         </button>
                     </div>
                 </div>
+                
                 <button type="submit" class="btn btn-primary" style="width: 100%;" id="b-login">Acessar Sistema</button>
             </form>
         </div>
     </div>
-    <div id="loading-global" class="loading-overlay">
-        <div class="loading-box">
-            <div class="spinner"></div>
-            <span>Entrando...</span>
-        </div>
-    </div>
+
     <script type="module" src="script/login.js"></script>
-    <!-- Cole isso no final do seu arquivo HTML -->
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const senhaInput = document.getElementById('senhaLogin');
@@ -57,10 +133,10 @@
 
                     if (senhaInput.type === 'password') {
                         senhaInput.type = 'text';
-                        iconeOlho.textContent = 'visibility_off'; // Muda para o olho cortado
+                        iconeOlho.textContent = 'visibility_off';
                     } else {
                         senhaInput.type = 'password';
-                        iconeOlho.textContent = 'visibility'; // Volta para o olho aberto
+                        iconeOlho.textContent = 'visibility';
                     }
                 });
             }
