@@ -5,6 +5,7 @@ export interface Produto {
   nome: string;
   unidade: string;
   quantidade: number;
+  estoque: number;
 }
 export interface LoginData { email: string; password: string; }
 export interface ProdutosRegistrados {

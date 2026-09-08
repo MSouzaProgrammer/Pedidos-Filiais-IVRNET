@@ -18,12 +18,25 @@ export function configurarDropdownProdutos() {
         if (produtosFiltrados.length > 0) {
             produtosFiltrados.forEach((produto) => {
                 const li = document.createElement("li");
-                li.textContent = produto.nome;
+                li.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
+            <span style="font-weight:600;">${produto.nome}</span>
+            <span style="font-size:12px; font-weight:700; padding:4px 9px; border-radius:999px; background:${produto.estoque > 0 ? '#ecfdf5' : '#fef2f2'}; color:${produto.estoque > 0 ? '#047857' : '#b91c1c'}; white-space:nowrap;">
+              Estoque Matriz: ${produto.estoque}
+            </span>
+          </div>
+        `;
                 li.addEventListener("click", function () {
                     unidProdutoMolde.value = produto.unidade;
                     inputProduto.value = produto.nome;
                     setProdutoEmEspera(produto);
                     listaSugestoes.style.display = "none";
+                    const estoqueInfo = document.getElementById("prod-estoque-info");
+                    if (estoqueInfo) {
+                        estoqueInfo.textContent = `Estoque na Matriz: ${produto.estoque}`;
+                        estoqueInfo.style.color = produto.estoque > 0 ? '#047857' : '#b91c1c';
+                        estoqueInfo.style.backgroundColor = produto.estoque > 0 ? '#ecfdf5' : '#fef2f2';
+                    }
                     quantValor.disabled = false;
                     btAdd.style.backgroundColor = 'var(--primary)';
                     btAdd.disabled = false;
@@ -134,7 +147,8 @@ export function iniciarNovoPedido() {
                     idProduto: produtoValido.idProduto,
                     nome: produtoValido.nome,
                     unidade: produtoValido.unidade,
-                    quantidade: qty
+                    quantidade: qty,
+                    estoque: produtoValido.estoque
                 };
                 carrinhoDePedidos.push(itemFinalCarrinho);
             }

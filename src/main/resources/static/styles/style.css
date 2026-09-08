@@ -632,7 +632,7 @@ body {
 /* Cabeçalho Fixo do Catálogo */
 .product-list-header {
     display: grid !important;
-    grid-template-columns: 90px 1fr 150px 100px !important;
+    grid-template-columns: 90px minmax(180px, 1fr) 110px 110px 100px !important;
     gap: 15px;
     align-items: center;
     padding: 14px 20px;
@@ -661,7 +661,7 @@ body {
 /* Linha do Produto */
 .product-list-item {
     display: grid !important;
-    grid-template-columns: 90px 1fr 150px 100px !important;
+    grid-template-columns: 90px minmax(180px, 1fr) 110px 110px 100px !important;
     gap: 15px;
     padding: 14px 20px;
     border-bottom: 1px solid var(--border-color);
@@ -1300,3 +1300,22 @@ html {
         background-color: var(--bg-sidebar);
     }
 }
+
+/* Coluna de estoque */
+.produto-estoque {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 7px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    font-weight: 700;
+}
+
+.produto-estoque.estoque-zero {
+    color: #ef4444;
+}
+

@@ -15,6 +15,7 @@ export function renderProductList(itens: Produto[]): void {
         <span style="font-weight:700; color:var(--text-muted)">${item.idProduto}</span>
         <span style="font-weight:600">${item.nome}</span>
         <span style="color:var(--text-muted)">${item.unidade}</span>
+        <span class="produto-estoque ${item.quantidade <= 0 ? 'estoque-zero' : ''}">${item.estoque}</span>
         <div style="text-align:right">
             <button style="border:none; background:none; cursor:pointer; color:var(--text-muted); margin-right:8px" onclick="${isAdmin ? `editarItem('${item.id}')` : 'avisoDePermissao()'}"><i data-lucide="edit" style="width:16px"></i></button>
             <button style="border:none; background:none; cursor:pointer; color:#ef4444" onclick="${isAdmin ? `deleteProduct('${item.id}')` : 'avisoDePermissao()'}"><i data-lucide="trash-2" style="width:16px"></i></button>
@@ -35,7 +36,8 @@ export async function carregarProdutos() {
         idProduto: String(itemDoJava.idProduto),
         nome: String(itemDoJava.name),
         unidade: String(itemDoJava.undMedida),
-        quantidade: 0
+        quantidade: 0,
+        estoque: Number(itemDoJava.quantEstoque ?? 0)
       })));
       renderProductList(estoque);
     }
@@ -79,7 +81,7 @@ if (btnNovoProduto) {
 
     if (nomeP && idP && nomeP.value.trim() !== "" && idP.value.trim() !== "") {
       const produto = {
-        id: idP.value, idProduto: idP.value, nome: nomeP.value, unidade: unitP ? unitP.value : "", quantidade: 0
+        id: idP.value, idProduto: idP.value, nome: nomeP.value, unidade: unitP ? unitP.value : "", quantidade: 0, estoque: 0
       };
       try {
         const resposta = await requestBack("produto/idP/" + idP.value, "GET", null);

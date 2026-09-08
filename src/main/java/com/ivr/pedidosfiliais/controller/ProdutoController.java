@@ -1,6 +1,5 @@
 package com.ivr.pedidosfiliais.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -16,98 +15,126 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ivr.pedidosfiliais.dto.request.ProdutoRequest;
 import com.ivr.pedidosfiliais.dto.response.ProdutoResponse;
-import com.ivr.pedidosfiliais.entities.Produto;
 import com.ivr.pedidosfiliais.services.ProdutoService;
 
-import lombok.extern.slf4j.Slf4j; // Import do Lombok adicionado
+import lombok.extern.slf4j.Slf4j;
 
-@Slf4j // Anotação do Lombok ativada!
+@Slf4j
 @RestController
 @RequestMapping("/produto")
 public class ProdutoController {
 
-    
     private final ProdutoService produtoService;
-    
 
     public ProdutoController(ProdutoService produtoService) {
         this.produtoService = produtoService;
     }
 
     @GetMapping("/idP/{id}")
-    public ResponseEntity<?> verificarIdProduto(@PathVariable Long id) {
-        boolean existe = produtoService.existeProduto(id);
+    public ResponseEntity<?> verificarIdProduto(
+            @PathVariable Long id
+    ) {
+
+        boolean existe =
+                produtoService.existeProduto(id);
 
         if (existe) {
-            // Se já existe, você avisa o TypeScript (pode retornar um JSON ou só o status)
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Este ID de produto já está cadastrado.");
+
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(
+                        "Este ID de produto já está cadastrado."
+                    );
         }
 
-        // Se não existe, retorna 204 No Content (indica sucesso, mas sem corpo) ou 200
-        // OK
-        return ResponseEntity.noContent().build();
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 
     @PostMapping
-    public ResponseEntity<String> save(@RequestBody ProdutoRequest produtoRequest) {
-        log.info("Requisição POST recebida em /produto para cadastrar o produto: '{}'", produtoRequest.name());
+    public ResponseEntity<String> save(
+            @RequestBody ProdutoRequest produtoRequest
+    ) {
 
-        Boolean saved = produtoService.save(produtoRequest);
+        log.info(
+                "Requisição POST recebida em /produto para cadastrar o produto: '{}'",
+                produtoRequest.name()
+        );
+
+        Boolean saved =
+                produtoService.save(produtoRequest);
+
         if (saved) {
-            log.info("Produto '{}' registrado com sucesso no banco de dados.", produtoRequest.name());
+
+            log.info(
+                    "Produto '{}' registrado com sucesso.",
+                    produtoRequest.name()
+            );
+
             return ResponseEntity.ok("Registrado");
         }
 
-        log.warn("Falha ao registrar produto: Dados inválidos enviados no payload.");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Produto Invalido");
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Produto Invalido");
     }
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-        log.info("Requisição GET recebida em /produto para listar todos os produtos.");
 
-        List<ProdutoResponse> lProdutoResponses = new ArrayList<>();
-        List<Produto> produtos = produtoService.findAll();
+        log.info(
+                "Buscando produtos e estoque da Matriz no IXC."
+        );
 
-        for (Produto produto : produtos) {
-            ProdutoResponse pResponse = new ProdutoResponse(produto.getId(), produto.getIdProduto(), produto.getName(),
-                    produto.getUndMedida());
-            lProdutoResponses.add(pResponse);
+        List<ProdutoResponse> produtos =
+                produtoService.findAll();
+
+        if (!produtos.isEmpty()) {
+
+            return ResponseEntity.ok(produtos);
         }
 
-        if (!lProdutoResponses.isEmpty()) {
-            log.info("Listagem concluída. Total de produtos retornados: {}.", lProdutoResponses.size());
-            return ResponseEntity.status(HttpStatus.FOUND).body(lProdutoResponses);
-        }
-        log.warn("Nenhum produto foi localizado no catálogo do banco de dados.");
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produtos não encontrados");
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Produtos não encontrados");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
-        log.info("Requisição DELETE recebida em /produto/{} para remover produto.", id);
+    public ResponseEntity<String> deleteById(
+            @PathVariable Long id
+    ) {
 
-        Boolean deleted = produtoService.delete(id);
+        Boolean deleted =
+                produtoService.delete(id);
+
         if (deleted) {
-            log.info("Produto ID: {} deletado com sucesso do sistema.", id);
+
             return ResponseEntity.ok("Deleted");
         }
 
-        log.warn("Falha ao deletar: Produto ID: {} não existe para exclusão.", id);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido não encontrado!");
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Produto não encontrado!");
     }
 
     @PutMapping("/update")
-    public ResponseEntity<String> update(@RequestBody ProdutoRequest produto) {
-        log.info("Requisição PUT recebida em /produto/update para atualizar dados do produto ID: {}.", produto.id());
+    public ResponseEntity<String> update(
+            @RequestBody ProdutoRequest produto
+    ) {
 
-        Boolean nProduto = produtoService.update(produto);
-        if (nProduto) {
-            log.info("Produto ID: {} alterado e salvo com sucesso.", produto.id());
-            return ResponseEntity.ok("Produto Atualizado!");
+        Boolean atualizado =
+                produtoService.update(produto);
+
+        if (atualizado) {
+
+            return ResponseEntity.ok(
+                    "Produto Atualizado!"
+            );
         }
-        log.warn("Aviso de atualização: O produto ID: {} não foi modificado.", produto.id());
-        return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Produto não alterado");
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_MODIFIED)
+                .body("Produto não alterado");
     }
 }

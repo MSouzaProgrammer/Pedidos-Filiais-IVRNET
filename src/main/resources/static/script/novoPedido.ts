@@ -19,12 +19,27 @@ export function configurarDropdownProdutos(): void {
     if (produtosFiltrados.length > 0) {
       produtosFiltrados.forEach((produto) => {
         const li = document.createElement("li");
-        li.textContent = produto.nome;
+        li.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
+            <span style="font-weight:600;">${produto.nome}</span>
+            <span style="font-size:12px; font-weight:700; padding:4px 9px; border-radius:999px; background:${produto.estoque > 0 ? '#ecfdf5' : '#fef2f2'}; color:${produto.estoque > 0 ? '#047857' : '#b91c1c'}; white-space:nowrap;">
+              Estoque Matriz: ${produto.estoque}
+            </span>
+          </div>
+        `;
         li.addEventListener("click", function () {
           unidProdutoMolde.value = produto.unidade;
           inputProduto.value = produto.nome;
           setProdutoEmEspera(produto);
           listaSugestoes.style.display = "none";
+
+          const estoqueInfo = document.getElementById("prod-estoque-info");
+          if (estoqueInfo) {
+            estoqueInfo.textContent = `Estoque na Matriz: ${produto.estoque}`;
+            estoqueInfo.style.color = produto.estoque > 0 ? '#047857' : '#b91c1c';
+            estoqueInfo.style.backgroundColor = produto.estoque > 0 ? '#ecfdf5' : '#fef2f2';
+          }
+
           quantValor.disabled = false;
           btAdd.style.backgroundColor = 'var(--primary)';
           btAdd.disabled = false;
@@ -102,6 +117,9 @@ export function iniciarNovoPedido() {
       
       const nome = inputProduto.value;
       const qty = quantValor.valueAsNumber;
+
+      // O estoque exibido vem do IXC através do backend.
+      const estoqueDisponivel = Number(produtoEmEspera?.estoque ?? 0);
       
       unidProdutoMolde.value = "";
       if (!produtoEmEspera) {
@@ -110,6 +128,19 @@ export function iniciarNovoPedido() {
       }
 
       const produtoValido = produtoEmEspera;
+
+      if (!Number.isFinite(qty) || qty <= 0) {
+        await exibirAvisoLindo("Quantidade inválida", "Informe uma quantidade maior que zero.");
+        return;
+      }
+
+      if (qty > estoqueDisponivel) {
+        await exibirAvisoLindo(
+          "Estoque insuficiente",
+          `A Matriz possui ${estoqueDisponivel} unidade(s) deste produto. Você informou ${qty}.`
+        );
+        return;
+      }
 
       // VERIFICAÇÃO DE DUPLICIDADE
       const produtoExistente = carrinhoDePedidos.find(item => Number(item.idProduto) === Number(produtoValido.idProduto));
@@ -153,7 +184,8 @@ export function iniciarNovoPedido() {
           idProduto: produtoValido.idProduto,
           nome: produtoValido.nome,
           unidade: produtoValido.unidade,
-          quantidade: qty
+          quantidade: qty,
+          estoque: produtoValido.estoque
         };
         carrinhoDePedidos.push(itemFinalCarrinho);
       }
@@ -167,6 +199,13 @@ export function iniciarNovoPedido() {
       btAdd.style.backgroundColor = 'red';
       quantValor.disabled = true;
       inputProduto.disabled = false;
+
+      const estoqueInfo = document.getElementById("prod-estoque-info");
+      if (estoqueInfo) {
+        estoqueInfo.textContent = "Estoque na Matriz: —";
+        estoqueInfo.style.color = "var(--text-muted)";
+        estoqueInfo.style.backgroundColor = "var(--bg-body)";
+      }
     });
   }
 

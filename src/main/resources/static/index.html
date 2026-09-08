@@ -111,8 +111,12 @@
                                 </div>
                                 <input type="text" id="prod-med" class="form-control" style="width:100px" value=""
                                     disabled>
-                                <input type="number" id="prod-qty" class="form-control" style="width:100px" value="1"
-                                    disabled>
+                                <div style="display:flex; flex-direction:column; gap:6px; min-width:170px;">
+                                    <span id="prod-estoque-info" style="display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:0 10px; border-radius:8px; background:var(--bg-body); color:var(--text-muted); font-size:12px; font-weight:700; border:1px solid var(--border-color); white-space:nowrap;">
+                                        Estoque na Matriz: —
+                                    </span>
+                                    <input type="number" id="prod-qty" class="form-control" style="width:100%" value="1" min="1" disabled>
+                                </div>
                                 <button class="btn-primary" id="btn-add-order" disabled><i
                                         data-lucide="plus"></i></button>
                             </div>
@@ -147,6 +151,7 @@
                         <span>ID</span>
                         <span>NOME DO PRODUTO</span>
                         <span>UNIDADE</span>
+                        <span>ESTOQUE</span>
                         <span style="text-align:right">AÇÕES</span>
                     </div>
                     <div id="global-product-list"></div>
